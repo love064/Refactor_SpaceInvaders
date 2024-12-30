@@ -85,7 +85,6 @@ void LeaderBoard::ReadFromFile(std::string_view fileName) {
 			Leaderboard.emplace_back(hs);
 			LeaderBoardFile.read((char*)&Leaderboard[i], sizeof(PlayerData));
 		}
-		LeaderBoardFile.close();
 	}
 }
 
@@ -102,11 +101,13 @@ void LeaderBoard::SortLeaderBoard() {
 void LeaderBoard::WriteToFile(std::string_view fileName) {
 	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()){
-		for (int i = 0; i < Leaderboard.size(); i++) {
-			LeaderBoardFile.write((char*)&Leaderboard[i], sizeof(PlayerData));
+		for (const auto& var : Leaderboard) {
+			size_t nameLength = var.name.size();
+			LeaderBoardFile.write(reinterpret_cast<const char*>(&nameLength), sizeof(nameLength));
+			LeaderBoardFile.write(var.name.data(), nameLength);
+			LeaderBoardFile.write(reinterpret_cast<const char*>(&var.score), sizeof(var.score));
 		}
 	}
-	LeaderBoardFile.close();
 }
 
 void LeaderBoard::render() {
