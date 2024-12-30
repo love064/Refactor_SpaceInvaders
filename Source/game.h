@@ -4,6 +4,7 @@
 #include "Resources.h"
 #include <string>
 
+//TODO: split into different files (player.h, etc.)
 
 enum struct State
 {
@@ -30,7 +31,7 @@ struct Player
 {
 public:
 
-	float x_pos = 0;
+	float x_pos = 0; //TODO: Magic values
 	float speed = 7;
 	float player_base_height = 70.0f;  
 	float radius = 50;
@@ -41,7 +42,7 @@ public:
 
 	EntityType type = EntityType::PLAYER;
 
-	void Initialize();
+	void Initialize(); //TODO: double init RAII
 	void Render(Texture2D texture);
 	void Update();
 	
@@ -52,8 +53,8 @@ struct Projectile
 {
 public: 
 	// INITIALIZE PROJECTILE WHILE DEFINING IF ITS PLAYER OR ENEMY 
-	Vector2 position = {0,0};
-	int speed = 15; 
+	Vector2 position = {0,0}; 
+	int speed = 15; //TODO: magic values
 	bool active = true;  
 	EntityType type = {};
 
@@ -69,11 +70,11 @@ public:
 struct Wall 
 {
 public: 
-	Vector2 position; 
+	Vector2 position; //TODO: uninitialised
 	Rectangle rec; 
 	bool active; 
 	Color color; 
-	int health = 50;
+	int health = 50; //TODO: magic numbers
 	int radius = 60;
 
 
@@ -85,8 +86,8 @@ struct Alien
 {
 public:
 	
-	Color color = WHITE; 
-	Vector2 position = {0, 0};
+	Color color = WHITE; //TODO: doesnt change (unused?)
+	Vector2 position = {0, 0}; //TODO: magic numbers
 	int x = 0; 
 	int y = 0; 
 	float radius = 30;
@@ -118,19 +119,19 @@ struct Background
 
 	std::vector<Star> Stars;
 
-	void Initialize(int starAmount);
+	void Initialize(int starAmount); //TODO: double init
 	void Update(float offset);
 	void Render();
 
 };
 
-struct Game
+struct Game //TODO: remove unneccecary comments
 {
 	// Gamestate
 	State gameState = {};
 
 	// Score
-	int score;
+	int score; //TODO: uninit
 
 	// for later, make a file where you can adjust the number of walls (config file) 
 	int wallCount = 5;

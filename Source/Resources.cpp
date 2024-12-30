@@ -1,7 +1,7 @@
 #include "Resources.h"
 #include <iostream>;
 
-void Resources::Load()
+void Resources::Load() //TODO: constructor
 {
 	std::cout << "Yay"; // yes
 	alienTexture = LoadTexture("./Assets/Alien.png");
@@ -12,7 +12,7 @@ void Resources::Load()
 	laserTexture = LoadTexture("./Assets/Laser.png");
 }
 /*
-void Resources::Unload()
+void Resources::Unload() //TODO: destructor
 {
 	UnloadTexture(barrierTexture);
 	UnloadTexture(alienTexture);

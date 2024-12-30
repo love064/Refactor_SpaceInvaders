@@ -6,6 +6,7 @@
 #include <fstream>
 
 
+//TODO: there must be alrgorithims for this
 // MATH FUNCTIONS
 float lineLength(Vector2 A, Vector2 B) //Uses pythagoras to calculate the length of a line
 {
@@ -29,7 +30,7 @@ bool pointInCircle(Vector2 circlePos, float radius, Vector2 point) // Uses pytha
 }
 
 
-void Game::Start()
+void Game::Start() //TODO: double init 
 {
 	// creating walls 
 	float window_width = (float)GetScreenWidth(); 
@@ -83,13 +84,13 @@ void Game::Continue()
 	gameState = State::STARTSCREEN;
 }
 
-void Game::Launch()
+void Game::Launch() //TODO: Double init
 {
 	//LOAD SOME RESOURCES HERE
 	resources.Load();
 }
 
-void Game::Update()
+void Game::Update() //TODO: move to the left, and make shorter/break apart
 {
 	switch (gameState)
 	{
@@ -346,7 +347,7 @@ void Game::Update()
 }
 
 
-void Game::Render()
+void Game::Render() //TODO: move to the left, and make shorter
 {
 	switch (gameState)
 	{

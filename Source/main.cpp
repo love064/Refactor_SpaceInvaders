@@ -32,15 +32,15 @@ int main(void)
 {    
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
+    const int screenWidth = 1920; //TODO: RAII window init
+    const int screenHeight = 1080; //TODO: RAII window init
 
-    InitWindow(screenWidth, screenHeight, "SPACE INVADERS");
+    InitWindow(screenWidth, screenHeight, "SPACE INVADERS"); //TODO: RAII for the window
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
 
     Game game = { State::STARTSCREEN };
-    Resources resources;
+    Resources resources; //TODO: RAII 
     game.resources = resources;
     game.Launch();
 
@@ -49,7 +49,7 @@ int main(void)
 
     InitAudioDevice();
 
-    auto sound = LoadSound("./hitHurt.ogg");
+    auto sound = LoadSound("./hitHurt.ogg"); //TODO: RAII, may not be used?
     
 
 
@@ -77,7 +77,7 @@ int main(void)
 
         // Draw
         //----------------------------------------------------------------------------------
-        BeginDrawing();
+        BeginDrawing(); //TODO: RAII Drawing
 
         ClearBackground(BLACK);
 
