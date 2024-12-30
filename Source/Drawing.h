@@ -3,12 +3,13 @@
 
 struct Drawing {
 	
-	Drawing() {
+	Drawing() noexcept{
 		BeginDrawing();
+		//TODO: ERROR HANDLING?
 		ClearBackground(BLACK);
 	}
 
-	~Drawing() {
+	~Drawing() noexcept {
 		EndDrawing();
 	}
 
