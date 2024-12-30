@@ -5,6 +5,7 @@
 #include <thread>
 #include <fstream>
 #include "Util.h"
+#include "LeaderBoard.h"
 
 void Game::Start() //TODO: double init 
 {
@@ -50,13 +51,13 @@ void Game::End()
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
-	newHighScore = CheckNewHighScore();
+	newHighScore = CheckNewHighScore(score, Leaderboard);
 	gameState = State::ENDSCREEN;
 }
 
 void Game::Continue()
 {
-	SaveLeaderboard();
+	//SaveLeaderboard();
 	gameState = State::STARTSCREEN;
 }
 
@@ -250,16 +251,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 
 		if (newHighScore)
 		{
-			if (CheckCollisionPointRec(GetMousePosition(), textBox)) mouseOnText = true;
-			else mouseOnText = false;
-
-			if (mouseOnText)
-			{
-				// Set the window's cursor to the I-Beam
-				SetMouseCursor(MOUSE_CURSOR_IBEAM);
-
-				// Get char pressed on the queue
-				int key = GetCharPressed();
+			int key = GetCharPressed();
 
 				// Check if more characters have been pressed on the same frame
 				while (key > 0)
@@ -282,25 +274,14 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 					if (letterCount < 0) letterCount = 0;
 					name[letterCount] = '\0';
 				}
-			}
-			else SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-
-			if (mouseOnText)
-			{
-				framesCounter++;
-			}
-			else
-			{
-				framesCounter = 0;
-			}
 
 			// If the name is right legth and enter is pressed, exit screen by setting highscore to false and add 
 			// name + score to scoreboard
 			if (letterCount > 0 && letterCount < 9 && IsKeyReleased(KEY_ENTER))
 			{
-				std::string nameEntry(name);
+				std::string_view nameEntry = name; //TODO: BROKEN ONLY ONE NAME AT A TIME (replaces the old one)
 
-				InsertNewHighScore(nameEntry);
+				Leaderboard = InsertNewHighScore(nameEntry, score, Leaderboard);
 
 				newHighScore = false;
 			}
@@ -438,8 +419,8 @@ void Game::Render() //TODO: move to the left, and make shorter
 
 			for (int i = 0; i < Leaderboard.size(); i++)
 			{
-				char* tempNameDisplay = Leaderboard[i].name.data();
-				DrawText(tempNameDisplay, 50, 140 + (i * 40), 40, YELLOW);
+				auto tempNameDisplay = Leaderboard[i].name;
+				DrawText(tempNameDisplay.data(), 50, 140 + (i * 40), 40, YELLOW);
 				DrawText(TextFormat("%i", Leaderboard[i].score), 350, 140 + (i * 40), 40, YELLOW);
 			}
 		}
@@ -469,72 +450,72 @@ void Game::SpawnAliens()
 	}
 
 }
-
-bool Game::CheckNewHighScore()
-{
-	if (score > Leaderboard[4].score)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-void Game::InsertNewHighScore(std::string name)
-{
-	PlayerData newData;
-	newData.name = name;
-	newData.score = score;
-
-	for (int i = 0; i < Leaderboard.size(); i++)
-	{
-		if (newData.score > Leaderboard[i].score)
-		{
-
-			Leaderboard.insert(Leaderboard.begin() + i, newData);
-
-			Leaderboard.pop_back();
-
-			i = Leaderboard.size();
-
-		}
-	}
-}
-
-void Game::LoadLeaderboard()
-{
-	// CLEAR LEADERBOARD
-
-	// OPEN FILE
-
-	// READ DATA
-
-	// WRITE DATA ONTO LEADERBOARD
-
-	//CLOSE FILE
-}
-
-void Game::SaveLeaderboard()
-{
-	// SAVE LEADERBOARD AS ARRAY
-
-	// OPEN FILE
-	std::fstream file;
-
-	file.open("Leaderboard");
-
-	if (!file)
-	{
-		std::cout << "file not found \n";
-
-	}
-	else
-	{
-		std::cout << "file found \n";
-	}
-	// CLEAR FILE
-
-	// WRITE ARRAY DATA INTO FILE
-
-	// CLOSE FILE
-}
+//
+//bool Game::CheckNewHighScore()
+//{
+//	if (score > Leaderboard[4].score)
+//	{
+//		return true;
+//	}
+//
+//	return false;
+//}
+//
+//void Game::InsertNewHighScore(std::string name)
+//{
+//	PlayerData newData;
+//	newData.name = name;
+//	newData.score = score;
+//
+//	for (int i = 0; i < Leaderboard.size(); i++)
+//	{
+//		if (newData.score > Leaderboard[i].score)
+//		{
+//
+//			Leaderboard.insert(Leaderboard.begin() + i, newData);
+//
+//			Leaderboard.pop_back();
+//
+//			i = Leaderboard.size();
+//
+//		}
+//	}
+//}
+//
+//void Game::LoadLeaderboard()
+//{
+//	// CLEAR LEADERBOARD
+//
+//	// OPEN FILE
+//
+//	// READ DATA
+//
+//	// WRITE DATA ONTO LEADERBOARD
+//
+//	//CLOSE FILE
+//}
+//
+//void Game::SaveLeaderboard()
+//{
+//	// SAVE LEADERBOARD AS ARRAY
+//
+//	// OPEN FILE
+//	std::fstream file;
+//
+//	file.open("Leaderboard");
+//
+//	if (!file)
+//	{
+//		std::cout << "file not found \n";
+//
+//	}
+//	else
+//	{
+//		std::cout << "file found \n";
+//	}
+//	// CLEAR FILE
+//
+//	// WRITE ARRAY DATA INTO FILE
+//
+//	// CLOSE FILE
+//}

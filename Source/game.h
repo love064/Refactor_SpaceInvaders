@@ -8,6 +8,7 @@
 #include "Wall.h"
 #include "Alien.h"
 #include "Stars.h"
+#include "LeaderBoard.h"
 
 //TODO: split into different files (player.h, etc.)
 
@@ -18,11 +19,11 @@ enum struct State
 	ENDSCREEN
 };
 
-struct PlayerData
-{
-	std::string name;
-	int score;
-};
+//struct PlayerData
+//{
+//	std::string name;
+//	int score;
+//};
 
 
 struct Game //TODO: remove unneccecary comments
@@ -70,12 +71,12 @@ struct Game //TODO: remove unneccecary comments
 
 	void SpawnAliens();
 
-	bool CheckNewHighScore();
 
+	/*bool CheckNewHighScore();
 	void InsertNewHighScore(std::string name);
 
 	void LoadLeaderboard();
-	void SaveLeaderboard();
+	void SaveLeaderboard();*/
 
 
 	// Entity Storage and Resources
