@@ -173,8 +173,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="level.h" />
+    <ClInclude Include="Source\EntityType.h" />
     <ClInclude Include="Source\game.h" />
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\Projectile.h" />
     <ClInclude Include="Source\Textures.h" />
+    <ClInclude Include="Source\Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

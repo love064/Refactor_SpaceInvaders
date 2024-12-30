@@ -3,6 +3,10 @@
 #include <vector>
 #include "Textures.h"
 #include <string>
+#include "EntityType.h"
+#include "Player.h"
+#include "Projectile.h"
+#include "Wall.h"
 
 //TODO: split into different files (player.h, etc.)
 
@@ -13,74 +17,66 @@ enum struct State
 	ENDSCREEN
 };
 
-enum struct EntityType
-{
-	PLAYER,
-	ENEMY,
-	PLAYER_PROJECTILE,
-	ENEMY_PROJECTILE
-};
-
 struct PlayerData
 {
 	std::string name;
 	int score;
 };
 
-struct Player
-{
-public:
-
-	float x_pos = 0; //TODO: Magic values
-	float speed = 7;
-	float player_base_height = 70.0f;  
-	float radius = 50;
-	int lives = 3;
-	int direction = 0;
-	int activeTexture = 0;
-	float timer = 0;
-
-	EntityType type = EntityType::PLAYER;
-
-	void Initialize(); //TODO: double init RAII
-	void Render(Texture2D texture);
-	void Update();
-	
-};
-
-
-struct Projectile
-{
-public: 
-	// INITIALIZE PROJECTILE WHILE DEFINING IF ITS PLAYER OR ENEMY 
-	Vector2 position = {0,0}; 
-	int speed = 15; //TODO: magic values
-	bool active = true;  
-	EntityType type = {};
-
-	// LINE WILL UPDATE WITH POSITION FOR CALCULATIONS
-	Vector2 lineStart = { 0, 0 };
-	Vector2 lineEnd = { 0, 0 };
-
-	void Update();
-
-	void Render(Texture2D texture);
-};
-
-struct Wall 
-{
-public: 
-	Vector2 position; //TODO: uninitialised
-	Rectangle rec; 
-	bool active; 
-	Color color; 
-	int health = 50; //TODO: magic numbers
-	int radius = 60;
+//struct Player
+//{
+//public:
+//
+//	float x_pos = 0; //TODO: Magic values
+//	float speed = 7;
+//	float player_base_height = 70.0f;  
+//	float radius = 50;
+//	int lives = 3;
+//	int direction = 0;
+//	int activeTexture = 0;
+//	float timer = 0;
+//
+//	EntityType type = EntityType::PLAYER;
+//
+//	void Initialize(); //TODO: double init RAII
+//	void Render(Texture2D texture);
+//	void Update();
+//	
+//};
 
 
-	void Render(Texture2D texture); 
-	void Update(); 
-};
+//struct Projectile
+//{
+//public: 
+//	// INITIALIZE PROJECTILE WHILE DEFINING IF ITS PLAYER OR ENEMY 
+//	Vector2 position = {0,0}; 
+//	int speed = 15; //TODO: magic values
+//	bool active = true;  
+//	EntityType type = {};
+//
+//	// LINE WILL UPDATE WITH POSITION FOR CALCULATIONS
+//	Vector2 lineStart = { 0, 0 };
+//	Vector2 lineEnd = { 0, 0 };
+//
+//	void Update();
+//
+//	void Render(Texture2D texture);
+//};
+
+//struct Wall 
+//{
+//public: 
+//	Vector2 position; //TODO: uninitialised
+//	Rectangle rec; 
+//	bool active; 
+//	Color color; 
+//	int health = 50; //TODO: magic numbers
+//	int radius = 60;
+//
+//
+//	void Render(Texture2D texture); 
+//	void Update(); 
+//};
 
 struct Alien
 {
