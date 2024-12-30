@@ -3,22 +3,37 @@
 #include "Window.h"
 #include "Drawing.h"
 
+enum struct GameState {
+    STARTSCREEN,
+    GAMEPLAY,
+    ENDSCREEN
+};
+
 int main(void)
 {   
     Window window( 1920, 1080 ); //TODO: ERROR handling for both window, drawing and resources
 
+    GameState currentState = GameState::GAMEPLAY;
+
     Game game = { State::STARTSCREEN };
-    game.Launch(); //TODO: Double init
 
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-        game.Update();
-      
-
         Drawing drawing;
-        game.Render();
+        
+        switch (currentState){
+        case GameState::STARTSCREEN:
+            //
+            break;
+        case GameState::GAMEPLAY:
+            game.Update();
+            game.Render();
+            break;
+        case GameState::ENDSCREEN:
+            //
+            break;
+        }
     }
-    //std::string filename = "level.txt";  //TODO: ??? maybe unused
 
     return 0;
 }

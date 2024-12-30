@@ -64,7 +64,6 @@ struct Game //TODO: remove unneccecary comments
 	void End();
 
 	void Continue();
-	void Launch();
 
 	void Update();
 	void Render();

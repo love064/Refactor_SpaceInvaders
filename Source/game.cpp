@@ -60,11 +60,6 @@ void Game::Continue()
 	gameState = State::STARTSCREEN;
 }
 
-void Game::Launch() //TODO: Double init
-{
-	//LOAD SOME RESOURCES HERE
-	//resources.Load();
-}
 
 void Game::Update() //TODO: move to the left, and make shorter/break apart
 {
