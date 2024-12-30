@@ -47,5 +47,11 @@
     <ClInclude Include="Source\Wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Alien.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
