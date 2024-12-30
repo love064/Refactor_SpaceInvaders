@@ -43,9 +43,14 @@ std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, con
 //
 
 void LeaderBoard::update(int score) {
-	if (!newHighScore) {
+	if (newHighScore) {
 		yourScore.score = score;
 		SetName();
+	}
+
+	if (IsKeyReleased(KEY_ENTER) && !newHighScore)
+	{
+		//Continue(); reset
 	}
 
 }
@@ -98,11 +103,11 @@ void LeaderBoard::SortLeaderBoard() {
 	}
 }
 
-void LeaderBoard::WriteToFile(std::string_view fileName) {
+void LeaderBoard::WriteToFile(std::string_view fileName) const {
 	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()){
 		for (const auto& var : Leaderboard) {
-			size_t nameLength = var.name.size();
+			const size_t nameLength = var.name.size();
 			LeaderBoardFile.write(reinterpret_cast<const char*>(&nameLength), sizeof(nameLength));
 			LeaderBoardFile.write(var.name.data(), nameLength);
 			LeaderBoardFile.write(reinterpret_cast<const char*>(&var.score), sizeof(var.score));
