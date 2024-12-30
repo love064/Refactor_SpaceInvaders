@@ -41,43 +41,6 @@ std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, con
 	return tempboard;
 }
 //
-//void LoadLeaderboard()
-//{
-//	// CLEAR LEADERBOARD
-//
-//	// OPEN FILE
-//
-//	// READ DATA
-//
-//	// WRITE DATA ONTO LEADERBOARD
-//
-//	//CLOSE FILE
-//}
-//
-//void SaveLeaderboard()
-//{
-//	// SAVE LEADERBOARD AS ARRAY
-//
-//	// OPEN FILE
-//	std::fstream file;
-//
-//	file.open("Leaderboard");
-//
-//	if (!file)
-//	{
-//		std::cout << "file not found \n";
-//
-//	}
-//	else
-//	{
-//		std::cout << "file found \n";
-//	}
-//	// CLEAR FILE
-//
-//	// WRITE ARRAY DATA INTO FILE
-//
-//	// CLOSE FILE
-//}
 
 void LeaderBoard::update(int score) {
 	if (!newHighScore) {
@@ -134,6 +97,16 @@ void LeaderBoard::SortLeaderBoard() {
 			break;
 		}
 	}
+}
+
+void LeaderBoard::WriteToFile(std::string_view fileName) {
+	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
+	if (LeaderBoardFile.is_open()){
+		for (int i = 0; i < Leaderboard.size(); i++) {
+			LeaderBoardFile.write((char*)&Leaderboard[i], sizeof(PlayerData));
+		}
+	}
+	LeaderBoardFile.close();
 }
 
 void LeaderBoard::render() {
