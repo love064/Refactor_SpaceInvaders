@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "game.h"
 #include "RayLibWindow.h"
+#include "Drawing.h"
 
 int main(void)
 {   
@@ -10,37 +11,20 @@ int main(void)
     Game game = { State::STARTSCREEN };
     game.Launch(); //TODO: Double init
 
+    //InitAudioDevice()
+   // auto sound = LoadSound("./hitHurt.ogg"); //TODO: RAII, may not be used?
     
-    //--------------------------------------------------------------------------------------
-
-    InitAudioDevice();
-
-    auto sound = LoadSound("./hitHurt.ogg"); //TODO: RAII, may not be used?
-    
-
-
-
-    // Main game loop
+   
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         game.Update();
       
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing(); //TODO: RAII Drawing
-
-        ClearBackground(BLACK);
-
-       
-
+        Drawing drawing;
         game.Render();
-
-        EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    CloseAudioDevice();
+    //CloseAudioDevice();
 
     std::string filename = "level.txt";  //TODO: ??? maybe unused
 
