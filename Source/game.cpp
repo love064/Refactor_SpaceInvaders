@@ -87,7 +87,7 @@ void Game::Continue()
 void Game::Launch() //TODO: Double init
 {
 	//LOAD SOME RESOURCES HERE
-	resources.Load();
+	//resources.Load();
 }
 
 void Game::Update() //TODO: move to the left, and make shorter/break apart
@@ -371,24 +371,24 @@ void Game::Render() //TODO: move to the left, and make shorter
 		DrawText(TextFormat("Lives: %i", player.lives), 50, 70, 40, YELLOW);
 
 		//player rendering 
-		player.Render(resources.shipTextures[player.activeTexture]);
+		player.Render(playerTextures[player.activeTexture]);
 
 		//projectile rendering
 		for (int i = 0; i < Projectiles.size(); i++)
 		{
-			Projectiles[i].Render(resources.laserTexture);
+			Projectiles[i].Render(laserTexture.get());
 		}
 
 		// wall rendering 
 		for (int i = 0; i < Walls.size(); i++)
 		{
-			Walls[i].Render(resources.barrierTexture); 
+			Walls[i].Render(barrierTexture.get()); 
 		}
 
 		//alien rendering  
 		for (int i = 0; i < Aliens.size(); i++)
 		{
-			Aliens[i].Render(resources.alienTexture);
+			Aliens[i].Render(alienTexture.get());
 		}
 
 

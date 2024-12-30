@@ -6,6 +6,7 @@ struct Window { //REAL ONE
 	
 	Window(int screenWidth, int screenHeight) { //TODO: noexcept?
 		InitWindow(screenWidth, screenHeight, "SPACE INVADERS");
+
 		//TODO: error handling
 	}
 	~Window() noexcept {

@@ -149,6 +149,15 @@ struct Game //TODO: remove unneccecary comments
 	int formationY = 50;
 
 	bool newHighScore = false;
+
+	Resources alienTexture{ "./Assets/Alien.png" };
+	Resources barrierTexture{ "./Assets/Barrier.png" };
+	Resources laserTexture{ "./Assets/Laser.png" };
+	Resources shipTexture1{ "./Assets/Ship1.png" };
+	Resources shipTexture2{ "./Assets/Ship2.png" };
+	Resources shipTexture3{ "./Assets/Ship3.png" };
+
+	std::vector<Texture2D> playerTextures{shipTexture1.get(), shipTexture2.get(), shipTexture3.get()};
 	
 
 	void Start();
@@ -173,7 +182,7 @@ struct Game //TODO: remove unneccecary comments
 
 
 	// Entity Storage and Resources
-	Resources resources;
+	//Resources resources;
 
 	Player player;
 
