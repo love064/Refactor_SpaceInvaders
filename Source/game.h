@@ -1,7 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include <vector>
-#include "Resources.h"
+#include "Textures.h"
 #include <string>
 
 //TODO: split into different files (player.h, etc.)
@@ -150,12 +150,12 @@ struct Game //TODO: remove unneccecary comments
 
 	bool newHighScore = false;
 
-	Resources alienTexture{ "./Assets/Alien.png" };
-	Resources barrierTexture{ "./Assets/Barrier.png" };
-	Resources laserTexture{ "./Assets/Laser.png" };
-	Resources shipTexture1{ "./Assets/Ship1.png" };
-	Resources shipTexture2{ "./Assets/Ship2.png" };
-	Resources shipTexture3{ "./Assets/Ship3.png" };
+	Textures alienTexture{ "./Assets/Alien.png" };
+	Textures barrierTexture{ "./Assets/Barrier.png" };
+	Textures laserTexture{ "./Assets/Laser.png" };
+	Textures shipTexture1{ "./Assets/Ship1.png" };
+	Textures shipTexture2{ "./Assets/Ship2.png" };
+	Textures shipTexture3{ "./Assets/Ship3.png" };
 
 	std::vector<Texture2D> playerTextures{shipTexture1.get(), shipTexture2.get(), shipTexture3.get()};
 	
