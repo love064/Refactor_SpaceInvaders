@@ -6,7 +6,7 @@
 struct PlayerData
 {
 	std::string_view name;
-	int score;
+	int score = 0;
 };
 
 class LeaderBoard {
@@ -26,12 +26,12 @@ public: //TODO: check which can be private
 	void SortLeaderBoard();
 	void WriteToFile(std::string_view fileName) const;
 
-	void SetNameRender();
-	void HSRender();
+	void SetNameRender() const noexcept;
+	void HSRender() noexcept;
 	void render();
 };
 
-bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard);
+bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept;
 std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, const std::vector<PlayerData>& Leaderboard);
 //void LoadLeaderboard();
 //void SaveLeaderboard();

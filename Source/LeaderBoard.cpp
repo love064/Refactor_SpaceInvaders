@@ -7,7 +7,7 @@
 #include <fstream>
 
 
-bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard)
+bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept
 {
 	if (score > Leaderboard[4].score)
 	{
@@ -86,8 +86,7 @@ void LeaderBoard::ReadFromFile(std::string_view fileName) {
 	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()) {
 		for (int i = 0; i < 5; i++) {
-			PlayerData hs = { "ABC", 0 };
-			Leaderboard.emplace_back(hs);
+			Leaderboard.emplace_back( "ABC", 0 );
 			LeaderBoardFile.read((char*)&Leaderboard[i], sizeof(PlayerData));
 		}
 	}
@@ -124,7 +123,7 @@ void LeaderBoard::render() {
 	}
 }
 
-void LeaderBoard::SetNameRender() {
+void LeaderBoard::SetNameRender() const noexcept{
 	DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
 
 	// BELOW CODE IS FOR NAME INPUT RENDER
@@ -161,7 +160,7 @@ void LeaderBoard::SetNameRender() {
 	}
 }
 
-void LeaderBoard::HSRender() {
+void LeaderBoard::HSRender() noexcept{
 	// If no highscore or name is entered, show scoreboard and call it a day
 	DrawText("PRESS ENTER TO CONTINUE", 600, 200, 40, YELLOW);
 
@@ -169,7 +168,7 @@ void LeaderBoard::HSRender() {
 
 	for (int i = 0; i < Leaderboard.size(); i++)
 	{
-		auto tempNameDisplay = Leaderboard[i].name;
+		const auto tempNameDisplay = Leaderboard[i].name;
 		DrawText(tempNameDisplay.data(), 50, 140 + (i * 40), 40, YELLOW);
 		DrawText(TextFormat("%i", Leaderboard[i].score), 350, 140 + (i * 40), 40, YELLOW);
 	}

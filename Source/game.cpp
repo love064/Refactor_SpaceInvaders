@@ -10,9 +10,9 @@
 void Game::Start() //TODO: double init 
 {
 	// creating walls 
-	float window_width = (float)GetScreenWidth(); 
-	float window_height = (float)GetScreenHeight(); 
-	float wall_distance = window_width / (wallCount + 1); 
+	const auto window_width = static_cast<float>(GetScreenWidth()); 
+	const auto window_height = static_cast<float>(GetScreenHeight());
+	const auto wall_distance = window_width / (wallCount + 1.f); 
 	for (int i = 0; i < wallCount; i++)
 	{
 		Wall newWalls;
@@ -25,7 +25,7 @@ void Game::Start() //TODO: double init
 
 
 	//creating player
-	Player newPlayer;
+	const Player newPlayer;
 	player = newPlayer;
 	player.Initialize();
 
@@ -55,7 +55,7 @@ void Game::End()
 	gameState = State::ENDSCREEN;
 }
 
-void Game::Continue()
+void Game::Continue() noexcept
 {
 	//SaveLeaderboard();
 	gameState = State::STARTSCREEN;
@@ -111,8 +111,8 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 
 
 		// Update background with offset
-		playerPos = { player.x_pos, (float)player.player_base_height };
-		cornerPos = { 0, (float)player.player_base_height };
+		playerPos = { player.x_pos, static_cast<float>(player.player_base_height) };
+		cornerPos = { 0, static_cast<float>(player.player_base_height) };
 		offset = lineLength(playerPos, cornerPos) * -1;
 		background.Update(offset / 15);
 
@@ -178,7 +178,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 		//MAKE PROJECTILE
 		if (IsKeyPressed(KEY_SPACE))
 		{
-			float window_height = (float)GetScreenHeight();
+			float window_height = static_cast<float>(GetScreenHeight());
 			Projectile newProjectile;
 			newProjectile.position.x = player.x_pos;
 			newProjectile.position.y = window_height - 130;
@@ -259,7 +259,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 					// NOTE: Only allow keys in range [32..125]
 					if ((key >= 32) && (key <= 125) && (letterCount < 9))
 					{
-						name[letterCount] = (char)key;
+						name[letterCount] = static_cast<char>(key);
 						name[letterCount + 1] = '\0'; // Add null terminator at the end of the string.
 						letterCount++;
 					}
@@ -279,7 +279,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 			// name + score to scoreboard
 			if (letterCount > 0 && letterCount < 9 && IsKeyReleased(KEY_ENTER))
 			{
-				std::string_view nameEntry = name; //TODO: BROKEN ONLY ONE NAME AT A TIME (replaces the old one)
+				const std::string_view nameEntry = name; //TODO: BROKEN ONLY ONE NAME AT A TIME (replaces the old one)
 
 				Leaderboard = InsertNewHighScore(nameEntry, score, Leaderboard);
 
@@ -419,7 +419,7 @@ void Game::Render() //TODO: move to the left, and make shorter
 
 			for (int i = 0; i < Leaderboard.size(); i++)
 			{
-				auto tempNameDisplay = Leaderboard[i].name;
+				const auto tempNameDisplay = Leaderboard[i].name;
 				DrawText(tempNameDisplay.data(), 50, 140 + (i * 40), 40, YELLOW);
 				DrawText(TextFormat("%i", Leaderboard[i].score), 350, 140 + (i * 40), 40, YELLOW);
 			}

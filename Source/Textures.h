@@ -8,7 +8,7 @@ struct Textures //TODO: RAII
 {
 	Texture2D texture;
 
-	explicit Textures(std::string_view fileName) {
+	explicit Textures(std::string_view fileName) noexcept{
 		texture = LoadTexture(fileName.data());
 		//TODO: ERROR handling
 	}

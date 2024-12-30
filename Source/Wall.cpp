@@ -1,6 +1,6 @@
 #include "Wall.h"
 
-void Wall::Render(Texture2D texture)
+void Wall::Render(Texture2D texture) const noexcept
 {
 	DrawTexturePro(texture,
 		{
@@ -23,7 +23,7 @@ void Wall::Render(Texture2D texture)
 
 }
 
-void Wall::Update()
+void Wall::Update() noexcept
 {
 
 	// set walls as inactive when out of health
