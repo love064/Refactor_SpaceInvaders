@@ -168,8 +168,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="level.cpp" />
+    <ClCompile Include="Source\Alien.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\Projectile.cpp" />
+    <ClCompile Include="Source\Stars.cpp" />
+    <ClCompile Include="Source\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="level.h" />

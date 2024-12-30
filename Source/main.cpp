@@ -18,7 +18,7 @@ int main(void)
         Drawing drawing;
         game.Render();
     }
-    std::string filename = "level.txt";  //TODO: ??? maybe unused
+    //std::string filename = "level.txt";  //TODO: ??? maybe unused
 
     return 0;
 }
