@@ -136,7 +136,7 @@ void LeaderBoard::render() noexcept {
 }
 
 void LeaderBoard::SetNameRender() const noexcept{
-	DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
+	DrawText("NEW HIGHSCORE! YAY", 600, 300, 60, YELLOW);
 
 	// BELOW CODE IS FOR NAME INPUT RENDER
 	DrawText("PLACE MOUSE OVER INPUT BOX!", 600, 400, 20, YELLOW);

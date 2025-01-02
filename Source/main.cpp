@@ -45,6 +45,7 @@ int main(void)
             if (!game.isCurrentState) {
                 currentState = GameState::ENDSCREEN;
                 score = game.score;
+                game.reset();
             }
             break;
 

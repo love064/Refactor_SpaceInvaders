@@ -72,7 +72,7 @@ void Game::Start() //TODO: double init
 	//reset score
 	score = 0;
 
-	gameState = State::GAMEPLAY;
+	//gameState = State::GAMEPLAY;
 
 }
 
@@ -82,38 +82,67 @@ void Game::End() noexcept{
 	Walls.clear();
 	Aliens.clear();
 	newHighScore = CheckNewHighScore(score, Leaderboard);
-	gameState = State::ENDSCREEN;
+	//gameState = State::ENDSCREEN;
 	isCurrentState = false;
 }
 
 void Game::Continue() noexcept
 {
 	//SaveLeaderboard();
-	gameState = State::STARTSCREEN;
+	//gameState = State::STARTSCREEN;
 }
 
 void Game::reset() {
-	
+	const auto window_width = static_cast<float>(GetScreenWidth());
+	const auto window_height = static_cast<float>(GetScreenHeight());
+	const auto wall_distance = window_width / (WALL_COUNT + 1.f);
+	for (int i = 0; i < WALL_COUNT; i++)
+	{
+		Wall newWalls;
+		newWalls.position.y = window_height - 250;
+		newWalls.position.x = wall_distance * (i + 1);
+
+		Walls.push_back(newWalls);
+
+	}
+
+
+	//creating player
+	const Player newPlayer;
+	player = newPlayer;
+	player.Initialize();
+
+	//creating aliens
+	SpawnAliens();
+
+
+	//creating background
+	Background newBackground;
+	newBackground.Initialize(600);
+	background = newBackground;
+
+	//reset score
+	score = 0;
 	
 }
 
 
 void Game::Update() //TODO: move to the left, and make shorter/break apart
 {
-	switch (gameState)
-	{
-	case State::STARTSCREEN:
-		//Code 
-		if (IsKeyReleased(KEY_SPACE))
-		{
-			Start();
+	//switch (gameState)
+	//{
+	//case State::STARTSCREEN:
+	//	//Code 
+	//	if (IsKeyReleased(KEY_SPACE))
+	//	{
+	//		Start();
 
 
-		}
+	//	}
 
-		break;
-	case State::GAMEPLAY:
-		//Code
+	//	break;
+	//case State::GAMEPLAY:
+	//	//Code
 		if (IsKeyReleased(KEY_Q))
 		{
 			End();
@@ -270,79 +299,73 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 			}
 		}
 
-			
-		
+	//		
+	//	
 
-	break;
-	case State::ENDSCREEN:
-		//Code
-	
-		//Exit endscreen
-		if (IsKeyReleased(KEY_ENTER) && !newHighScore)
-		{
-			Continue();
-		}
+	//break;
+	//case State::ENDSCREEN:
+	//	//Code
+	//
+	//	//Exit endscreen
+	//	if (IsKeyReleased(KEY_ENTER) && !newHighScore)
+	//	{
+	//		Continue();
+	//	}
 
-	
+	//
 
-		if (newHighScore)
-		{
-			int key = GetCharPressed();
+	//	if (newHighScore)
+	//	{
+	//		int key = GetCharPressed();
 
-				// Check if more characters have been pressed on the same frame
-				while (key > 0)
-				{
-					// NOTE: Only allow keys in range [32..125]
-					if ((key >= 32) && (key <= 125) && (letterCount < 9))
-					{
-						name[letterCount] = static_cast<char>(key);
-						name[letterCount + 1] = '\0'; // Add null terminator at the end of the string.
-						letterCount++;
-					}
+	//			// Check if more characters have been pressed on the same frame
+	//			while (key > 0)
+	//			{
+	//				// NOTE: Only allow keys in range [32..125]
+	//				if ((key >= 32) && (key <= 125) && (letterCount < 9))
+	//				{
+	//					name[letterCount] = static_cast<char>(key);
+	//					name[letterCount + 1] = '\0'; // Add null terminator at the end of the string.
+	//					letterCount++;
+	//				}
 
-					key = GetCharPressed();  // Check next character in the queue
-				}
+	//				key = GetCharPressed();  // Check next character in the queue
+	//			}
 
-				//Remove chars 
-				if (IsKeyPressed(KEY_BACKSPACE))
-				{
-					letterCount--;
-					if (letterCount < 0) letterCount = 0;
-					name[letterCount] = '\0';
-				}
+	//			//Remove chars 
+	//			if (IsKeyPressed(KEY_BACKSPACE))
+	//			{
+	//				letterCount--;
+	//				if (letterCount < 0) letterCount = 0;
+	//				name[letterCount] = '\0';
+	//			}
 
-			// If the name is right legth and enter is pressed, exit screen by setting highscore to false and add 
-			// name + score to scoreboard
-			if (letterCount > 0 && letterCount < 9 && IsKeyReleased(KEY_ENTER))
-			{
-				const std::string_view nameEntry = name; //TODO: BROKEN ONLY ONE NAME AT A TIME (replaces the old one)
+	//		// If the name is right legth and enter is pressed, exit screen by setting highscore to false and add 
+	//		// name + score to scoreboard
+	//		if (letterCount > 0 && letterCount < 9 && IsKeyReleased(KEY_ENTER))
+	//		{
+	//			const std::string_view nameEntry = name; //TODO: BROKEN ONLY ONE NAME AT A TIME (replaces the old one)
 
-				Leaderboard = InsertNewHighScore(nameEntry, score, Leaderboard);
+	//			Leaderboard = InsertNewHighScore(nameEntry, score, Leaderboard);
 
-				newHighScore = false;
-			}
-
-
-		}
-		
+	//			newHighScore = false;
+	//		}
 
 
-		break;
-	default:
-		//SHOULD NOT HAPPEN
-		break;
-	}
+	//	}
+	//	
+
+
+	//	break;
+	//default:
+	//	//SHOULD NOT HAPPEN
+	//	break;
+	/*}*/
 }
 
 
 void Game::Render() //TODO: move to the left, and make shorter
 {
-	switch (gameState)
-	{
-	case State::GAMEPLAY:
-		//Code
-
-
 		//background render LEAVE THIS AT TOP
 		background.Render();
 
@@ -370,97 +393,6 @@ void Game::Render() //TODO: move to the left, and make shorter
 		{
 			Aliens[i].Render(alienTexture.get());
 		}
-
-
-
-
-
-
-		break;
-	case State::ENDSCREEN:
-		//Code
-		//DrawText("END", 50, 50, 40, YELLOW);
-
-
-		
-
-		
-
-
-		if (newHighScore)
-		{
-			DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
-
-
-
-			// BELOW CODE IS FOR NAME INPUT RENDER
-			DrawText("PLACE MOUSE OVER INPUT BOX!", 600, 400, 20, YELLOW);
-
-			DrawRectangleRec(textBox, LIGHTGRAY);
-			if (mouseOnText)
-			{
-				// HOVER CONFIRMIATION
-				DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
-			}
-			else
-			{
-				DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, DARKGRAY);
-			}
-
-			//Draw the name being typed out
-			DrawText(name, (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
-
-			//Draw the text explaining how many characters are used
-			DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, 8), 600, 600, 20, YELLOW);
-
-			if (mouseOnText)
-			{
-				if (letterCount < 9)
-				{
-					// Draw blinking underscore char
-					if (((framesCounter / 20) % 2) == 0)
-					{
-						DrawText("_", (int)textBox.x + 8 + MeasureText(name, 40), (int)textBox.y + 12, 40, MAROON);
-					}
-
-				}
-				else
-				{
-					//Name needs to be shorter
-					DrawText("Press BACKSPACE to delete chars...", 600, 650, 20, YELLOW);
-				}
-				
-			}
-
-			// Explain how to continue when name is input
-			if (letterCount > 0 && letterCount < 9)
-			{
-				DrawText("PRESS ENTER TO CONTINUE", 600, 800, 40, YELLOW);
-			}
-
-		}
-		else {
-			// If no highscore or name is entered, show scoreboard and call it a day
-			DrawText("PRESS ENTER TO CONTINUE", 600, 200, 40, YELLOW);
-
-			DrawText("LEADERBOARD", 50, 100, 40, YELLOW);
-
-			for (int i = 0; i < Leaderboard.size(); i++)
-			{
-				const auto tempNameDisplay = Leaderboard[i].name;
-				DrawText(tempNameDisplay.data(), 50, 140 + (i * 40), 40, YELLOW);
-				DrawText(TextFormat("%i", Leaderboard[i].score), 350, 140 + (i * 40), 40, YELLOW);
-			}
-		}
-
-		
-
-
-		break;
-	default:
-		//SHOULD NOT HAPPEN
-		break;
-	}
 }
 
 void Game::SpawnAliens()
