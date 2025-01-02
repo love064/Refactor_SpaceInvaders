@@ -86,3 +86,11 @@ bool CheckCollision(Vector2 circlePos, float circleRadius, Vector2 lineStart, Ve
 	}
 
 }
+
+float GetScreenWidthF() noexcept {
+	return static_cast<float>(GetScreenWidth());
+}
+
+float GetScreenHeightF() noexcept {
+	return static_cast<float>(GetScreenHeight());
+}

@@ -21,7 +21,7 @@ int main(void)
     GameState currentState = GameState::STARTSCREEN;
 
     StartScreen startScreen;
-    Game game = { State::GAMEPLAY };
+    Game game;
     LeaderBoard leaderboard;
 
     int score = 0;

@@ -58,6 +58,7 @@ struct Game //TODO: remove unneccecary comments
 
 	std::vector<Texture2D> playerTextures{shipTexture1.get(), shipTexture2.get(), shipTexture3.get()};
 	
+	Game() noexcept;
 
 	void Start(); //TODO: Double init
 	void End();		//TODO: this start and contiune should be incorporated in a reset/end and reset function

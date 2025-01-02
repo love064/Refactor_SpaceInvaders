@@ -7,7 +7,36 @@
 #include "Util.h"
 #include "LeaderBoard.h"
 
+Game::Game() noexcept{
 
+	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f); //TODO: maybe delete (only used once)
+	for (int i = 0; i < WALL_COUNT; i++){
+		Wall newWalls; //TODO: double init
+		newWalls.position.y = GetScreenHeightF() - 250;
+		newWalls.position.x = wall_distance * (i + 1);
+
+		Walls.push_back(newWalls);
+	}
+
+	//creating player
+	const Player newPlayer;
+	player = newPlayer;
+	player.Initialize();
+
+	//creating aliens
+	SpawnAliens();
+
+
+	//creating background
+	Background newBackground;
+	newBackground.Initialize(600);
+	background = newBackground;
+
+	//reset score
+	score = 0;
+
+	gameState = State::GAMEPLAY;
+}
 
 void Game::Start() //TODO: double init 
 {
