@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Drawing.h"
 #include "LeaderBoard.h"
+#include "StartScreen.h"
 
 enum struct GameState {
     STARTSCREEN,
@@ -17,9 +18,10 @@ int main(void)
     Window window( 1920, 1080 ); //TODO: ERROR handling for both window, drawing and resources
     
 
-    GameState currentState = GameState::GAMEPLAY;
+    GameState currentState = GameState::STARTSCREEN;
 
-    Game game = { State::STARTSCREEN };
+    StartScreen startScreen;
+    Game game = { State::GAMEPLAY };
     LeaderBoard leaderboard;
 
     int score = 0;
@@ -33,7 +35,7 @@ int main(void)
             if (IsKeyReleased(KEY_SPACE)){
                 currentState = GameState::GAMEPLAY;
             }
-
+            startScreen.render();
             break;
         case GameState::GAMEPLAY:
             game.Update();
