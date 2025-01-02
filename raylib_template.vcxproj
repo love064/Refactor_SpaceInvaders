@@ -175,6 +175,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Projectile.cpp" />
     <ClCompile Include="Source\Stars.cpp" />
+    <ClCompile Include="Source\StartScreen.cpp" />
     <ClCompile Include="Source\Util.cpp" />
     <ClCompile Include="Source\Wall.cpp" />
   </ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Projectile.h" />
     <ClInclude Include="Source\Stars.h" />
+    <ClInclude Include="Source\StartScreen.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\Util.h" />
     <ClInclude Include="Source\Wall.h" />
