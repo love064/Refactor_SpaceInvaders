@@ -32,7 +32,7 @@ public: //TODO: check which can be private
 	void reset();
 
 	void SetNameRender() const noexcept;
-	void HSRender() noexcept;
+	void HSRender() const noexcept;
 	void render() noexcept;
 };
 

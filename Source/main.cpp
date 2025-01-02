@@ -56,7 +56,6 @@ int main(void)
             {
                 leaderboard.reset();
                 currentState = GameState::STARTSCREEN;
-
             }
             break;
         }
