@@ -61,9 +61,12 @@ struct Game //TODO: remove unneccecary comments
 	Game() noexcept;
 
 	void Start(); //TODO: Double init
-	void End();		//TODO: this start and contiune should be incorporated in a reset/end and reset function
+	void End() noexcept;		//TODO: this start and contiune should be incorporated in a reset/end and reset function
 
 	void Continue() noexcept; //TODO: Double init
+
+	bool isCurrentState = false;
+	void reset();
 
 	void Update();
 	void Render();

@@ -76,20 +76,25 @@ void Game::Start() //TODO: double init
 
 }
 
-void Game::End()
-{
+void Game::End() noexcept{
 	//SAVE SCORE AND UPDATE SCOREBOARD
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
 	newHighScore = CheckNewHighScore(score, Leaderboard);
 	gameState = State::ENDSCREEN;
+	isCurrentState = false;
 }
 
 void Game::Continue() noexcept
 {
 	//SaveLeaderboard();
 	gameState = State::STARTSCREEN;
+}
+
+void Game::reset() {
+	
+	
 }
 
 

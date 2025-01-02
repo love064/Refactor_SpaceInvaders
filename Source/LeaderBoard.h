@@ -13,7 +13,7 @@ class LeaderBoard {
 	std::vector<PlayerData> Leaderboard = { {"Player 1", 500}, {"Player 2", 400}, {"Player 3", 300}, {"Player 4", 200}, {"Player 5", 100} };
 public: //TODO: check which can be private
 
-	bool newHighScore = false;
+	bool newHighScore = true;
 	PlayerData yourScore = {"", 0};
 	char name[9 + 1] = "\0";
 	int letterCount = 0;
@@ -27,9 +27,11 @@ public: //TODO: check which can be private
 	void SortLeaderBoard();
 	void WriteToFile(std::string_view fileName) const;
 
+	void reset();
+
 	void SetNameRender() const noexcept;
 	void HSRender() noexcept;
-	void render();
+	void render() noexcept;
 };
 
 bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept;

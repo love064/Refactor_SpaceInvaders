@@ -43,6 +43,7 @@ std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, con
 //
 
 void LeaderBoard::update(int score) {
+	
 	if (newHighScore) {
 		yourScore.score = score;
 		SetName();
@@ -114,7 +115,18 @@ void LeaderBoard::WriteToFile(std::string_view fileName) const {
 	}
 }
 
-void LeaderBoard::render() {
+void LeaderBoard::reset() {
+	WriteToFile(".\highscores.scores");
+	yourScore = { "", 0};
+	for (int i = 0; i < 10; ++i) {
+		name[i] = '\0';
+	}
+	letterCount = 0;
+	newHighScore = true;
+	Leaderboard.clear();
+}
+
+void LeaderBoard::render() noexcept {
 	if (newHighScore) {
 		SetNameRender();
 	}
@@ -162,7 +174,7 @@ void LeaderBoard::SetNameRender() const noexcept{
 
 void LeaderBoard::HSRender() noexcept{
 	// If no highscore or name is entered, show scoreboard and call it a day
-	DrawText("PRESS ENTER TO CONTINUE", 600, 200, 40, YELLOW);
+	DrawText("PRESS SPACE TO CONTINUE", 600, 200, 40, YELLOW);
 
 	DrawText("LEADERBOARD", 50, 100, 40, YELLOW);
 

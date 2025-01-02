@@ -33,17 +33,30 @@ int main(void)
         switch (currentState){
         case GameState::STARTSCREEN:
             if (IsKeyReleased(KEY_SPACE)){
+                game.isCurrentState = true;
                 currentState = GameState::GAMEPLAY;
             }
             startScreen.render();
             break;
+
         case GameState::GAMEPLAY:
             game.Update();
             game.Render();
+            if (!game.isCurrentState) {
+                currentState = GameState::ENDSCREEN;
+                score = game.score;
+            }
             break;
+
         case GameState::ENDSCREEN:
             leaderboard.update(score);
             leaderboard.render();
+            if (IsKeyReleased(KEY_SPACE) && !leaderboard.newHighScore)
+            {
+                leaderboard.reset();
+                currentState = GameState::STARTSCREEN;
+
+            }
             break;
         }
     }
