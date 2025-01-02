@@ -22,6 +22,7 @@ public: //TODO: check which can be private
 	
 	void update(int score);
 	void SetName();
+
 	void ReadFromFile(std::string_view fileName);
 	void SortLeaderBoard();
 	void WriteToFile(std::string_view fileName) const;

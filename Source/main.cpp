@@ -16,11 +16,11 @@ int main(void)
 {   
     Window window( 1920, 1080 ); //TODO: ERROR handling for both window, drawing and resources
     
-    LeaderBoard leaderboard;
 
     GameState currentState = GameState::GAMEPLAY;
 
     Game game = { State::STARTSCREEN };
+    LeaderBoard leaderboard;
 
     int score = 0;
 
@@ -30,7 +30,10 @@ int main(void)
         
         switch (currentState){
         case GameState::STARTSCREEN:
-            //
+            if (IsKeyReleased(KEY_SPACE)){
+                currentState = GameState::GAMEPLAY;
+            }
+
             break;
         case GameState::GAMEPLAY:
             game.Update();

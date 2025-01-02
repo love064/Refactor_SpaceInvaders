@@ -35,15 +35,15 @@ struct Game //TODO: remove unneccecary comments
 	int score; //TODO: uninit
 
 	// for later, make a file where you can adjust the number of walls (config file) 
-	int wallCount = 5;
+	int wallCount = 5;  //TODO: these can be global constexpr
 
 	//Aliens shooting
 	float shootTimer = 0;
 
 	//Aliens stuff? (idk cause liv wrote this)
-	Rectangle rec = { 0, 0 ,0 ,0 }; 
+	Rectangle rec = { 0, 0 ,0 ,0 }; //TODO: rename or delete
 
-	int formationWidth = 8;
+	int formationWidth = 8; //TODO: these can be global constexpr
 	int formationHeight = 5;
 	int alienSpacing = 80;
 	int formationX = 100;
@@ -61,10 +61,10 @@ struct Game //TODO: remove unneccecary comments
 	std::vector<Texture2D> playerTextures{shipTexture1.get(), shipTexture2.get(), shipTexture3.get()};
 	
 
-	void Start();
-	void End();
+	void Start(); //TODO: Double init
+	void End();		//TODO: this start and contiune should be incorporated in a reset/end and reset function
 
-	void Continue() noexcept;
+	void Continue() noexcept; //TODO: Double init
 
 	void Update();
 	void Render();
