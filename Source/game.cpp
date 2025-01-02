@@ -32,8 +32,7 @@ void Game::reset() noexcept {
 	SpawnAliens();
 
 	//creating background
-	Background newBackground;
-	newBackground.Initialize(600);
+	Background newBackground(STAR_COUNT);
 	background = newBackground;
 
 	//reset score

@@ -26,6 +26,7 @@ enum struct State
 //};
 
 constexpr int WALL_COUNT = 5;
+constexpr int STAR_COUNT = 600;
 constexpr int FORMATION_ROW = 8;
 constexpr int FORMATION_COLLUM = 5;
 constexpr int ALIEN_SPACING = 80;
@@ -62,7 +63,7 @@ struct Game //TODO: remove unneccecary comments
 	std::vector<Projectile> Projectiles;
 	std::vector<Wall> Walls;
 	std::vector<Alien> Aliens;
-	Background background;
+	Background background{ STAR_COUNT };
 
 	Vector2 playerPos;
 	Vector2 alienPos; 

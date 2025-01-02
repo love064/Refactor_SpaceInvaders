@@ -1,51 +1,42 @@
 #include "Stars.h"
 
-//BACKGROUND
-void Star::Update(float starOffset)
-{
-	position.x = initPosition.x + starOffset;
-	position.y = initPosition.y;
-
-}
-
-void Star::Render()
-{
-	DrawCircle((int)position.x, (int)position.y, size, color);
-}
-
-
-void Background::Initialize(int starAmount)
-{
-	for (int i = 0; i < starAmount; i++)
-	{
-		Star newStar;
-
-		newStar.initPosition.x = GetRandomValue(-150, GetScreenWidth() + 150);
-		newStar.initPosition.y = GetRandomValue(0, GetScreenHeight());
-
-		//random color?
-		newStar.color = SKYBLUE;
-
-		newStar.size = GetRandomValue(1, 4) / 2;
-
-		Stars.push_back(newStar);
-
+Background::Background(int starAmount) noexcept {
+	for (int i = 0; i < starAmount; i++) {
+		Stars.emplace_back();
 	}
 }
 
-void Background::Update(float offset)
-{
-	for (int i = 0; i < Stars.size(); i++)
-	{
-		Stars[i].Update(offset);
+void Background::Update(float offset) noexcept {
+	for (auto& star : Stars) {
+		star.Update(offset);
 	}
-
 }
 
-void Background::Render()
-{
-	for (int i = 0; i < Stars.size(); i++)
-	{
-		Stars[i].Render();
+void Background::Render() const noexcept{
+	for (const auto& star : Stars) {
+		star.Render();
 	}
+}
+
+
+Star::Star() noexcept {
+	size = static_cast<float>(GetRandomValue(1, 4)) / 2.f;
+	initX = static_cast<float>(GetRandomValue(-150, GetScreenWidth() + 150));
+	position.x = initX;
+	position.y = static_cast<float>(GetRandomValue(0, GetScreenHeight()));
+}
+
+void Star::Update(float starOffset) noexcept {
+	position.x = initX + starOffset;
+}
+
+void Star::Render() const noexcept {
+	DrawCircle(getPositionX(), getPositionY(), size, SKYBLUE);
+}
+
+int Star::getPositionX() const noexcept {
+	return static_cast<int>(position.x);
+}
+int Star::getPositionY() const noexcept {
+	return static_cast<int>(position.y);
 }
