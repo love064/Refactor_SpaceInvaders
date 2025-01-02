@@ -1,11 +1,10 @@
 #include "game.h"
-#include <iostream>
+#include <iostream> //TODO: SEE WHICH ones can go
 #include <vector>
 #include <chrono>
 #include <thread>
 #include <fstream>
 #include "Util.h"
-//#include "LeaderBoard.h"
 
 Game::Game() noexcept{
 	reset();
@@ -232,9 +231,6 @@ void Game::SpawnAliens()
 			newAlien.position.x = FORMATION_X + 450 + (col * ALIEN_SPACING);
 			newAlien.position.y = FORMATION_Y + (row * ALIEN_SPACING);
 			Aliens.push_back(newAlien);
-			std::cout << "Find Alien -X:" << newAlien.position.x << std::endl;
-			std::cout << "Find Alien -Y:" << newAlien.position.y << std::endl;
 		}
 	}
-
 }
