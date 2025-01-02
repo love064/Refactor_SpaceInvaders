@@ -5,41 +5,42 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+#include <string>
 
 
-bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept
-{
-	if (score > Leaderboard[4].score)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, const std::vector<PlayerData>& Leaderboard)
-{
-	PlayerData newData;
-	newData.name = name;
-	newData.score = score;
-
-	std::vector<PlayerData> tempboard = Leaderboard;
-
-	for (int i = 0; i < tempboard.size(); i++)
-	{
-		if (newData.score > tempboard[i].score)
-		{
-
-			tempboard.insert(tempboard.begin() + i, newData);
-
-			tempboard.pop_back();
-
-			i = tempboard.size();
-
-		}
-	}
-	return tempboard;
-}
+//bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept
+//{
+//	if (score > Leaderboard[4].score)
+//	{
+//		return true;
+//	}
+//
+//	return false;
+//}
+//
+//std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, const std::vector<PlayerData>& Leaderboard)
+//{
+//	PlayerData newData;
+//	newData.name = name;
+//	newData.score = score;
+//
+//	std::vector<PlayerData> tempboard = Leaderboard;
+//
+//	for (int i = 0; i < tempboard.size(); i++)
+//	{
+//		if (newData.score > tempboard[i].score)
+//		{
+//
+//			tempboard.insert(tempboard.begin() + i, newData);
+//
+//			tempboard.pop_back();
+//
+//			i = tempboard.size();
+//
+//		}
+//	}
+//	return tempboard;
+//}
 //
 
 void LeaderBoard::update(int score) {
@@ -49,10 +50,10 @@ void LeaderBoard::update(int score) {
 		SetName();
 	}
 
-	if (IsKeyReleased(KEY_ENTER) && !newHighScore)
-	{
-		//Continue(); reset
-	}
+	//if (IsKeyReleased(KEY_ENTER) && !newHighScore)
+	//{
+	//	//Continue(); reset
+	//}
 
 }
 
@@ -60,24 +61,26 @@ void LeaderBoard::SetName() {
 	int key = GetCharPressed();
 	while (key > 0) {
 		if ((key >= 32) && (key <= 125) && (letterCount < 9)) {
-			name[letterCount] = static_cast<char>(key);
-			name[letterCount + 1] = '\0';
+			name += static_cast<char>(key);
+			/*name[letterCount] = static_cast<char>(key);
+			name[letterCount + 1] = '\0';*/
 			letterCount++;
 		}
 		key = GetCharPressed();
 	}
 
 	if (IsKeyPressed(KEY_BACKSPACE) && letterCount > 0) {
-		name[letterCount - 1] = '\0';
+		name.pop_back();
+		//name[letterCount - 1] = '\0';
 		letterCount--;
 	}
 
 	if (letterCount > 0 && letterCount < 9 && IsKeyReleased(KEY_ENTER)) {
-		for (int i = 0; i < 4; ++i) {
-			yourScore.name = name;
-		}
-
-		ReadFromFile(".\LeaderBoard.txt"); //TODO: check if this is the right address
+		//for (int i = 0; i < 4; ++i) { //TODO: magic number ->leaderboard
+		//	yourScore.name = name;
+		//}
+		yourScore.name = name;
+		ReadFromFile("Assets/LeaderBoard.txt"); //TODO: check if this is the right address
 		SortLeaderBoard();
 		newHighScore = false;
 	}
@@ -87,9 +90,20 @@ void LeaderBoard::ReadFromFile(std::string_view fileName) {
 	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()) {
 		for (int i = 0; i < 5; i++) {
-			Leaderboard.emplace_back( "ABC", 0 );
-			LeaderBoardFile.read((char*)&Leaderboard[i], sizeof(PlayerData));
+			std::string line;
+			PlayerData currentPlayer;
+
+			while (std::getline(LeaderBoardFile, line)) {
+				if (line.find("Player Name:") != std::string::npos) {
+					currentPlayer.name = line.substr(13);
+				}
+				else if (line.find("Score:") != std::string::npos) {
+					std::istringstream(line.substr(7)) >> currentPlayer.score;
+					Leaderboard.push_back(currentPlayer);  
+				}
+			}
 		}
+			LeaderBoardFile.close();
 	}
 }
 
@@ -107,23 +121,28 @@ void LeaderBoard::WriteToFile(std::string_view fileName) const {
 	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()){
 		for (const auto& var : Leaderboard) {
-			const size_t nameLength = var.name.size();
-			LeaderBoardFile.write(reinterpret_cast<const char*>(&nameLength), sizeof(nameLength));
-			LeaderBoardFile.write(var.name.data(), nameLength);
-			LeaderBoardFile.write(reinterpret_cast<const char*>(&var.score), sizeof(var.score));
+			LeaderBoardFile << "Player Name: " << var.name << "\n";
+			LeaderBoardFile << "Score: " << var.score << "\n";
+			//LeaderBoardFile << var.name << var.score;
+
+			//LeaderBoardFile.write((char*)&var, sizeof(PlayerData));
+
+			/*size_t strLength = var.name.size();
+			LeaderBoardFile.write(reinterpret_cast<const char*>(&strLength), sizeof(size_t));
+			LeaderBoardFile.write(var.name.c_str(), strLength);
+			LeaderBoardFile.write(reinterpret_cast<const char*>(&var.score), sizeof(int));*/
 		}
+		LeaderBoardFile.close();
 	}
 }
 
 void LeaderBoard::reset() {
-	WriteToFile(".\highscores.scores");
+	WriteToFile("Assets/LeaderBoard.txt");
+	Leaderboard.clear();
 	yourScore = { "", 0};
-	for (int i = 0; i < 10; ++i) {
-		name[i] = '\0';
-	}
+	name = "";
 	letterCount = 0;
 	newHighScore = true;
-	Leaderboard.clear();
 }
 
 void LeaderBoard::render() noexcept {
@@ -136,7 +155,7 @@ void LeaderBoard::render() noexcept {
 }
 
 void LeaderBoard::SetNameRender() const noexcept{
-	DrawText("NEW HIGHSCORE! YAY", 600, 300, 60, YELLOW);
+	DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
 
 	// BELOW CODE IS FOR NAME INPUT RENDER
 	DrawText("PLACE MOUSE OVER INPUT BOX!", 600, 400, 20, YELLOW);
@@ -145,7 +164,7 @@ void LeaderBoard::SetNameRender() const noexcept{
 	DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
 
 	//Draw the name being typed out
-	DrawText(name, (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
+	DrawText(name.data(), (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
 
 	//Draw the text explaining how many characters are used
 	DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, 8), 600, 600, 20, YELLOW);
@@ -178,10 +197,17 @@ void LeaderBoard::HSRender() noexcept{
 
 	DrawText("LEADERBOARD", 50, 100, 40, YELLOW);
 
-	for (int i = 0; i < Leaderboard.size(); i++)
-	{
-		const auto tempNameDisplay = Leaderboard[i].name;
-		DrawText(tempNameDisplay.data(), 50, 140 + (i * 40), 40, YELLOW);
-		DrawText(TextFormat("%i", Leaderboard[i].score), 350, 140 + (i * 40), 40, YELLOW);
+	int i = 0;
+	for (const auto& var : Leaderboard) {
+		DrawText(var.name.data(), 50, 140 + (i * 40), 40, YELLOW);
+		DrawText(TextFormat("%i", var.score), 350, 140 + (i * 40), 40, YELLOW);
+		i++;
 	}
+
+	//for (int i = 0; i < Leaderboard.size(); i++)
+	//{
+	//	const auto tempNameDisplay = Leaderboard[i].name;
+	//	DrawText(tempNameDisplay.data(), 50, 140 + (i * 40), 40, YELLOW);
+	//	DrawText(TextFormat("%i", Leaderboard[i].score), 350, 140 + (i * 40), 40, YELLOW);
+	//}
 }

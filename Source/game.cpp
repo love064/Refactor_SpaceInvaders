@@ -8,9 +8,66 @@
 #include "LeaderBoard.h"
 
 Game::Game() noexcept{
+	reset();
+}
+//
+//void Game::Start() //TODO: double init 
+//{
+//	// creating walls 
+//	const auto window_width = static_cast<float>(GetScreenWidth()); 
+//	const auto window_height = static_cast<float>(GetScreenHeight());
+//	const auto wall_distance = window_width / (WALL_COUNT + 1.f); 
+//	for (int i = 0; i < WALL_COUNT; i++)
+//	{
+//		Wall newWalls;
+//		newWalls.position.y = window_height - 250; 
+//		newWalls.position.x = wall_distance * (i + 1); 
+//
+//		Walls.push_back(newWalls); 
+//
+//	}
+//
+//
+//	//creating player
+//	const Player newPlayer;
+//	player = newPlayer;
+//	player.Initialize();
+//
+//	//creating aliens
+//	SpawnAliens();
+//	
+//
+//	//creating background
+//	Background newBackground;
+//	newBackground.Initialize(600);
+//	background = newBackground;
+//
+//	//reset score
+//	score = 0;
+//
+//	//gameState = State::GAMEPLAY;
+//
+//}
 
+void Game::End() noexcept{
+	//SAVE SCORE AND UPDATE SCOREBOARD
+	Projectiles.clear();
+	Walls.clear();
+	Aliens.clear();
+	//newHighScore = CheckNewHighScore(score, Leaderboard);
+	//gameState = State::ENDSCREEN;
+	isCurrentState = false;
+}
+
+void Game::Continue() noexcept
+{
+	//SaveLeaderboard();
+	//gameState = State::STARTSCREEN;
+}
+
+void Game::reset() {
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f); //TODO: maybe delete (only used once)
-	for (int i = 0; i < WALL_COUNT; i++){
+	for (int i = 0; i < WALL_COUNT; i++) {
 		Wall newWalls; //TODO: double init
 		newWalls.position.y = GetScreenHeightF() - 250;
 		newWalls.position.x = wall_distance * (i + 1);
@@ -34,96 +91,6 @@ Game::Game() noexcept{
 
 	//reset score
 	score = 0;
-
-	gameState = State::GAMEPLAY;
-}
-
-void Game::Start() //TODO: double init 
-{
-	// creating walls 
-	const auto window_width = static_cast<float>(GetScreenWidth()); 
-	const auto window_height = static_cast<float>(GetScreenHeight());
-	const auto wall_distance = window_width / (WALL_COUNT + 1.f); 
-	for (int i = 0; i < WALL_COUNT; i++)
-	{
-		Wall newWalls;
-		newWalls.position.y = window_height - 250; 
-		newWalls.position.x = wall_distance * (i + 1); 
-
-		Walls.push_back(newWalls); 
-
-	}
-
-
-	//creating player
-	const Player newPlayer;
-	player = newPlayer;
-	player.Initialize();
-
-	//creating aliens
-	SpawnAliens();
-	
-
-	//creating background
-	Background newBackground;
-	newBackground.Initialize(600);
-	background = newBackground;
-
-	//reset score
-	score = 0;
-
-	//gameState = State::GAMEPLAY;
-
-}
-
-void Game::End() noexcept{
-	//SAVE SCORE AND UPDATE SCOREBOARD
-	Projectiles.clear();
-	Walls.clear();
-	Aliens.clear();
-	newHighScore = CheckNewHighScore(score, Leaderboard);
-	//gameState = State::ENDSCREEN;
-	isCurrentState = false;
-}
-
-void Game::Continue() noexcept
-{
-	//SaveLeaderboard();
-	//gameState = State::STARTSCREEN;
-}
-
-void Game::reset() {
-	const auto window_width = static_cast<float>(GetScreenWidth());
-	const auto window_height = static_cast<float>(GetScreenHeight());
-	const auto wall_distance = window_width / (WALL_COUNT + 1.f);
-	for (int i = 0; i < WALL_COUNT; i++)
-	{
-		Wall newWalls;
-		newWalls.position.y = window_height - 250;
-		newWalls.position.x = wall_distance * (i + 1);
-
-		Walls.push_back(newWalls);
-
-	}
-
-
-	//creating player
-	const Player newPlayer;
-	player = newPlayer;
-	player.Initialize();
-
-	//creating aliens
-	SpawnAliens();
-
-
-	//creating background
-	Background newBackground;
-	newBackground.Initialize(600);
-	background = newBackground;
-
-	//reset score
-	score = 0;
-	
 }
 
 
