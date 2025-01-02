@@ -1,73 +1,64 @@
 #include "Player.h"
+#include "Util.h"
 
-void Player::Initialize()
-{
-
-	float window_width = (float)GetScreenWidth();
-	x_pos = window_width / 2;
-	//std::cout << "Find Player -X:" << GetScreenWidth() / 2 << "Find Player -Y" << GetScreenHeight() - player_base_height << std::endl;
-
+Player::Player() noexcept {
+	x_pos = GetScreenWidthF() / 2.f;
 }
 
-void Player::Update()
-{
+void Player::Update() noexcept{
+	Movement();
+	Animation();
+}
 
-	//Movement
-	direction = 0;
-	if (IsKeyDown(KEY_LEFT))
-	{
-		direction--;
+void Player::Movement() noexcept {
+	direction = Direction::STATIC;
+	if (IsKeyDown(KEY_LEFT)){
+		direction = Direction::LEFT;
 	}
-	if (IsKeyDown(KEY_RIGHT))
-	{
-		direction++;
-	}
-
-	x_pos += speed * direction;
-
-	if (x_pos < 0 + radius)
-	{
-		x_pos = 0 + radius;
-	}
-	else if (x_pos > GetScreenWidth() - radius)
-	{
-		x_pos = GetScreenWidth() - radius;
+	if (IsKeyDown(KEY_RIGHT)){
+		direction = Direction::RIGHT;
 	}
 
+	x_pos += PLAYER_SPEED * static_cast<float>(direction);
 
-	//Determine frame for animation
-	timer += GetFrameTime();
+	if (x_pos < 0 + PLAYER_RADIUS)
+	{
+		x_pos = 0 + PLAYER_RADIUS;
+	}
+	else if (x_pos > GetScreenWidthF() - PLAYER_RADIUS)
+	{
+		x_pos = GetScreenWidthF() - PLAYER_RADIUS;
+	}
+}
 
-	if (timer > 0.4 && activeTexture == 2)
+void Player::Animation() noexcept {
+	textureTimer += GetFrameTime();
+
+	if (textureTimer > PLAYER_ANIMATION_TIMER && activeTexture == 2)
 	{
 		activeTexture = 0;
-		timer = 0;
+		textureTimer = 0;
 	}
-	else if (timer > 0.4)
+	else if (textureTimer > PLAYER_ANIMATION_TIMER)
 	{
 		activeTexture++;
-		timer = 0;
+		textureTimer = 0;
 	}
-
-
 }
 
-void Player::Render(Texture2D texture)
-{
-	float window_height = GetScreenHeight();
+void Player::reset() noexcept { //TODO: if we make a new one we dont need this
+	x_pos = GetScreenWidthF() / 2.f;
+	lives = PLAYER_MAX_HEALTH;
+	textureTimer = 0;
+	direction = Direction::STATIC;
+	activeTexture = 0;
+}
 
+void Player::Render(Texture2D texture) const noexcept{ //TODO: maybe make const Texture2D& texture
 	DrawTexturePro(texture,
-		{
-			0,
-			0,
-			352,
-			352,
-		},
-		{
-			x_pos, window_height - player_base_height,
-			100,
-			100,
-		}, { 50, 50 },
+		{0,0, PLAYER_SPRITE_SIZE, PLAYER_SPRITE_SIZE,},
+		{x_pos, GetScreenHeightF() - PLAYER_POSITION_Y, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2,},
+		{ 50, 50 },
 		0,
 		WHITE);
 }

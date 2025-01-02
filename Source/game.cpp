@@ -5,7 +5,7 @@
 #include <thread>
 #include <fstream>
 #include "Util.h"
-#include "LeaderBoard.h"
+//#include "LeaderBoard.h"
 
 Game::Game() noexcept{
 	reset();
@@ -31,7 +31,6 @@ void Game::reset() noexcept {
 
 	const Player newPlayer;
 	player = newPlayer;
-	player.Initialize();
 
 	//creating aliens
 	SpawnAliens();
@@ -61,7 +60,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 	{
 		Aliens[i].Update(); 
 
-		if (Aliens[i].position.y > GetScreenHeight() - player.player_base_height)
+		if (Aliens[i].position.y > GetScreenHeight() - PLAYER_POSITION_Y)
 		{
 			End();
 		}
@@ -81,8 +80,8 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 
 
 	// Update background with offset
-	playerPos = { player.x_pos, static_cast<float>(player.player_base_height) };
-	cornerPos = { 0, static_cast<float>(player.player_base_height) };
+	playerPos = { player.x_pos, PLAYER_POSITION_Y };
+	cornerPos = { 0, PLAYER_POSITION_Y };
 	offset = lineLength(playerPos, cornerPos) * -1;
 	background.Update(offset / 15);
 
@@ -122,7 +121,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 		{
 			if (Projectiles[i].type == EntityType::ENEMY_PROJECTILE)
 			{
-				if (CheckCollision({player.x_pos, GetScreenHeight() - player.player_base_height }, player.radius, Projectiles[i].lineStart, Projectiles[i].lineEnd))
+				if (CheckCollision({player.x_pos, GetScreenHeight() - PLAYER_POSITION_Y }, player.radius, Projectiles[i].lineStart, Projectiles[i].lineEnd))
 				{
 					std::cout << "dead!\n"; 
 					Projectiles[i].active = false; 
