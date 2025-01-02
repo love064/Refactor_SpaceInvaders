@@ -5,6 +5,7 @@
 constexpr int WALL_MAX_HEALTH = 50;
 constexpr int WALL_RADIUS = 60;
 constexpr float WALL_SPRITE_SIZE = 704;
+constexpr float WALL_SPRITE_ORIGN = 100;
 constexpr float WALL_SIZE = 200;
 constexpr int WALL_TEXT_OFFSET_X = 21;
 constexpr int WALL_TEXT_OFFSET_Y = 10;

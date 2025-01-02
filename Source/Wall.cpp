@@ -14,7 +14,7 @@ void Wall::Render(Texture2D texture) const noexcept {
 	DrawTexturePro(texture,
 		{ 0, 0, WALL_SPRITE_SIZE, WALL_SPRITE_SIZE },
 		{ position.x, position.y, WALL_SIZE, WALL_SIZE },
-		{ 100, 100 },
+		{ WALL_SPRITE_ORIGN, WALL_SPRITE_ORIGN },
 		0, WHITE);
 
 	DrawText(TextFormat("%i", health), getPosXI() - WALL_TEXT_OFFSET_X, getPosYI() + WALL_TEXT_OFFSET_Y, WALL_TEXT_SIZE, RED);

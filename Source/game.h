@@ -56,7 +56,7 @@ struct Game //TODO: remove unneccecary comments
 	void Update();
 	void Render();
 
-	void SpawnAliens();
+	void SpawnAliens() noexcept;
 
 	Player player;
 	std::vector<Projectile> Projectiles;

@@ -222,15 +222,11 @@ void Game::Render() //TODO: move to the left, and make shorter
 	}
 }
 
-void Game::SpawnAliens()
-{
+void Game::SpawnAliens() noexcept{
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {
-			Alien newAlien = Alien();
-			newAlien.active = true; //TODO: Double INIT
-			newAlien.position.x = FORMATION_X + 450 + (col * ALIEN_SPACING);
-			newAlien.position.y = FORMATION_Y + (row * ALIEN_SPACING);
-			Aliens.push_back(newAlien);
+			Vector2 spawnPoint = { FORMATION_X + ALIEN_X_SPAWN_OFFSET + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
+			Aliens.emplace_back(spawnPoint);
 		}
 	}
 }

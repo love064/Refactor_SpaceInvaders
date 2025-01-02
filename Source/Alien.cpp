@@ -1,51 +1,23 @@
 #include "Alien.h"
+#include "Util.h"
 
-void Alien::Update()
-{
-	int window_width = GetScreenWidth();
+Alien::Alien(Vector2 pos) noexcept {
+	position = pos;
+}
 
-	if (moveRight)
-	{
-		position.x += speed;
+void Alien::Update() noexcept {
+	position.x += (moveRight ? speed : -speed);
 
-		if (position.x >= GetScreenWidth())
-		{
-			moveRight = false;
-			position.y += 50;
-		}
-	}
-	else
-	{
-		position.x -= speed;
-
-		if (position.x <= 0)
-		{
-			moveRight = true;
-			position.y += 50;
-		}
+	if (position.x >= GetScreenWidthF() || position.x <= 0) {
+		moveRight = !moveRight;  
+		position.y += ALIEN_Y_DROP_AMOUNT;
 	}
 }
 
-void Alien::Render(Texture2D texture)
-{
-	//DrawRectangle((int)position.x - 25, (int)position.y, 30, 30, RED);
-	//DrawCircle((int)position.x, (int)position.y, radius, GREEN);
-
-
-
+void Alien::Render(Texture2D texture) const noexcept{
 	DrawTexturePro(texture,
-		{
-			0,
-			0,
-			352,
-			352,
-		},
-		{
-			position.x,
-			position.y,
-			100,
-			100,
-		}, { 50 , 50 },
-		0,
-		WHITE);
+		{ 0, 0, ALIEN_SPRITE_SIZE, ALIEN_SPRITE_SIZE},
+		{ position.x, position.y, ALIEN_SIZE, ALIEN_SIZE}, 
+		{ ALIEN_SPRITE_ORIGN, ALIEN_SPRITE_ORIGN },
+		0,WHITE);
 }
