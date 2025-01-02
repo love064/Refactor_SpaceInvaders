@@ -22,11 +22,8 @@ void Game::End() noexcept{
 void Game::reset() noexcept {
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f); //TODO: maybe delete (only used once)
 	for (int i = 0; i < WALL_COUNT; i++) {
-		Wall newWalls; //TODO: double init
-		newWalls.position.y = GetScreenHeightF() - 250;
-		newWalls.position.x = wall_distance * (i + 1);
-
-		Walls.push_back(newWalls);
+		Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
+		Walls.emplace_back(spawnPoint);
 	}
 
 	const Player newPlayer;
