@@ -82,7 +82,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 	// Update background with offset
 	playerPos = { player.x_pos, PLAYER_POSITION_Y };
 	cornerPos = { 0, PLAYER_POSITION_Y };
-	offset = lineLength(playerPos, cornerPos) * -1;
+	offset = getLineLength(playerPos, cornerPos) * -1;
 	background.Update(offset / 15);
 
 
