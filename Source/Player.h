@@ -7,7 +7,7 @@ constexpr float PLAYER_POSITION_Y = 70.f;
 constexpr float PLAYER_RADIUS = 50.f;
 constexpr float PLAYER_SPRITE_SIZE = 352.f;
 constexpr float PLAYER_ANIMATION_TIMER = 0.4f;
-constexpr int PLAYER_MAX_HEALTH = 3;
+constexpr int	PLAYER_MAX_HEALTH = 3;
 
 enum struct Direction {
 	STATIC = 0,
@@ -21,7 +21,6 @@ struct Player
 
 	float x_pos = 0; 
 	Direction direction = Direction::STATIC;
-	//int direction = 0;
 	int lives = PLAYER_MAX_HEALTH;
 	float textureTimer = 0;
 	int activeTexture = 0;
