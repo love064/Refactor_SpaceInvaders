@@ -25,6 +25,13 @@ enum struct State
 //	int score;
 //};
 
+constexpr int WALL_COUNT = 5;
+constexpr int FORMATION_ROW = 8;
+constexpr int FORMATION_COLLUM = 5;
+constexpr int ALIEN_SPACING = 80;
+constexpr int FORMATION_X = 100;
+constexpr int FORMATION_Y = 50;
+
 
 struct Game //TODO: remove unneccecary comments
 {
@@ -35,19 +42,10 @@ struct Game //TODO: remove unneccecary comments
 	int score; //TODO: uninit
 
 	// for later, make a file where you can adjust the number of walls (config file) 
-	int wallCount = 5;  //TODO: these can be global constexpr
+	
 
 	//Aliens shooting
 	float shootTimer = 0;
-
-	//Aliens stuff? (idk cause liv wrote this)
-	Rectangle rec = { 0, 0 ,0 ,0 }; //TODO: rename or delete
-
-	int formationWidth = 8; //TODO: these can be global constexpr
-	int formationHeight = 5;
-	int alienSpacing = 80;
-	int formationX = 100;
-	int formationY = 50;
 
 	bool newHighScore = false;
 

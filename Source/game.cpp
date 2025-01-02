@@ -7,13 +7,15 @@
 #include "Util.h"
 #include "LeaderBoard.h"
 
+
+
 void Game::Start() //TODO: double init 
 {
 	// creating walls 
 	const auto window_width = static_cast<float>(GetScreenWidth()); 
 	const auto window_height = static_cast<float>(GetScreenHeight());
-	const auto wall_distance = window_width / (wallCount + 1.f); 
-	for (int i = 0; i < wallCount; i++)
+	const auto wall_distance = window_width / (WALL_COUNT + 1.f); 
+	for (int i = 0; i < WALL_COUNT; i++)
 	{
 		Wall newWalls;
 		newWalls.position.y = window_height - 250; 
@@ -303,14 +305,6 @@ void Game::Render() //TODO: move to the left, and make shorter
 {
 	switch (gameState)
 	{
-	case State::STARTSCREEN:
-		//Code
-		DrawText("SPACE INVADERS", 200, 100, 160, YELLOW);
-
-		DrawText("PRESS SPACE TO BEGIN", 200, 350, 40, YELLOW);
-
-
-		break;
 	case State::GAMEPLAY:
 		//Code
 
@@ -437,12 +431,12 @@ void Game::Render() //TODO: move to the left, and make shorter
 
 void Game::SpawnAliens()
 {
-	for (int row = 0; row < formationHeight; row++) {
-		for (int col = 0; col < formationWidth; col++) {
+	for (int row = 0; row < FORMATION_COLLUM; row++) {
+		for (int col = 0; col < FORMATION_ROW; col++) {
 			Alien newAlien = Alien();
-			newAlien.active = true;
-			newAlien.position.x = formationX + 450 + (col * alienSpacing);
-			newAlien.position.y = formationY + (row * alienSpacing);
+			newAlien.active = true; //TODO: Double INIT
+			newAlien.position.x = FORMATION_X + 450 + (col * ALIEN_SPACING);
+			newAlien.position.y = FORMATION_Y + (row * ALIEN_SPACING);
 			Aliens.push_back(newAlien);
 			std::cout << "Find Alien -X:" << newAlien.position.x << std::endl;
 			std::cout << "Find Alien -Y:" << newAlien.position.y << std::endl;
