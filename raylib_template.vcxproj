@@ -182,6 +182,7 @@
   <ItemGroup>
     <ClInclude Include="level.h" />
     <ClInclude Include="Source\Alien.h" />
+    <ClInclude Include="Source\Direction.h" />
     <ClInclude Include="Source\Drawing.h" />
     <ClInclude Include="Source\EntityType.h" />
     <ClInclude Include="Source\game.h" />

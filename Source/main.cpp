@@ -12,12 +12,10 @@ enum struct GameState {
 };
 
 
-
 int main(void)
 {   
     Window window( 1920, 1080 ); //TODO: ERROR handling for both window, drawing and resources
     
-
     GameState currentState = GameState::STARTSCREEN;
 
     StartScreen startScreen;

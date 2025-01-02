@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "EntityType.h"
+#include "Direction.h"
 
 constexpr float PLAYER_SPEED = 7.f;
 constexpr float PLAYER_POSITION_Y = 70.f;
@@ -8,12 +9,6 @@ constexpr float PLAYER_RADIUS = 50.f;
 constexpr float PLAYER_SPRITE_SIZE = 352.f;
 constexpr float PLAYER_ANIMATION_TIMER = 0.4f;
 constexpr int	PLAYER_MAX_HEALTH = 3;
-
-enum struct Direction {
-	STATIC = 0,
-	LEFT = -1,
-	RIGHT = 1
-};
 
 struct Player
 {

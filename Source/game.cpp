@@ -104,7 +104,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 		{
 			for (int a = 0; a < Aliens.size(); a++)
 			{
-				if (CheckCollision(Aliens[a].position, Aliens[a].radius, Projectiles[i].lineStart, Projectiles[i].lineEnd))
+				if (CheckCollision(Aliens[a].position, Aliens[a].radius, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
 				{
 					// Kill!
 					std::cout << "Hit! \n";
@@ -121,7 +121,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 		{
 			if (Projectiles[i].type == EntityType::ENEMY_PROJECTILE)
 			{
-				if (CheckCollision({player.x_pos, GetScreenHeight() - PLAYER_POSITION_Y }, player.radius, Projectiles[i].lineStart, Projectiles[i].lineEnd))
+				if (CheckCollision({player.x_pos, GetScreenHeight() - PLAYER_POSITION_Y }, PLAYER_RADIUS, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
 				{
 					std::cout << "dead!\n"; 
 					Projectiles[i].active = false; 
@@ -133,7 +133,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 
 		for (int b = 0; b < Walls.size(); b++)
 		{
-			if (CheckCollision(Walls[b].position, Walls[b].radius, Projectiles[i].lineStart, Projectiles[i].lineEnd))
+			if (CheckCollision(Walls[b].position, Walls[b].radius, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
 			{
 				// Kill!
 				std::cout << "Hit! \n";
@@ -145,14 +145,9 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 	}
 
 	//MAKE PROJECTILE
-	if (IsKeyPressed(KEY_SPACE))
-	{
-		float window_height = static_cast<float>(GetScreenHeight());
-		Projectile newProjectile;
-		newProjectile.position.x = player.x_pos;
-		newProjectile.position.y = window_height - 130;
-		newProjectile.type = EntityType::PLAYER_PROJECTILE;
-		Projectiles.push_back(newProjectile);
+	if (IsKeyPressed(KEY_SPACE)) {
+		Vector2 spawnPoint = { player.x_pos, GetScreenHeightF() - PLAYER_RADIUS * 2 + 30 };
+		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
 	}
 
 	//Aliens Shooting
@@ -166,12 +161,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 			randomAlienIndex = rand() % Aliens.size();
 		}
 
-		Projectile newProjectile;
-		newProjectile.position = Aliens[randomAlienIndex].position;
-		newProjectile.position.y += 40;
-		newProjectile.speed = -15;
-		newProjectile.type = EntityType::ENEMY_PROJECTILE;
-		Projectiles.push_back(newProjectile);
+		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomAlienIndex].position);
 		shootTimer = 0;
 	}
 

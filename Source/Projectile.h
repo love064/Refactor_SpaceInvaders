@@ -1,21 +1,24 @@
 #pragma once
 #include "raylib.h"
 #include "EntityType.h"
+#include "Direction.h"
 
-struct Projectile
-{
-public:
-	// INITIALIZE PROJECTILE WHILE DEFINING IF ITS PLAYER OR ENEMY 
+constexpr float PROJECTILE_SPEED = 15;
+constexpr float PROJECTILE_SPRITE_SIZE = 176;
+constexpr float PROJECTILE_SIZE = 50;
+constexpr float PROJECTILE_HITBOX_OFFSET = 15;
+
+struct Projectile{
 	Vector2 position = { 0,0 };
-	int speed = 15; //TODO: magic values
+	EntityType type = EntityType::PLAYER_PROJECTILE;
 	bool active = true;
-	EntityType type = {};
+	Direction direction = Direction::UP;
 
-	// LINE WILL UPDATE WITH POSITION FOR CALCULATIONS
-	Vector2 lineStart = { 0, 0 };
-	Vector2 lineEnd = { 0, 0 };
+	Projectile(EntityType type, Vector2 pos) noexcept;
+	
+	void Update() noexcept;
+	void Render(Texture2D texture) const noexcept;
 
-	void Update();
-
-	void Render(Texture2D texture);
+	Vector2 getLineStart() const noexcept;
+	Vector2 getLineEnd() const noexcept;
 };
