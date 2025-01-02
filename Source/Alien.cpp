@@ -21,3 +21,10 @@ void Alien::Render(Texture2D texture) const noexcept{
 		{ ALIEN_SPRITE_ORIGN, ALIEN_SPRITE_ORIGN },
 		0,WHITE);
 }
+
+float Alien::getPositionX() const noexcept {
+	return position.x;
+}
+float Alien::getPositionY() const noexcept {
+	return position.y;
+}

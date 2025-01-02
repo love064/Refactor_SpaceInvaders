@@ -21,7 +21,7 @@ void Game::End() noexcept{
 void Game::reset() noexcept {
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f); //TODO: maybe delete (only used once)
 	for (int i = 0; i < WALL_COUNT; i++) {
-		Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
+		const Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
 		Walls.emplace_back(spawnPoint);
 	}
 
@@ -32,7 +32,7 @@ void Game::reset() noexcept {
 	SpawnAliens();
 
 	//creating background
-	Background newBackground(STAR_COUNT);
+	const Background newBackground(STAR_COUNT);
 	background = newBackground;
 
 	//reset score
@@ -40,7 +40,7 @@ void Game::reset() noexcept {
 }
 
 
-void Game::Update() //TODO: move to the left, and make shorter/break apart
+void Game::Update() //TODO: move to the left, and make shorter/break apart, noexcpt
 {
 	if (IsKeyReleased(KEY_Q))
 	{
@@ -51,28 +51,23 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 	player.Update();
 		
 	//Update Aliens and Check if they are past player
-	for (int i = 0; i < Aliens.size(); i++)
-	{
-		Aliens[i].Update(); 
+	for (auto& alien : Aliens) {
+		alien.Update();
 
-		if (Aliens[i].position.y > GetScreenHeight() - PLAYER_POSITION_Y)
-		{
+		if (alien.getPositionY() > GetScreenHeightF() - PLAYER_POSITION_Y) {
 			End();
 		}
 	}
 
 	//End game if player dies
-	if (player.lives < 1)
-	{
+	if (player.lives < 1){
 		End();
 	}
 
 	//Spawn new aliens if aliens run out
-	if (Aliens.size() < 1)
-	{
+	if (Aliens.empty()){
 		SpawnAliens();
 	}
-
 
 	// Update background with offset
 	playerPos = { player.x_pos, PLAYER_POSITION_Y };
@@ -82,14 +77,11 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 
 
 	//UPDATE PROJECTILE
-	for (int i = 0; i < Projectiles.size(); i++)
-	{
-		Projectiles[i].Update();
+	for (auto& projectile : Projectiles) {
+		projectile.Update();
 	}
-	//UPDATE PROJECTILE
-	for (int i = 0; i < Walls.size(); i++)
-	{
-		Walls[i].Update();
+	for (auto& wall : Walls) {
+		wall.Update();
 	}
 
 	//CHECK ALL COLLISONS HERE
@@ -160,33 +152,10 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart
 		shootTimer = 0;
 	}
 
-	// REMOVE INACTIVE/DEAD ENITITIES
-	for (int i = 0; i < Projectiles.size(); i++)
-	{
-		if (Projectiles[i].active == false)
-		{
-			Projectiles.erase(Projectiles.begin() + i);
-			// Prevent the loop from skipping an instance because of index changes, since all insances after
-			// the killed objects are moved down in index. This is the same for all loops with similar function
-			i--;
-		}
-	}
-	for (int i = 0; i < Aliens.size(); i++)
-	{
-		if (Aliens[i].active == false)
-		{
-			Aliens.erase(Aliens.begin() + i);
-			i--;
-		}
-	}
-	for (int i = 0; i < Walls.size(); i++)
-	{
-		if (Walls[i].active == false)
-		{
-			Walls.erase(Walls.begin() + i);
-			i--;
-		}
-	}
+	//storge killing pruning etc
+	Aliens.erase(std::remove_if(Aliens.begin(), Aliens.end(), [](const Alien& a) { return !a.active; }), Aliens.end());
+	Walls.erase(std::remove_if(Walls.begin(), Walls.end(), [](const Wall& w) { return !w.active; }), Walls.end());
+	Projectiles.erase(std::remove_if(Projectiles.begin(), Projectiles.end(), [](const Projectile& p) { return !p.active; }), Projectiles.end());
 }
 
 

@@ -22,4 +22,7 @@ struct Alien{
 
 	void Update() noexcept;
 	void Render(Texture2D texture) const noexcept;
+
+	float getPositionX() const noexcept;
+	float getPositionY() const noexcept;
 };
