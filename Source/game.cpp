@@ -91,7 +91,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 		{
 			for (int a = 0; a < Aliens.size(); a++)
 			{
-				if (CheckCollision(Aliens[a].position, Aliens[a].radius, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
+				if (CheckCollision(Aliens[a].position, ALIEN_RADIUS, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
 				{
 					// Kill!
 					std::cout << "Hit! \n";

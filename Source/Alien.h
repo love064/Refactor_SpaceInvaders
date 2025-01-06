@@ -12,7 +12,6 @@ constexpr int ALIEN_X_SPAWN_OFFSET = 450;
 
 struct Alien{
 	Vector2 position = { 0, 0 }; 
-	float radius = ALIEN_RADIUS;
 	bool active = true;
 	bool moveRight = true;
 	float speed = ALIEN_SPEED;
