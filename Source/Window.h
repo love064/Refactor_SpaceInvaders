@@ -4,7 +4,7 @@
 
 struct Window { 
 
-	Window(int screenWidth, int screenHeight) { //TODO: noexcept?
+	Window(int screenWidth, int screenHeight) noexcept { 
 		InitWindow(screenWidth, screenHeight, "SPACE INVADERS");
 		SetTargetFPS(60);
 		//TODO: error handling

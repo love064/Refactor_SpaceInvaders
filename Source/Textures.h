@@ -4,7 +4,7 @@
 #include <string_view>
 #include <stdexcept> //TODO: ERROR HANDLING
 
-struct Textures //TODO: RAII
+struct Textures
 {
 	Texture2D texture;
 

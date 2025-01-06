@@ -1,29 +1,12 @@
 #pragma once
 #include "raylib.h"
 #include <vector>
-#include <string>
 #include "Textures.h"
 #include "Player.h"
 #include "Projectile.h"
 #include "Wall.h"
 #include "Alien.h"
 #include "Stars.h"
-#include "LeaderBoard.h"
-
-//TODO: split into different files (player.h, etc.)
-
-enum struct State
-{
-	STARTSCREEN,
-	GAMEPLAY,
-	ENDSCREEN
-};
-
-//struct PlayerData
-//{
-//	std::string name;
-//	int score;
-//};
 
 constexpr int WALL_COUNT = 5;
 constexpr int STAR_COUNT = 600;
@@ -34,9 +17,9 @@ constexpr int FORMATION_X = 100;
 constexpr int FORMATION_Y = 50;
 
 
-struct Game //TODO: remove unneccecary comments
+struct Game //TODO: go through update&render
 {
-	int score = 0; //TODO: uninit
+	int score = 0; 
 	float shootTimer = 0;
 	bool newHighScore = false;
 	bool isCurrentState = false;
@@ -65,7 +48,7 @@ struct Game //TODO: remove unneccecary comments
 	std::vector<Alien> Aliens;
 	Background background{ STAR_COUNT };
 
-	Vector2 playerPos;
+	Vector2 playerPos; //TODO: uninit
 	Vector2 alienPos; 
 	Vector2 cornerPos;
 	float offset;

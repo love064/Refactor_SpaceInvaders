@@ -40,7 +40,7 @@ void LeaderBoard::SetName() {
 
 void LeaderBoard::ReadFromFile(std::string_view fileName) {
 	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
-	if (LeaderBoardFile.is_open()) {
+	if (LeaderBoardFile.is_open()) { //TODO: revert if statement if(!open) break;
 		for (int i = 0; i < 5; i++) {
 			std::string line;
 			PlayerData currentPlayer;
@@ -59,7 +59,7 @@ void LeaderBoard::ReadFromFile(std::string_view fileName) {
 	}
 }
 
-void LeaderBoard::SortLeaderBoard() {
+void LeaderBoard::SortLeaderBoard() { //TODO: looking into this, may swap?
 	for (int i = 0; i < Leaderboard.size(); i++){
 		if (yourScore.score > Leaderboard[i].score){
 			Leaderboard.insert(Leaderboard.begin() + i, yourScore);
@@ -89,7 +89,7 @@ void LeaderBoard::reset() {
 	newHighScore = true;
 }
 
-void LeaderBoard::render() noexcept {
+void LeaderBoard::render() const noexcept {
 	if (newHighScore) {
 		SetNameRender();
 	}

@@ -33,10 +33,10 @@ public: //TODO: check which can be private
 
 	void SetNameRender() const noexcept;
 	void HSRender() const noexcept;
-	void render() noexcept;
+	void render() const noexcept;
 };
-
-bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept;
-std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, const std::vector<PlayerData>& Leaderboard);
+//
+//bool CheckNewHighScore(int score, const std::vector<PlayerData>& Leaderboard) noexcept;
+//std::vector<PlayerData> InsertNewHighScore(std::string_view name, int score, const std::vector<PlayerData>& Leaderboard);
 //void LoadLeaderboard();
 //void SaveLeaderboard();
