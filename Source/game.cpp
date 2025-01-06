@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+
+#include <random>
 #include "Util.h"
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
@@ -27,11 +29,11 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
-Game::Game() noexcept{
+Game::Game(){
 	reset();
 }
 
-void Game::End() noexcept{
+void Game::End() noexcept{ //TODO: check if deallocation is noexcept
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
@@ -39,7 +41,7 @@ void Game::End() noexcept{
 	isCurrentState = false;
 }
 
-void Game::reset() noexcept {
+void Game::reset(){
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f); //TODO: maybe delete (only used once)
 	for (int i = 0; i < WALL_COUNT; i++) {
 		const Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
@@ -54,31 +56,26 @@ void Game::reset() noexcept {
 
 void Game::Update() //TODO: move to the left, and make shorter/break apart, noexcpt
 {
-	if (IsKeyReleased(KEY_Q))
-	{
+	player.Update();
+	if (player.lives < 1){
 		End();
 	}
-
-	//Update Player
-	player.Update();
-		
-	//Update Aliens and Check if they are past player
+	
 	for (auto& alien : Aliens) {
 		alien.Update();
-
 		if (alien.getPositionY() > PLAYER_POSITION_Y) {
 			End();
 		}
 	}
-
-	//End game if player dies
-	if (player.lives < 1){
-		End();
-	}
-
-	//Spawn new aliens if aliens run out
 	if (Aliens.empty()){
 		SpawnAliens();
+	}
+
+	for (auto& projectile : Projectiles) {
+		projectile.Update();
+	}
+	for (auto& wall : Walls) {
+		wall.Update();
 	}
 
 	// Update background with offset
@@ -87,44 +84,42 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 	offset = getLineLength(playerPos, cornerPos) * -1;
 	background.Update(offset / 15);
 
-
-	//UPDATE PROJECTILE
-	for (auto& projectile : Projectiles) {
-		projectile.Update();
-	}
-	for (auto& wall : Walls) {
-		wall.Update();
-	}
-
+	Inputs();
+	AlienShooting();
 	Collisions();
-	
-
-	//MAKE PROJECTILE //TODO: make this a function (make a input fucntion with this and q for exit)
-	if (IsKeyPressed(KEY_SPACE)) {
-		Vector2 spawnPoint = { player.x_pos, GetScreenHeightF() - PLAYER_RADIUS * 2 + 30 };
-		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
-	}
-
-	//Aliens Shooting //TODO: make this a fucntion
-	shootTimer += 1;
-	if (shootTimer > 59) //once per second
-	{
-		int randomAlienIndex = 0;
-
-		if (Aliens.size() > 1)
-		{
-			randomAlienIndex = rand() % Aliens.size();
-		}
-
-		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomAlienIndex].getPosition() );
-		shootTimer = 0;
-	}
-
 
 	//TODO: erase-remove is an old idiom. prefer erase_if // [](const Alien& a) { return !a.active; } could be a namespace
 	std::erase_if(Aliens, [](const Alien& a) { return !a.active; });
 	std::erase_if(Walls, [](const Wall& w) { return !w.active; });
 	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
+}
+
+void Game::Inputs(){
+	if (IsKeyReleased(KEY_Q)) {
+		End();
+	}
+
+	if (IsKeyPressed(KEY_SPACE)) {
+		Vector2 spawnPoint = { player.x_pos, PLAYER_POSITION_Y };
+		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
+	}
+}
+
+void Game::AlienShooting() {
+	shootTimer += 1;
+	if (shootTimer >= 60){
+		if (Aliens.empty()) {
+			return;
+		}
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<> dis(0, Aliens.size());
+
+		const int randomNumber = dis(gen);
+
+		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition());
+		shootTimer = 0;
+	}
 }
 
 void Game::Collisions() noexcept {

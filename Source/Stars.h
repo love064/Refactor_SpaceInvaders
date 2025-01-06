@@ -19,7 +19,7 @@ struct Star{
 struct Background{
 	std::vector<Star> Stars;
 
-	explicit Background(int starAmount) noexcept;
+	explicit Background(int starAmount);
 
 	void Update(float offset) noexcept;
 	void Render() const noexcept;

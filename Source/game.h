@@ -38,11 +38,13 @@ struct Game //TODO: go through update&render
 
 	std::vector<Texture2D> playerTextures{shipTexture1.get(), shipTexture2.get(), shipTexture3.get()};
 	
-	Game() noexcept;
+	Game();
 	void End() noexcept;
-	void reset() noexcept;
+	void reset();
 
 	void Update();
+	void Inputs();
+	void AlienShooting();
 	void Render();
 	void Collisions() noexcept;
 
@@ -54,7 +56,7 @@ struct Game //TODO: go through update&render
 	std::vector<Alien> Aliens;
 	Background background{ STAR_COUNT };
 
-	Vector2 playerPos; //TODO: uninit
+	Vector2 playerPos; //TODO: uninit / delete
 	Vector2 alienPos; 
 	Vector2 cornerPos;
 	float offset;

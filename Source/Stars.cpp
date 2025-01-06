@@ -21,7 +21,7 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
-Background::Background(int starAmount) noexcept {
+Background::Background(int starAmount){
 	for (int i = 0; i < starAmount; i++) {
 		Stars.emplace_back();
 	}
