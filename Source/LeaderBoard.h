@@ -26,6 +26,7 @@ public: //TODO: check which can be private
 	void SetName();
 
 	void ReadFromFile(std::string_view fileName);
+	void ReadPlayerData(std::ifstream& LeaderBoardFile);
 	void SortLeaderBoard();
 	void WriteToFile(std::string_view fileName) const;
 

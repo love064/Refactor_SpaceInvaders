@@ -35,7 +35,6 @@ GameState LeaderBoard::update(int score) {
 		SetName();
 	}
 	if (IsKeyReleased(KEY_SPACE) && !newHighScore) {
-		//reset();
 		return GameState::STARTSCREEN;
 	}
 	return GameState::ENDSCREEN;
@@ -66,22 +65,26 @@ void LeaderBoard::SetName() {
 
 void LeaderBoard::ReadFromFile(std::string_view fileName) {
 	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
-	if (LeaderBoardFile.is_open()) { //TODO: revert if statement if(!open) break;
+	if (LeaderBoardFile.is_open()) { 
 		for (int i = 0; i < 5; i++) {
-			std::string line;
-			PlayerData currentPlayer;
-
-			while (std::getline(LeaderBoardFile, line)) {
-				if (line.find("Player Name:") != std::string::npos) {
-					currentPlayer.name = line.substr(13);
-				}
-				else if (line.find("Score:") != std::string::npos) {
-					std::istringstream(line.substr(7)) >> currentPlayer.score;
-					Leaderboard.push_back(currentPlayer);  
-				}
-			}
+			ReadPlayerData(LeaderBoardFile);
 		}
-			LeaderBoardFile.close();
+		LeaderBoardFile.close();
+	}
+}
+
+void LeaderBoard::ReadPlayerData(std::ifstream& LeaderBoardFile) {
+	std::string line;
+	PlayerData currentPlayer;
+
+	while (std::getline(LeaderBoardFile, line)) {
+		if (line.contains("Player Name:")) {
+			currentPlayer.name = line.substr(13);
+		}
+		else if (line.contains("Score:")) {
+			std::istringstream(line.substr(7)) >> currentPlayer.score;
+			Leaderboard.push_back(currentPlayer);
+		}
 	}
 }
 

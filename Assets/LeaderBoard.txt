@@ -2,9 +2,9 @@ Player Name: state pt
 Score: 2100
 Player Name:   
 Score: 2100
+Player Name: contains
+Score: 1500
 Player Name: bamse
 Score: 1100
 Player Name: blue
 Score: 1000
-Player Name: plase
-Score: 800
