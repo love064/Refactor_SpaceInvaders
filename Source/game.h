@@ -55,9 +55,4 @@ struct Game //TODO: go through update&render
 	std::vector<Wall> Walls;
 	std::vector<Alien> Aliens;
 	Background background{ STAR_COUNT };
-
-	Vector2 playerPos; //TODO: uninit / delete
-	Vector2 alienPos; 
-	Vector2 cornerPos;
-	float offset;
 };

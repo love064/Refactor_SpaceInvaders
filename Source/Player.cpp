@@ -23,7 +23,7 @@
     __pragma(warning(disable : 26440))
 
 Player::Player() noexcept {
-	x_pos = GetScreenWidthF() / 2.f;
+	rec.x = GetScreenWidthF() / 2.f;
 }
 
 void Player::Update() noexcept{
@@ -40,15 +40,15 @@ void Player::Movement() noexcept {
 		direction = Direction::RIGHT;
 	}
 
-	x_pos += PLAYER_SPEED * static_cast<float>(direction);
+	rec.x += PLAYER_SPEED * static_cast<float>(direction);
 
-	if (x_pos < 0 + PLAYER_RADIUS)
+	if (rec.x < 0 + PLAYER_RADIUS)
 	{
-		x_pos = 0 + PLAYER_RADIUS;
+		rec.x = 0 + PLAYER_RADIUS;
 	}
-	else if (x_pos > GetScreenWidthF() - PLAYER_RADIUS)
+	else if (rec.x > GetScreenWidthF() - PLAYER_RADIUS)
 	{
-		x_pos = GetScreenWidthF() - PLAYER_RADIUS;
+		rec.x = GetScreenWidthF() - PLAYER_RADIUS;
 	}
 }
 
@@ -72,7 +72,7 @@ void Player::Animation() noexcept {
 }
 
 void Player::reset() noexcept { //TODO: if we make a new one we dont need this
-	x_pos = GetScreenWidthF() / 2.f;
+	rec.x = GetScreenWidthF() / 2.f;
 	lives = PLAYER_MAX_HEALTH;
 	textureTimer = 0;
 	direction = Direction::STATIC;
@@ -82,9 +82,16 @@ void Player::reset() noexcept { //TODO: if we make a new one we dont need this
 void Player::Render(Texture2D texture) const noexcept{ //TODO: maybe make const Texture2D& texture
 	DrawTexturePro(texture,
 		{0,0, PLAYER_SPRITE_SIZE, PLAYER_SPRITE_SIZE,},
-		{x_pos, PLAYER_POSITION_Y, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2,},
+		{rec.x, PLAYER_POSITION_Y, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2,},
 		{ 50, 50 },
 		0, WHITE);
+}
+
+Vector2 Player::getPosition() const noexcept{
+	return { rec.x, rec.y };
+}
+float Player::getPositionX() const noexcept {
+	return rec.x;
 }
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

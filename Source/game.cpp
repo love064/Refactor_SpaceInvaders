@@ -5,7 +5,6 @@
 #include <thread>
 #include <fstream>
 
-#include <random>
 #include "Util.h"
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
@@ -54,8 +53,7 @@ void Game::reset(){
 }
 
 
-void Game::Update() //TODO: move to the left, and make shorter/break apart, noexcpt
-{
+void Game::Update(){
 	player.Update();
 	if (player.lives < 1){
 		End();
@@ -78,17 +76,14 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 		wall.Update();
 	}
 
-	// Update background with offset
-	playerPos = { player.x_pos, PLAYER_POSITION_Y };
-	cornerPos = { 0, PLAYER_POSITION_Y };
-	offset = getLineLength(playerPos, cornerPos) * -1;
-	background.Update(offset / 15);
+	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / 10.f;
+	background.Update(offset);
 
 	Inputs();
 	AlienShooting();
 	Collisions();
 
-	//TODO: erase-remove is an old idiom. prefer erase_if // [](const Alien& a) { return !a.active; } could be a namespace
+	//TODO: [](const Alien& a) { return !a.active; } could be a namespace
 	std::erase_if(Aliens, [](const Alien& a) { return !a.active; });
 	std::erase_if(Walls, [](const Wall& w) { return !w.active; });
 	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
@@ -100,7 +95,7 @@ void Game::Inputs(){
 	}
 
 	if (IsKeyPressed(KEY_SPACE)) {
-		Vector2 spawnPoint = { player.x_pos, PLAYER_POSITION_Y };
+		Vector2 spawnPoint = { player.getPositionX(), PLAYER_POSITION_Y};
 		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
 	}
 }
@@ -111,11 +106,7 @@ void Game::AlienShooting() {
 		if (Aliens.empty()) {
 			return;
 		}
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(0, Aliens.size());
-
-		const int randomNumber = dis(gen);
+		const int randomNumber = GetRandomValue(0, Aliens.size() - 1); 
 
 		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition());
 		shootTimer = 0;
