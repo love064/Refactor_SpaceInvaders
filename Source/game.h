@@ -7,6 +7,7 @@
 #include "Wall.h"
 #include "Alien.h"
 #include "Stars.h"
+#include "GameStates.h"
 
 constexpr int WALL_COUNT = 5;
 constexpr int STAR_COUNT = 600;
@@ -22,7 +23,6 @@ struct Game //TODO: go through render
 	int score = 0; 
 	float shootTimer = 0;
 	bool newHighScore = false;
-	bool isCurrentState = false;
 
 	Textures alienTexture{ "./Assets/Alien.png" };
 	Textures barrierTexture{ "./Assets/Barrier.png" };
@@ -38,8 +38,8 @@ struct Game //TODO: go through render
 	void End() noexcept;
 	void reset();
 
-	void Update();
-	void Inputs();
+	GameState Update();
+	void PlayerShooting();
 	void AlienShooting();
 	void Render() const noexcept;
 	void Collisions() noexcept;

@@ -22,6 +22,13 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
+GameState StartScreen::update() noexcept {
+    if (IsKeyReleased(KEY_SPACE)) {
+        return GameState::GAMEPLAY;
+    }
+    return GameState::STARTSCREEN;
+}
+
 void StartScreen::render() const noexcept {
 	DrawText("SPACE INVADERS", 200, 100, 160, YELLOW);
 

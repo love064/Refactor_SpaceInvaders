@@ -36,7 +36,6 @@ void Game::End() noexcept{ //TODO: check if deallocation is noexcept //maybe sho
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
-	isCurrentState = false;
 }
 
 void Game::reset(){
@@ -52,16 +51,23 @@ void Game::reset(){
 }
 
 
-void Game::Update(){
+GameState Game::Update(){
+	if (IsKeyReleased(KEY_Q)) {
+		End();
+		return GameState::ENDSCREEN;
+	}
+	
 	player.Update();
 	if (player.lives < 1){
 		End();
+		return GameState::ENDSCREEN;
 	}
 	
 	for (auto& alien : Aliens) {
 		alien.Update();
 		if (alien.getPositionY() > PLAYER_POSITION_Y) {
 			End();
+			return GameState::ENDSCREEN;
 		}
 	}
 	if (Aliens.empty()){
@@ -78,7 +84,7 @@ void Game::Update(){
 	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / 10.f; //TODO: MAGIC number
 	background.Update(offset);
 
-	Inputs();
+	PlayerShooting();
 	AlienShooting();
 	Collisions();
 
@@ -86,13 +92,11 @@ void Game::Update(){
 	std::erase_if(Aliens, [](const Alien& a) { return !a.active; });
 	std::erase_if(Walls, [](const Wall& w) { return !w.active; });
 	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
+	
+	return GameState::GAMEPLAY;
 }
 
-void Game::Inputs(){
-	if (IsKeyReleased(KEY_Q)) {
-		End();
-	}
-
+void Game::PlayerShooting(){
 	if (IsKeyPressed(KEY_SPACE)) {
 		Vector2 spawnPoint = { player.getPositionX() + (PLAYER_SIZE / 2), PLAYER_POSITION_Y};
 		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);

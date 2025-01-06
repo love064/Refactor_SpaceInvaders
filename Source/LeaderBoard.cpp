@@ -29,11 +29,16 @@
     __pragma(warning(disable : 26440))
 
 
-void LeaderBoard::update(int score) {
+GameState LeaderBoard::update(int score) {
 	if (newHighScore) {
 		yourScore.score = score;
 		SetName();
 	}
+	if (IsKeyReleased(KEY_SPACE) && !newHighScore) {
+		//reset();
+		return GameState::STARTSCREEN;
+	}
+	return GameState::ENDSCREEN;
 }
 
 void LeaderBoard::SetName() {

@@ -176,6 +176,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Alien.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\LeaderBoard.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -188,10 +189,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Alien.h" />
+    <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Direction.h" />
     <ClInclude Include="Source\Drawing.h" />
     <ClInclude Include="Source\EntityType.h" />
     <ClInclude Include="Source\game.h" />
+    <ClInclude Include="Source\GameStates.h" />
     <ClInclude Include="Source\LeaderBoard.h" />
     <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\Player.h" />

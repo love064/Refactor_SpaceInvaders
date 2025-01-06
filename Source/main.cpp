@@ -2,11 +2,8 @@
 #include <stdexcept>
 #include <print>
 #include "pch.h"
-#include "game.h"
-#include "Window.h"
-#include "Drawing.h"
-#include "LeaderBoard.h"
-#include "StartScreen.h"
+#include "Application.h"
+
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
@@ -28,12 +25,6 @@
     __pragma(warning(disable : 26818)) \
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
-
-enum struct GameState {
-    STARTSCREEN,
-    GAMEPLAY,
-    ENDSCREEN
-};
 
 /*Window class error checking (none available, don't worry about it)
 
@@ -65,49 +56,11 @@ recheck all noexcpets (allocation of memory = except) ie. emplace_back is alloca
 int main(void)
 {   
     try {
-        Window window(1920, 1080, "Space Invaders", 60); //TODO: ERROR handling for both window, drawing and resources
-
-        GameState currentState = GameState::STARTSCREEN;
-
-        StartScreen startScreen;
-        Game game;
-        LeaderBoard leaderboard;
-
-        int score = 0;
+        Application application;
 
         while (!WindowShouldClose())    // Detect window close button or ESC key
         {
-            Drawing drawing(BLACK);
-
-            switch (currentState) {
-            case GameState::STARTSCREEN:
-                if (IsKeyReleased(KEY_SPACE)) {
-                    game.isCurrentState = true; //TODO: ick
-                    currentState = GameState::GAMEPLAY;
-                }
-                startScreen.render();
-                break;
-
-            case GameState::GAMEPLAY:
-                game.Update();
-                game.Render();
-                if (!game.isCurrentState) {
-                    currentState = GameState::ENDSCREEN;
-                    score = game.score;
-                    game.reset();
-                }
-                break;
-
-            case GameState::ENDSCREEN:
-                leaderboard.update(score);
-                leaderboard.render();
-                if (IsKeyReleased(KEY_SPACE) && !leaderboard.newHighScore)
-                {
-                    leaderboard.reset();
-                    currentState = GameState::STARTSCREEN;
-                }
-                break;
-            }
+            application.run();
         }
 
         return 0;
