@@ -1,6 +1,6 @@
 #pragma once
-#include "pch.h"
 #include <vector>
+#include "pch.h"
 #include "Textures.h"
 #include "Player.h"
 #include "Projectile.h"
@@ -17,9 +17,7 @@ constexpr float ALIEN_SPACING = 100;
 constexpr float FORMATION_X = 100;
 constexpr float FORMATION_Y = 50;
 
-
-struct Game //TODO: go through render
-{
+struct Game {
 	int score = 0; 
 	float shootTimer = 0;
 	bool newHighScore = false;

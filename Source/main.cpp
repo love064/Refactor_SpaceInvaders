@@ -4,7 +4,6 @@
 #include "pch.h"
 #include "Application.h"
 
-
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
     /* C26812: The enum type '...' is unscoped. Prefer 'enum class' over 'enum' (Enum.3) */ \
@@ -44,25 +43,21 @@ Exceptions: make sure you catch them before leaving the main scope
 
 Scale the textures on the hard drive instead of doing it every frame (DrawTexturePro vs. DrawTexture)
 
-Consider creating an Animation class to handle timing
+//TODO: Consider creating an Animation class to handle timing 
 
 Check you project settings. C++Latest, warnings level 4, static analysis with a good ruleset.
 
-disable warnings and static analysis  on external files, check the forums for how to do that.
+disable warnings and static analysis on external files, check the forums for how to do that.
 
-recheck all noexcpets (allocation of memory = except) ie. emplace_back is allocation*/
+//TODO: Recheck all noexcpets (allocation of memory = except) ie. emplace_back is allocation*/
 
 
-int main(void)
-{   
+int main(void) {   
     try {
         Application application;
-
-        while (!WindowShouldClose())    // Detect window close button or ESC key
-        {
+        while (!WindowShouldClose()) {    // Detect window close button or ESC key
             application.run();
         }
-
         return 0;
     }
     catch (const std::runtime_error& e) {
@@ -70,6 +65,5 @@ int main(void)
     }
     return 0;
 }
-
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

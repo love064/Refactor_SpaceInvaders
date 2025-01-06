@@ -2,7 +2,6 @@
 #include "GameStates.h"
 
 struct StartScreen {
-
-	GameState update() noexcept;
+	GameState update() const noexcept;
 	void render() const noexcept;
 };

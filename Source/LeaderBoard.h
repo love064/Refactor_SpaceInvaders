@@ -11,16 +11,14 @@ struct PlayerData {
 	int score = 0;
 };
 
-class LeaderBoard {
+struct LeaderBoard {
 	std::vector<PlayerData> Leaderboard;
-public: //TODO: check which can be private
 
 	bool newHighScore = true;
 	PlayerData yourScore = {"", 0};
 	std::string name;
 	int letterCount = 0;
 	Rectangle textBox = { 600, 500, 225, 50 };
-
 	
 	GameState update(int score);
 	void SetName();
