@@ -44,6 +44,7 @@ struct Game //TODO: go through update&render
 
 	void Update();
 	void Render();
+	void Collisions() noexcept;
 
 	void SpawnAliens() noexcept;
 

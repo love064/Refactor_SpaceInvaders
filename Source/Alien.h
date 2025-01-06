@@ -12,7 +12,8 @@ constexpr int ALIEN_Y_DROP_AMOUNT = 50;
 constexpr int ALIEN_X_SPAWN_OFFSET = 450;
 
 struct Alien{
-	Vector2 position = { 0, 0 }; 
+	Rectangle rec = { 0, 0, ALIEN_SIZE, ALIEN_SIZE };
+	//Vector2 position = { 0, 0 }; 
 	bool active = true;
 	bool moveRight = true;
 	float speed = ALIEN_SPEED;
@@ -22,7 +23,9 @@ struct Alien{
 
 	void Update() noexcept;
 	void Render(Texture2D texture) const noexcept;
+	void Collision() noexcept;
 
+	Vector2 getPosition() const noexcept;
 	float getPositionX() const noexcept;
 	float getPositionY() const noexcept;
 };

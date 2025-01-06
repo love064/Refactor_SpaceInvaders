@@ -9,7 +9,8 @@ constexpr float PROJECTILE_SIZE = 50;
 constexpr float PROJECTILE_HITBOX_OFFSET = 15;
 
 struct Projectile{
-	Vector2 position = { 0,0 };
+	Rectangle rec = { 0, 0, PROJECTILE_SIZE, PROJECTILE_SIZE };
+	//Vector2 position = { 0,0 };
 	EntityType type = EntityType::PLAYER_PROJECTILE;
 	bool active = true;
 	Direction direction = Direction::UP;
@@ -17,8 +18,9 @@ struct Projectile{
 	Projectile(EntityType type, Vector2 pos) noexcept;
 	
 	void Update() noexcept;
+	void Collision() noexcept;
 	void Render(Texture2D texture) const noexcept;
 
-	Vector2 getLineStart() const noexcept;
-	Vector2 getLineEnd() const noexcept;
+	/*Vector2 getLineStart() const noexcept;
+	Vector2 getLineEnd() const noexcept;*/
 };

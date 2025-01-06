@@ -35,7 +35,7 @@ void Game::End() noexcept{
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
-	//player.reset();
+	//player.reset(); //TODO: not used
 	isCurrentState = false;
 }
 
@@ -66,7 +66,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 	for (auto& alien : Aliens) {
 		alien.Update();
 
-		if (alien.getPositionY() > GetScreenHeightF() - PLAYER_POSITION_Y) {
+		if (alien.getPositionY() > PLAYER_POSITION_Y) {
 			End();
 		}
 	}
@@ -96,60 +96,16 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 		wall.Update();
 	}
 
-	//CHECK ALL COLLISONS HERE
-	for (int i = 0; i < Projectiles.size(); i++)
-	{
-		if (Projectiles[i].type == EntityType::PLAYER_PROJECTILE)
-		{
-			for (int a = 0; a < Aliens.size(); a++)
-			{
-				if (CheckCollision(Aliens[a].position, ALIEN_RADIUS, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
-				{
-					// Kill!
-					std::cout << "Hit! \n";
-					// Set them as inactive, will be killed later
-					Projectiles[i].active = false;
-					Aliens[a].active = false;
-					score += 100;
-				}
-			}
-		}
+	Collisions();
+	
 
-		//ENEMY PROJECTILES HERE
-		for (int i = 0; i < Projectiles.size(); i++)
-		{
-			if (Projectiles[i].type == EntityType::ENEMY_PROJECTILE)
-			{
-				if (CheckCollision({player.x_pos, GetScreenHeight() - PLAYER_POSITION_Y }, PLAYER_RADIUS, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
-				{
-					std::cout << "dead!\n"; 
-					Projectiles[i].active = false; 
-					player.lives -= 1; 
-				}
-			}
-		}
-
-
-		for (int b = 0; b < Walls.size(); b++)
-		{
-			if (CheckCollision(Walls[b].position, Walls[b].radius, Projectiles[i].getLineStart(), Projectiles[i].getLineEnd()))
-			{
-				// Kill!
-				std::cout << "Hit! \n";
-				// Set them as inactive, will be killed later
-				Projectiles[i].active = false;
-				Walls[b].health -= 1;
-			}
-		}
-	}
-
-	//MAKE PROJECTILE
+	//MAKE PROJECTILE //TODO: make this a function (make a input fucntion with this and q for exit)
 	if (IsKeyPressed(KEY_SPACE)) {
 		Vector2 spawnPoint = { player.x_pos, GetScreenHeightF() - PLAYER_RADIUS * 2 + 30 };
 		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
 	}
 
-	//Aliens Shooting
+	//Aliens Shooting //TODO: make this a fucntion
 	shootTimer += 1;
 	if (shootTimer > 59) //once per second
 	{
@@ -160,7 +116,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 			randomAlienIndex = rand() % Aliens.size();
 		}
 
-		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomAlienIndex].position);
+		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomAlienIndex].getPosition() );
 		shootTimer = 0;
 	}
 
@@ -171,6 +127,29 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
 }
 
+void Game::Collisions() noexcept {
+	for (auto& projectile : Projectiles) {
+		for (auto& wall : Walls) {
+			if (CheckCollisionRecs(projectile.rec, wall.rec)) {
+				projectile.Collision();
+				wall.Collision();
+			}
+		}
+
+		if (projectile.type == EntityType::ENEMY_PROJECTILE && CheckCollisionRecs(projectile.rec, player.rec)) {
+			projectile.Collision();
+			player.Collision();
+		}
+
+		for (auto& alien : Aliens) {
+			if (projectile.type == EntityType::PLAYER_PROJECTILE && CheckCollisionRecs(projectile.rec, alien.rec)) {
+				projectile.Collision();
+				alien.Collision();
+				score += 100;
+			}
+		}
+	}
+}
 
 void Game::Render() //TODO: move to the left, and make shorter
 {

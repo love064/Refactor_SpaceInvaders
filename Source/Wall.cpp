@@ -22,7 +22,8 @@
     __pragma(warning(disable : 26440))
 
 Wall::Wall(Vector2 pos) noexcept {
-	position = pos;
+	rec.x = pos.x;
+	rec.y = pos.y;
 }
 
 void Wall::Update() noexcept {
@@ -31,10 +32,14 @@ void Wall::Update() noexcept {
 	}
 }
 
+void Wall::Collision() noexcept {
+    health -= 1;
+}
+
 void Wall::Render(Texture2D texture) const noexcept {
 	DrawTexturePro(texture,
 		{ 0, 0, WALL_SPRITE_SIZE, WALL_SPRITE_SIZE },
-		{ position.x, position.y, WALL_SIZE, WALL_SIZE },
+		{ rec.x, rec.y, WALL_SIZE, WALL_SIZE },
 		{ WALL_SPRITE_ORIGN, WALL_SPRITE_ORIGN },
 		0, WHITE);
 
@@ -42,10 +47,10 @@ void Wall::Render(Texture2D texture) const noexcept {
 }
 
 int Wall::getPosXI() const noexcept{
-	return static_cast<int>(position.x);
+	return static_cast<int>(rec.x);
 }
 int Wall::getPosYI() const noexcept {
-	return static_cast<int>(position.y);
+	return static_cast<int>(rec.y);
 }
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

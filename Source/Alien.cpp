@@ -23,15 +23,16 @@
     __pragma(warning(disable : 26440))
 
 Alien::Alien(Vector2 pos) noexcept {
-	position = pos;
+    rec.x = pos.x;
+    rec.y = pos.y;
 }
 
 void Alien::Update() noexcept {
-	position.x += (moveRight ? speed : -speed);
+	rec.x += (moveRight ? speed : -speed);
 
-	if (position.x >= GetScreenWidthF() || position.x <= 0) {
+	if (rec.x >= GetScreenWidthF() || rec.x <= 0) {
 		moveRight = !moveRight;  
-		position.y += ALIEN_Y_DROP_AMOUNT;
+		rec.y += ALIEN_Y_DROP_AMOUNT;
 	}
 }
 
@@ -39,16 +40,24 @@ void Alien::Update() noexcept {
 void Alien::Render(Texture2D texture) const noexcept{
 	DrawTexturePro(texture,
 		{ 0, 0, ALIEN_SPRITE_SIZE, ALIEN_SPRITE_SIZE},
-		{ position.x, position.y, ALIEN_SIZE, ALIEN_SIZE}, 
+		{ rec.x, rec.y, ALIEN_SIZE, ALIEN_SIZE}, 
 		{ ALIEN_SPRITE_ORIGN, ALIEN_SPRITE_ORIGN },
 		0,WHITE);
 }
 
+void Alien::Collision() noexcept {
+    active = false;
+}
+
+Vector2 Alien::getPosition() const noexcept {
+    return { rec.x, rec.y };
+}
+
 float Alien::getPositionX() const noexcept {
-	return position.x;
+	return rec.x;
 }
 float Alien::getPositionY() const noexcept {
-	return position.y;
+	return rec.y;
 }
 
 #define RESTORE_WARNINGS __pragma(warning(pop))
