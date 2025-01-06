@@ -4,7 +4,7 @@
 #pragma warning(disable:ALL_CODE_ANALYSIS_WARNINGS)
 #include <raylib.h>
 #pragma warning(pop)
-#include "raylib.h"
+#include "pch.h"
 #include <vector>
 #include "Textures.h"
 #include "Player.h"

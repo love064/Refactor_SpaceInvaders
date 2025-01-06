@@ -1,5 +1,5 @@
 #pragma once
-#include "raylib.h"
+#include "pch.h"
 #include "EntityType.h"
 
 constexpr int WALL_MAX_HEALTH = 50;

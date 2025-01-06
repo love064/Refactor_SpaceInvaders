@@ -1,6 +1,6 @@
 #pragma once
 
-#include "raylib.h"
+#include "pch.h"
 #include "EntityType.h"
 
 constexpr int ALIEN_SIZE = 100;
