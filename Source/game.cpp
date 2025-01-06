@@ -164,11 +164,11 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 		shootTimer = 0;
 	}
 
-	//storge killing pruning etc
-	//TODO: erase-remove is an old idiom. prefer erase_if
-	Aliens.erase(std::remove_if(Aliens.begin(), Aliens.end(), [](const Alien& a) { return !a.active; }), Aliens.end());
-	Walls.erase(std::remove_if(Walls.begin(), Walls.end(), [](const Wall& w) { return !w.active; }), Walls.end());
-	Projectiles.erase(std::remove_if(Projectiles.begin(), Projectiles.end(), [](const Projectile& p) { return !p.active; }), Projectiles.end());
+
+	//TODO: erase-remove is an old idiom. prefer erase_if // [](const Alien& a) { return !a.active; } could be a namespace
+	std::erase_if(Aliens, [](const Alien& a) { return !a.active; });
+	std::erase_if(Walls, [](const Wall& w) { return !w.active; });
+	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
 }
 
 
