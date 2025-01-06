@@ -4,10 +4,9 @@
 #include "Direction.h"
 
 constexpr float PLAYER_SPEED = 7.f;
-constexpr float PLAYER_POSITION_Y = 1010.f;
-constexpr float PLAYER_RADIUS = 50.f;
-constexpr float PLAYER_SIZE = PLAYER_RADIUS * 2.f;
-constexpr float PLAYER_SPRITE_SIZE = 352.f;
+constexpr float PLAYER_POSITION_Y = 950.f;
+constexpr float PLAYER_SIZE = 100;
+constexpr float PLAYER_RADIUS = PLAYER_SIZE/2;
 constexpr float PLAYER_ANIMATION_TIMER = 0.4f;
 constexpr int	PLAYER_MAX_HEALTH = 3;
 
@@ -28,7 +27,6 @@ struct Player
 	void Movement() noexcept;
 	void Collision() noexcept;
 	void Animation() noexcept; //TODO: make into an object
-	void reset() noexcept; //TODO: mayeb be unsused
 	Vector2 getPosition() const noexcept;
 	float getPositionX() const noexcept;
 };

@@ -37,12 +37,7 @@ void Wall::Collision() noexcept {
 }
 
 void Wall::Render(Texture2D texture) const noexcept {
-	DrawTexturePro(texture,
-		{ 0, 0, WALL_SPRITE_SIZE, WALL_SPRITE_SIZE },
-		{ rec.x, rec.y, WALL_SIZE, WALL_SIZE },
-		{ 0, 0 },
-		0, WHITE);
-
+    DrawTextureV(texture, { rec.x, rec.y }, WHITE);
 	DrawText(TextFormat("%i", health), getPosXI() + WALL_TEXT_OFFSET_X, getPosYI() + WALL_TEXT_OFFSET_Y, WALL_TEXT_SIZE, RED);
 }
 

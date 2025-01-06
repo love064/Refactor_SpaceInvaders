@@ -3,19 +3,16 @@
 #include "EntityType.h"
 
 constexpr int WALL_MAX_HEALTH = 50;
-//constexpr int WALL_RADIUS = 60;
-constexpr float WALL_SPRITE_SIZE = 704;
-constexpr float WALL_SPRITE_ORIGN = 100;
-constexpr float WALL_SIZE = 60;
-constexpr int WALL_TEXT_OFFSET_X = 21;
-constexpr int WALL_TEXT_OFFSET_Y = 10;
+constexpr int WALL_SIZE_X = 200;
+constexpr int WALL_SIZE_Y = 90;
 constexpr int WALL_TEXT_SIZE = 40;
+constexpr int WALL_TEXT_OFFSET_X = ( WALL_SIZE_X / 2 ) - (WALL_TEXT_SIZE / 2);
+constexpr int WALL_TEXT_OFFSET_Y = WALL_SIZE_Y / 2;
 
 struct Wall{
-	Rectangle rec = { 0, 0, WALL_SIZE, WALL_SIZE };
+	Rectangle rec = { 0, 0, WALL_SIZE_X, WALL_SIZE_Y };
 	bool active = true;
 	int health = WALL_MAX_HEALTH;
-	//int radius = WALL_RADIUS;
 
 	explicit Wall(Vector2 pos) noexcept;
 

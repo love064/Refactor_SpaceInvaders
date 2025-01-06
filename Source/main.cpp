@@ -79,7 +79,7 @@ int main(void)
         switch (currentState){
         case GameState::STARTSCREEN:
             if (IsKeyReleased(KEY_SPACE)){
-                game.isCurrentState = true;
+                game.isCurrentState = true; //TODO: ick
                 currentState = GameState::GAMEPLAY;
             }
             startScreen.render();

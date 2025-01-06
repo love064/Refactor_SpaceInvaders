@@ -32,7 +32,7 @@ Game::Game(){
 	reset();
 }
 
-void Game::End() noexcept{ //TODO: check if deallocation is noexcept
+void Game::End() noexcept{ //TODO: check if deallocation is noexcept //maybe should be in destructor
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
@@ -94,7 +94,7 @@ void Game::Inputs(){
 	}
 
 	if (IsKeyPressed(KEY_SPACE)) {
-		Vector2 spawnPoint = { player.getPositionX(), PLAYER_POSITION_Y};
+		Vector2 spawnPoint = { player.getPositionX() + (PLAYER_SIZE / 2), PLAYER_POSITION_Y};
 		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
 	}
 }

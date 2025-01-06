@@ -26,7 +26,6 @@ Projectile::Projectile(EntityType entityType, Vector2 pos) noexcept {
 	type = entityType;
     rec.x = pos.x;
     rec.y = pos.y;
-	//position = pos;
 	if (entityType == EntityType::ENEMY_PROJECTILE) {
 		direction = Direction::DOWN;
 	}
@@ -45,18 +44,7 @@ void Projectile::Collision() noexcept {
 }
 
 void Projectile::Render(Texture2D texture) const noexcept{
-	DrawTexturePro(texture,
-		{ 0, 0, PROJECTILE_SPRITE_SIZE, PROJECTILE_SPRITE_SIZE},
-		{ rec.x, rec.y, PROJECTILE_SIZE, PROJECTILE_SIZE}, 
-		{ 25 , 25 },
-		0, WHITE);
+    DrawTextureV(texture, { rec.x, rec.y }, WHITE);
 }
-
-//Vector2 Projectile::getLineStart() const noexcept {
-//	return { position.x, position.y - PROJECTILE_HITBOX_OFFSET };
-//}
-//Vector2 Projectile::getLineEnd() const noexcept {
-//	return { position.x, position.y + PROJECTILE_HITBOX_OFFSET };
-//}
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

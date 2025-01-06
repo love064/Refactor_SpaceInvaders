@@ -71,20 +71,8 @@ void Player::Animation() noexcept {
 	}
 }
 
-void Player::reset() noexcept { //TODO: if we make a new one we dont need this
-	rec.x = GetScreenWidthF() / 2.f;
-	lives = PLAYER_MAX_HEALTH;
-	textureTimer = 0;
-	direction = Direction::STATIC;
-	activeTexture = 0;
-}
-
-void Player::Render(Texture2D texture) const noexcept{ //TODO: maybe make const Texture2D& texture
-	DrawTexturePro(texture,
-		{0,0, PLAYER_SPRITE_SIZE, PLAYER_SPRITE_SIZE,},
-		{rec.x, PLAYER_POSITION_Y, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2,},
-		{ 50, 50 },
-		0, WHITE);
+void Player::Render(Texture2D texture) const noexcept{ 
+	DrawTextureV(texture, getPosition(), WHITE);
 }
 
 Vector2 Player::getPosition() const noexcept{
