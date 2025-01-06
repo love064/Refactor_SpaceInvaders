@@ -4,12 +4,8 @@
 #include "EntityType.h"
 
 constexpr int ALIEN_SIZE = 100;
-constexpr int ALIEN_SPRITE_SIZE = 352;
-constexpr int ALIEN_SPRITE_ORIGN = 50;
-constexpr float ALIEN_RADIUS = 30.f;
 constexpr float ALIEN_SPEED = 2.f;
 constexpr int ALIEN_Y_DROP_AMOUNT = 50;
-constexpr int ALIEN_X_SPAWN_OFFSET = 450;
 
 struct Alien{
 	Rectangle rec = { 0, 0, ALIEN_SIZE, ALIEN_SIZE };

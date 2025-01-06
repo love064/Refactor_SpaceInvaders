@@ -30,23 +30,18 @@ Alien::Alien(Vector2 pos) noexcept {
 void Alien::Update() noexcept {
 	rec.x += (moveRight ? speed : -speed);
 
-	if (rec.x >= GetScreenWidthF() || rec.x <= 0) {
+	if (rec.x >= GetScreenWidthF() - ALIEN_SIZE || rec.x <= 0) {
 		moveRight = !moveRight;  
 		rec.y += ALIEN_Y_DROP_AMOUNT;
 	}
 }
 
-//TODO: replace drawtexturepro with the simpler drawtexture
-void Alien::Render(Texture2D texture) const noexcept{
-	DrawTexturePro(texture,
-		{ 0, 0, ALIEN_SPRITE_SIZE, ALIEN_SPRITE_SIZE},
-		{ rec.x, rec.y, ALIEN_SIZE, ALIEN_SIZE}, 
-		{ ALIEN_SPRITE_ORIGN, ALIEN_SPRITE_ORIGN },
-		0,WHITE);
-}
-
 void Alien::Collision() noexcept {
     active = false;
+}
+
+void Alien::Render(Texture2D texture) const noexcept{
+    DrawTextureV(texture, getPosition(), WHITE);
 }
 
 Vector2 Alien::getPosition() const noexcept {

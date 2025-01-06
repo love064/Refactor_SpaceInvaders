@@ -40,9 +40,9 @@ void Game::End() noexcept{ //TODO: check if deallocation is noexcept //maybe sho
 }
 
 void Game::reset(){
-	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f);
+	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1);
 	for (int i = 0; i < WALL_COUNT; i++) {
-		const Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
+		const Vector2 spawnPoint = { wall_distance * (i + 0.75f), GetScreenHeightF() - 250};
 		Walls.emplace_back(spawnPoint);
 	}	
 	player = {};	
@@ -160,7 +160,7 @@ void Game::Render() const noexcept {
 void Game::SpawnAliens(){
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {
-			Vector2 spawnPoint = { FORMATION_X + ALIEN_X_SPAWN_OFFSET + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
+			Vector2 spawnPoint = { FORMATION_X + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
 			Aliens.emplace_back(spawnPoint);
 		}
 	}

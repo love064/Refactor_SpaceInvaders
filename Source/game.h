@@ -12,7 +12,7 @@ constexpr int WALL_COUNT = 5;
 constexpr int STAR_COUNT = 600;
 constexpr int FORMATION_ROW = 8;
 constexpr int FORMATION_COLLUM = 5;
-constexpr float ALIEN_SPACING = 80;
+constexpr float ALIEN_SPACING = 100;
 constexpr float FORMATION_X = 100;
 constexpr float FORMATION_Y = 50;
 
