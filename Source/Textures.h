@@ -17,7 +17,7 @@ struct Textures
 		UnloadTexture(texture);
 	}
 
-	auto& get() noexcept{
+	auto& get() const noexcept{
 		return texture;
 	}
 
