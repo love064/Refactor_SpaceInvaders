@@ -1,4 +1,6 @@
 #pragma once
+#include <stdexcept>
+#include <print>
 #include "pch.h"
 #include "game.h"
 #include "Window.h"
@@ -62,51 +64,57 @@ recheck all noexcpets (allocation of memory = except) ie. emplace_back is alloca
 
 int main(void)
 {   
-    Window window( 1920, 1080, "Space Invaders", 60); //TODO: ERROR handling for both window, drawing and resources
-    
-    GameState currentState = GameState::STARTSCREEN;
+    try {
+        Window window(1920, 1080, "Space Invaders", 60); //TODO: ERROR handling for both window, drawing and resources
 
-    StartScreen startScreen;
-    Game game;
-    LeaderBoard leaderboard;
+        GameState currentState = GameState::STARTSCREEN;
 
-    int score = 0;
+        StartScreen startScreen;
+        Game game;
+        LeaderBoard leaderboard;
 
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        Drawing drawing(BLACK);
-        
-        switch (currentState){
-        case GameState::STARTSCREEN:
-            if (IsKeyReleased(KEY_SPACE)){
-                game.isCurrentState = true; //TODO: ick
-                currentState = GameState::GAMEPLAY;
+        int score = 0;
+
+        while (!WindowShouldClose())    // Detect window close button or ESC key
+        {
+            Drawing drawing(BLACK);
+
+            switch (currentState) {
+            case GameState::STARTSCREEN:
+                if (IsKeyReleased(KEY_SPACE)) {
+                    game.isCurrentState = true; //TODO: ick
+                    currentState = GameState::GAMEPLAY;
+                }
+                startScreen.render();
+                break;
+
+            case GameState::GAMEPLAY:
+                game.Update();
+                game.Render();
+                if (!game.isCurrentState) {
+                    currentState = GameState::ENDSCREEN;
+                    score = game.score;
+                    game.reset();
+                }
+                break;
+
+            case GameState::ENDSCREEN:
+                leaderboard.update(score);
+                leaderboard.render();
+                if (IsKeyReleased(KEY_SPACE) && !leaderboard.newHighScore)
+                {
+                    leaderboard.reset();
+                    currentState = GameState::STARTSCREEN;
+                }
+                break;
             }
-            startScreen.render();
-            break;
-
-        case GameState::GAMEPLAY:
-            game.Update();
-            game.Render();
-            if (!game.isCurrentState) {
-                currentState = GameState::ENDSCREEN;
-                score = game.score;
-                game.reset();
-            }
-            break;
-
-        case GameState::ENDSCREEN:
-            leaderboard.update(score);
-            leaderboard.render();
-            if (IsKeyReleased(KEY_SPACE) && !leaderboard.newHighScore)
-            {
-                leaderboard.reset();
-                currentState = GameState::STARTSCREEN;
-            }
-            break;
         }
-    }
 
+        return 0;
+    }
+    catch (const std::runtime_error& e) {
+        std::println("Runtime error: {}", e.what());
+    }
     return 0;
 }
 

@@ -1,17 +1,19 @@
 #pragma once
 
 #include "pch.h"
-#include "vector"
 #include <string_view>
-#include <stdexcept> //TODO: ERROR HANDLING
+#include <stdexcept>
+#include <format>
 
 struct Textures
 {
 	Texture2D texture;
 
-	explicit Textures(std::string_view fileName) noexcept{
+	explicit Textures(std::string_view fileName){
 		texture = LoadTexture(fileName.data());
-		//TODO: ERROR handling
+		if (texture.id <= 0) {
+			throw std::runtime_error(std::format("ERROR. Failed to load texture: {}", fileName));
+		}
 	}
 
 	~Textures() noexcept {

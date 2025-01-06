@@ -27,6 +27,7 @@ struct Game //TODO: go through render
 	Textures alienTexture{ "./Assets/Alien.png" };
 	Textures barrierTexture{ "./Assets/Barrier.png" };
 	Textures laserTexture{ "./Assets/Laser.png" };
+
 	Textures shipTexture1{ "./Assets/Ship1.png" }; //TODO: consider creating an Animation to handle this
 	Textures shipTexture2{ "./Assets/Ship2.png" };
 	Textures shipTexture3{ "./Assets/Ship3.png" };

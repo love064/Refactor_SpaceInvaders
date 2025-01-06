@@ -4,7 +4,6 @@
 #include "Direction.h"
 
 constexpr float PROJECTILE_SPEED = 15;
-constexpr float PROJECTILE_SPRITE_SIZE = 176;
 constexpr float PROJECTILE_SIZE_X = 1;
 constexpr float PROJECTILE_SIZE_Y = 50;
 

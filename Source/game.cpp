@@ -42,7 +42,7 @@ void Game::End() noexcept{ //TODO: check if deallocation is noexcept //maybe sho
 void Game::reset(){
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1);
 	for (int i = 0; i < WALL_COUNT; i++) {
-		const Vector2 spawnPoint = { wall_distance * (i + 0.75f), GetScreenHeightF() - 250};
+		const Vector2 spawnPoint = { wall_distance * (i + 0.75f), GetScreenHeightF() - 250}; //TODO: magci numbers
 		Walls.emplace_back(spawnPoint);
 	}	
 	player = {};	
