@@ -76,7 +76,7 @@ void Game::Update(){
 		wall.Update();
 	}
 
-	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / 10.f;
+	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / 10.f; //TODO: MAGIC number
 	background.Update(offset);
 
 	Inputs();
@@ -170,7 +170,7 @@ void Game::Render() //TODO: move to the left, and make shorter
 
 //TODO: you claim noexcept but you are allocating memory. allocation can always throw. 
 //either catch and swallow or declare noexcept false.
-void Game::SpawnAliens() noexcept{
+void Game::SpawnAliens(){
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {
 			Vector2 spawnPoint = { FORMATION_X + ALIEN_X_SPAWN_OFFSET + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };

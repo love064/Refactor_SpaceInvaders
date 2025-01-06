@@ -22,13 +22,6 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
-float getLineLength(Vector2 A, Vector2 B) noexcept //Uses pythagoras to calculate the length of a line
-{
-	float length = sqrtf(pow(B.x - A.x, 2) + pow(B.y - A.y, 2));
-
-	return length;
-}
-
 float GetScreenWidthF() noexcept {
 	return static_cast<float>(GetScreenWidth());
 }

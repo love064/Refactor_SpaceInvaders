@@ -22,7 +22,7 @@ constexpr int FORMATION_X = 100;
 constexpr int FORMATION_Y = 50;
 
 
-struct Game //TODO: go through update&render
+struct Game //TODO: go through render
 {
 	int score = 0; 
 	float shootTimer = 0;
@@ -48,7 +48,7 @@ struct Game //TODO: go through update&render
 	void Render();
 	void Collisions() noexcept;
 
-	void SpawnAliens() noexcept;
+	void SpawnAliens();
 
 	Player player;
 	std::vector<Projectile> Projectiles;
