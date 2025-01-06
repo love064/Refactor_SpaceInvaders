@@ -16,7 +16,6 @@ struct Player
 	Player() noexcept;
 
 	Rectangle rec = { 0, PLAYER_POSITION_Y, PLAYER_SIZE, PLAYER_SIZE };
-	//float x_pos = 0; 
 	Direction direction = Direction::STATIC;
 	int lives = PLAYER_MAX_HEALTH;
 	float textureTimer = 0;

@@ -36,12 +36,11 @@ void Game::End() noexcept{ //TODO: check if deallocation is noexcept
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
-	//player.reset(); //TODO: not used
 	isCurrentState = false;
 }
 
 void Game::reset(){
-	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f); //TODO: maybe delete (only used once)
+	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1.f);
 	for (int i = 0; i < WALL_COUNT; i++) {
 		const Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
 		Walls.emplace_back(spawnPoint);
@@ -106,7 +105,7 @@ void Game::AlienShooting() {
 		if (Aliens.empty()) {
 			return;
 		}
-		const int randomNumber = GetRandomValue(0, Aliens.size() - 1); 
+		const int randomNumber = GetRandomValue(0, static_cast<int>(Aliens.size()) - 1); 
 
 		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition());
 		shootTimer = 0;
@@ -137,34 +136,22 @@ void Game::Collisions() noexcept {
 	}
 }
 
-void Game::Render() //TODO: move to the left, and make shorter
-{
-	//background render LEAVE THIS AT TOP
+void Game::Render() const noexcept {
 	background.Render();
 
-	//DrawText("GAMEPLAY", 50, 30, 40, YELLOW);
 	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW); //TODO: make UI object
 	DrawText(TextFormat("Lives: %i", player.lives), 50, 70, 40, YELLOW);
 
-	//player rendering 
 	player.Render(playerTextures[player.activeTexture]);
 
-	//projectile rendering
-	for (int i = 0; i < Projectiles.size(); i++)
-	{
-		Projectiles[i].Render(laserTexture.get());
+	for (const auto& p : Projectiles) {
+		p.Render(laserTexture.get());
 	}
-
-	// wall rendering 
-	for (int i = 0; i < Walls.size(); i++)
-	{
-		Walls[i].Render(barrierTexture.get()); 
+	for (const auto& w : Walls) {
+		w.Render(barrierTexture.get());
 	}
-
-	//alien rendering  
-	for (int i = 0; i < Aliens.size(); i++)
-	{
-		Aliens[i].Render(alienTexture.get());
+	for (const auto& a : Aliens) {
+		a.Render(alienTexture.get());
 	}
 }
 

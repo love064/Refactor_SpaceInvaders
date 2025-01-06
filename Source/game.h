@@ -17,9 +17,9 @@ constexpr int WALL_COUNT = 5;
 constexpr int STAR_COUNT = 600;
 constexpr int FORMATION_ROW = 8;
 constexpr int FORMATION_COLLUM = 5;
-constexpr int ALIEN_SPACING = 80;
-constexpr int FORMATION_X = 100;
-constexpr int FORMATION_Y = 50;
+constexpr float ALIEN_SPACING = 80;
+constexpr float FORMATION_X = 100;
+constexpr float FORMATION_Y = 50;
 
 
 struct Game //TODO: go through render
@@ -45,7 +45,7 @@ struct Game //TODO: go through render
 	void Update();
 	void Inputs();
 	void AlienShooting();
-	void Render();
+	void Render() const noexcept;
 	void Collisions() noexcept;
 
 	void SpawnAliens();
