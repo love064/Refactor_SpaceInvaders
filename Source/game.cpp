@@ -23,19 +23,10 @@ void Game::reset() noexcept {
 	for (int i = 0; i < WALL_COUNT; i++) {
 		const Vector2 spawnPoint = { wall_distance * (i + 1), GetScreenHeightF() - 250};
 		Walls.emplace_back(spawnPoint);
-	}
-
-	const Player newPlayer;
-	player = newPlayer;
-
-	//creating aliens
-	SpawnAliens();
-
-	//creating background
-	const Background newBackground(STAR_COUNT);
-	background = newBackground;
-
-	//reset score
+	}	
+	player = {};	
+	SpawnAliens();		
+	background = Background(STAR_COUNT);
 	score = 0;
 }
 
@@ -153,6 +144,7 @@ void Game::Update() //TODO: move to the left, and make shorter/break apart, noex
 	}
 
 	//storge killing pruning etc
+	//TODO: erase-remove is an old idiom. prefer erase_if
 	Aliens.erase(std::remove_if(Aliens.begin(), Aliens.end(), [](const Alien& a) { return !a.active; }), Aliens.end());
 	Walls.erase(std::remove_if(Walls.begin(), Walls.end(), [](const Wall& w) { return !w.active; }), Walls.end());
 	Projectiles.erase(std::remove_if(Projectiles.begin(), Projectiles.end(), [](const Projectile& p) { return !p.active; }), Projectiles.end());
@@ -190,6 +182,8 @@ void Game::Render() //TODO: move to the left, and make shorter
 	}
 }
 
+//TODO: you claim noexcept but you are allocating memory. allocation can always throw. 
+//either catch and swallow or declare noexcept false.
 void Game::SpawnAliens() noexcept{
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {

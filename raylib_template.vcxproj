@@ -187,6 +187,7 @@
     <ClInclude Include="Source\EntityType.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\LeaderBoard.h" />
+    <ClInclude Include="Source\pch.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Projectile.h" />
     <ClInclude Include="Source\Stars.h" />

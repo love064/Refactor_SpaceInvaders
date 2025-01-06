@@ -1,4 +1,9 @@
 #pragma once
+#include <codeanalysis\warnings.h>
+#pragma warning(push)
+#pragma warning(disable:ALL_CODE_ANALYSIS_WARNINGS)
+#include <raylib.h>
+#pragma warning(pop)
 #include "raylib.h"
 #include <vector>
 #include "Textures.h"
@@ -27,7 +32,7 @@ struct Game //TODO: go through update&render
 	Textures alienTexture{ "./Assets/Alien.png" };
 	Textures barrierTexture{ "./Assets/Barrier.png" };
 	Textures laserTexture{ "./Assets/Laser.png" };
-	Textures shipTexture1{ "./Assets/Ship1.png" };
+	Textures shipTexture1{ "./Assets/Ship1.png" }; //TODO: consider creating an Animation to handle this
 	Textures shipTexture2{ "./Assets/Ship2.png" };
 	Textures shipTexture3{ "./Assets/Ship3.png" };
 

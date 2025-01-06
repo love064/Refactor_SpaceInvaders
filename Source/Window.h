@@ -1,18 +1,18 @@
 #pragma once
-#include "raylib.h"
+#include "pch.h"
+#include <string_view>
 
 
 struct Window { 
 
-	Window(int screenWidth, int screenHeight) noexcept { //TODO: maybe add "title" to arguments?
-		InitWindow(screenWidth, screenHeight, "SPACE INVADERS");
-		SetTargetFPS(60);
-		//TODO: error handling
+	Window(unsigned screenWidth, unsigned screenHeight, std::string_view title, unsigned fps) noexcept {
+		InitWindow(screenWidth, screenHeight, title.data());
+		SetTargetFPS(fps);
 	}
 	~Window() noexcept {
 		CloseWindow();
 	}
-
+	
 	Window(const Window&) = delete;
 	Window(Window&&) = delete;
 	Window& operator=(const Window&) = delete;

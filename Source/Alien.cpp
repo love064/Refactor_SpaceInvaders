@@ -14,6 +14,7 @@ void Alien::Update() noexcept {
 	}
 }
 
+//TODO: replace drawtexturepro with the simpler drawtexture
 void Alien::Render(Texture2D texture) const noexcept{
 	DrawTexturePro(texture,
 		{ 0, 0, ALIEN_SPRITE_SIZE, ALIEN_SPRITE_SIZE},

@@ -1,12 +1,11 @@
 #pragma once
-#include "raylib.h"
+#include "pch.h"
 
 struct Drawing {
 	
-	Drawing() noexcept{
+	explicit Drawing(Color Background) noexcept{
 		BeginDrawing();
-		//TODO: ERROR HANDLING?
-		ClearBackground(BLACK);
+		ClearBackground(Background);
 	}
 
 	~Drawing() noexcept {
