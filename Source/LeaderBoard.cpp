@@ -98,7 +98,7 @@ void LeaderBoard::render() const noexcept {
 	}
 }
 
-void LeaderBoard::SetNameRender() const noexcept{
+void LeaderBoard::SetNameRender() const noexcept{ //TODO: refactor away c style casting
 	DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
 
 	// BELOW CODE IS FOR NAME INPUT RENDER
