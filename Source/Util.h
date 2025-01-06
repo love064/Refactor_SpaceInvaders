@@ -1,8 +1,6 @@
 #pragma once
 #include "pch.h"
 
-float getLineLength(Vector2 A, Vector2 B) noexcept; //TODO: go over these three functions and refactor
-bool isPointInCircle(Vector2 circlePos, float radius, Vector2 point) noexcept;
-bool CheckCollision(Vector2 circlePos, float circleRadius, Vector2 lineStart, Vector2 lineEnd) noexcept;
+float getLineLength(Vector2 A, Vector2 B) noexcept; //TODO: see if there already is a function for this in raylib
 float GetScreenWidthF() noexcept;
 float GetScreenHeightF() noexcept;

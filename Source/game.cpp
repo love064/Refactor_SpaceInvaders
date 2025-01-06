@@ -157,7 +157,7 @@ void Game::Render() //TODO: move to the left, and make shorter
 	background.Render();
 
 	//DrawText("GAMEPLAY", 50, 30, 40, YELLOW);
-	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW);
+	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW); //TODO: make UI object
 	DrawText(TextFormat("Lives: %i", player.lives), 50, 70, 40, YELLOW);
 
 	//player rendering 
