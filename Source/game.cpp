@@ -58,6 +58,7 @@ GameState Game::Update(){
 	}
 	
 	player.Update();
+	playerAnimation.Update(PLAYER_ANIMATION_TIMER);
 	if (player.lives < 1){
 		End();
 		return GameState::ENDSCREEN;
@@ -146,7 +147,7 @@ void Game::Render() const noexcept {
 	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW); //TODO: make UI object
 	DrawText(TextFormat("Lives: %i", player.lives), 50, 70, 40, YELLOW);
 
-	player.Render(playerTextures[player.activeTexture]);
+	player.Render(playerAnimation.getTexture());
 
 	for (const auto& p : Projectiles) {
 		p.Render(laserTexture.get());

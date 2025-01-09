@@ -1,5 +1,5 @@
-#include "Player.h"
-#include "Util.h"
+#include "Animation.h"
+
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
@@ -22,48 +22,26 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
-Player::Player() noexcept {
-	rec.x = GetScreenWidthF() / 2.f;
+Animation::Animation(const std::vector<Texture>& textures) {
+    animationTextures = textures;
 }
 
-void Player::Update() noexcept{
-	Movement();
+void Animation::addFrame(Texture2D texture) {
+    animationTextures.emplace_back(texture);
 }
 
-void Player::Movement() noexcept {
-	direction = Direction::STATIC;
-	if (IsKeyDown(KEY_LEFT)){
-		direction = Direction::LEFT;
-	}
-	if (IsKeyDown(KEY_RIGHT)){
-		direction = Direction::RIGHT;
-	}
+void Animation::Update(float anitmationTimer) noexcept {
+    timer += GetFrameTime();
 
-	rec.x += PLAYER_SPEED * static_cast<float>(direction);
-
-	if (rec.x < 0 + PLAYER_RADIUS)
-	{
-		rec.x = 0 + PLAYER_RADIUS;
-	}
-	else if (rec.x > GetScreenWidthF() - PLAYER_RADIUS)
-	{
-		rec.x = GetScreenWidthF() - PLAYER_RADIUS;
-	}
+    if (!animationTextures.empty() && timer > anitmationTimer) {
+        frame = (frame + 1) % animationTextures.size();
+        timer = 0;
+    }
 }
 
-void Player::Collision() noexcept {
-	lives -= 1;
+Texture2D Animation::getTexture() const noexcept {
+    return animationTextures[frame]; //TODO: supress at()?
 }
 
-void Player::Render(Texture2D texture) const noexcept{ 
-	DrawTextureV(texture, getPosition(), WHITE);
-}
-
-Vector2 Player::getPosition() const noexcept{
-	return { rec.x, rec.y };
-}
-float Player::getPositionX() const noexcept {
-	return rec.x;
-}
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

@@ -55,7 +55,7 @@ disable warnings and static analysis on external files, check the forums for how
 int main(void) {   
     try {
         Application application;
-        while (!WindowShouldClose()) {    // Detect window close button or ESC key
+        while (!WindowShouldClose()) { 
             application.run();
         }
         return 0;

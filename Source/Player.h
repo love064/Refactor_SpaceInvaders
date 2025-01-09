@@ -17,16 +17,12 @@ struct Player
 	Rectangle rec = { 0, PLAYER_POSITION_Y, PLAYER_SIZE, PLAYER_SIZE };
 	Direction direction = Direction::STATIC;
 	int lives = PLAYER_MAX_HEALTH;
-	float textureTimer = 0;
-	int activeTexture = 0;
-
 	EntityType type = EntityType::PLAYER;
 
 	void Render(Texture2D texture) const noexcept;
 	void Update() noexcept;
 	void Movement() noexcept;
 	void Collision() noexcept;
-	void Animation() noexcept; //TODO: make into an object
 	Vector2 getPosition() const noexcept;
 	float getPositionX() const noexcept;
 };

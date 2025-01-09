@@ -8,6 +8,7 @@
 #include "Alien.h"
 #include "Stars.h"
 #include "GameStates.h"
+#include "Animation.h"
 
 constexpr int WALL_COUNT = 5;
 constexpr int STAR_COUNT = 600;
@@ -26,11 +27,10 @@ struct Game {
 	Textures barrierTexture{ "./Assets/Barrier.png" };
 	Textures laserTexture{ "./Assets/Laser.png" };
 
-	Textures shipTexture1{ "./Assets/Ship1.png" }; //TODO: consider creating an Animation to handle this
+	Textures shipTexture1{ "./Assets/Ship1.png" }; //TODO: should game or player own animation?
 	Textures shipTexture2{ "./Assets/Ship2.png" };
 	Textures shipTexture3{ "./Assets/Ship3.png" };
-
-	std::vector<Texture2D> playerTextures{shipTexture1.get(), shipTexture2.get(), shipTexture3.get()};
+	Animation playerAnimation{ {shipTexture1.get(), shipTexture2.get(), shipTexture3.get()} };
 	
 	Game();
 	void End() noexcept;
