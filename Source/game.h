@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "pch.h"
 #include "Textures.h"
 #include "Player.h"
 #include "Projectile.h"
@@ -9,14 +8,18 @@
 #include "Stars.h"
 #include "GameStates.h"
 #include "Animation.h"
+#include "UI.h"
 
 constexpr int WALL_COUNT = 5;
+constexpr float WALL_MARGIN_X = 0.75F;
+constexpr float WALL_Y_OFFSET = 250;
 constexpr int STAR_COUNT = 600;
 constexpr int FORMATION_ROW = 8;
 constexpr int FORMATION_COLLUM = 5;
 constexpr float ALIEN_SPACING = 100;
 constexpr float FORMATION_X = 100;
 constexpr float FORMATION_Y = 50;
+constexpr int PLAYER_TO_STAR_OFFSET_DIVIDER = 10;
 
 struct Game {
 	int score = 0; 
@@ -44,6 +47,7 @@ struct Game {
 
 	void SpawnAliens();
 
+	UI ui;
 	Player player;
 	std::vector<Projectile> Projectiles;
 	std::vector<Wall> Walls;

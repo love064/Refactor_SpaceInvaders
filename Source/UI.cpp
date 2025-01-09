@@ -1,4 +1,5 @@
-#include "Animation.h"
+#include "UI.h"
+#include "pch.h"
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
@@ -21,26 +22,10 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
-Animation::Animation(const std::vector<Texture>& textures) {
-    animationTextures = textures;
+
+void UI::Render(int score, int lives) const noexcept {
+	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW);
+	DrawText(TextFormat("Lives: %i", lives), 50, 70, 40, YELLOW);
 }
-
-void Animation::addFrame(Texture2D texture) {
-    animationTextures.emplace_back(texture);
-}
-
-void Animation::Update(float anitmationTimer) noexcept {
-    timer += GetFrameTime();
-
-    if (!animationTextures.empty() && timer > anitmationTimer) {
-        frame = (frame + 1) % animationTextures.size(); //TODO: arethmetic overflow?
-        timer = 0;
-    }
-}
-
-Texture2D Animation::getTexture() const noexcept {
-    return animationTextures[frame]; //TODO: supress at()?
-}
-
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

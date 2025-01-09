@@ -1,11 +1,6 @@
 #include "game.h"
-#include <iostream> //TODO: SEE WHICH ones can go
-#include <vector>
-#include <chrono>
-#include <thread>
-#include <fstream>
-
 #include "Util.h"
+#include "pch.h"
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
@@ -32,7 +27,7 @@ Game::Game() noexcept(false) {
 	reset();
 }
 
-void Game::End() noexcept{ //TODO: check if deallocation is noexcept //maybe should be in destructor
+void Game::End() noexcept{
 	Projectiles.clear();
 	Walls.clear();
 	Aliens.clear();
@@ -41,7 +36,7 @@ void Game::End() noexcept{ //TODO: check if deallocation is noexcept //maybe sho
 void Game::reset(){
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1);
 	for (int i = 0; i < WALL_COUNT; i++) {
-		const Vector2 spawnPoint = { wall_distance * (i + 0.75f), GetScreenHeightF() - 250}; //TODO: magci numbers
+		const Vector2 spawnPoint = { wall_distance * (i + WALL_MARGIN_X), GetScreenHeightF() - WALL_Y_OFFSET };
 		Walls.emplace_back(spawnPoint);
 	}	
 	player = {};	
@@ -82,14 +77,13 @@ GameState Game::Update(){
 		wall.Update();
 	}
 
-	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / 10.f; //TODO: MAGIC number
+	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / PLAYER_TO_STAR_OFFSET_DIVIDER;
 	background.Update(offset);
 
 	PlayerShooting();
 	AlienShooting();
 	Collisions();
 
-	//TODO: [](const Alien& a) { return !a.active; } could be a namespace
 	std::erase_if(Aliens, [](const Alien& a) { return !a.active; });
 	std::erase_if(Walls, [](const Wall& w) { return !w.active; });
 	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
@@ -110,9 +104,9 @@ void Game::AlienShooting() {
 		if (Aliens.empty()) {
 			return;
 		}
-		const int randomNumber = GetRandomValue(0, static_cast<int>(Aliens.size()) - 1); 
+		const int randomNumber = GetRandomValue(0, static_cast<int>(Aliens.size()) - 1); //TODO: gsl::narrow_cast
 
-		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition());
+		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition()); //TODO: at()
 		shootTimer = 0;
 	}
 }
@@ -144,8 +138,7 @@ void Game::Collisions() noexcept {
 void Game::Render() const noexcept {
 	background.Render();
 
-	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW); //TODO: make UI object
-	DrawText(TextFormat("Lives: %i", player.lives), 50, 70, 40, YELLOW);
+	ui.Render(score, player.lives);
 
 	player.Render(playerAnimation.getTexture());
 
@@ -160,8 +153,6 @@ void Game::Render() const noexcept {
 	}
 }
 
-//TODO: you claim noexcept but you are allocating memory. allocation can always throw. 
-//either catch and swallow or declare noexcept false.
 void Game::SpawnAliens(){
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {

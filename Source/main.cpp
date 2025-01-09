@@ -1,7 +1,6 @@
 #pragma once
 #include <stdexcept>
 #include <print>
-#include "pch.h"
 #include "Application.h"
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
@@ -43,13 +42,13 @@ Exceptions: make sure you catch them before leaving the main scope
 
 Scale the textures on the hard drive instead of doing it every frame (DrawTexturePro vs. DrawTexture)
 
-//TODO: Consider creating an Animation class to handle timing 
+Consider creating an Animation class to handle timing 
 
 Check you project settings. C++Latest, warnings level 4, static analysis with a good ruleset.
 
 disable warnings and static analysis on external files, check the forums for how to do that.
 
-//TODO: Recheck all noexcpets (allocation of memory = except) ie. emplace_back is allocation*/
+Recheck all noexcpets (allocation of memory = except) ie. emplace_back is allocation*/
 
 
 int main(void) {   

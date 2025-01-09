@@ -1,5 +1,5 @@
 #include "Util.h"
-#include <math.h>
+#include "pch.h"
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
