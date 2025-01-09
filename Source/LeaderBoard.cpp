@@ -64,7 +64,7 @@ void LeaderBoard::SetName() {
 }
 
 void LeaderBoard::ReadFromFile(std::string_view fileName) {
-	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
+	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary); //TODO: RAII
 	if (LeaderBoardFile.is_open()) { 
 		for (int i = 0; i < 5; i++) {
 			ReadPlayerData(LeaderBoardFile);
@@ -99,7 +99,7 @@ void LeaderBoard::SortLeaderBoard() { //TODO: looking into this, may swap?
 }
 
 void LeaderBoard::WriteToFile(std::string_view fileName) const {
-	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
+	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary); //TODO: RAII
 	if (LeaderBoardFile.is_open()){
 		for (const auto& var : Leaderboard) {
 			LeaderBoardFile << "Player Name: " << var.name << "\n";
@@ -127,47 +127,22 @@ void LeaderBoard::render() const noexcept {
 	}
 }
 
-void LeaderBoard::SetNameRender() const noexcept{ //TODO: refactor away c style casting
+void LeaderBoard::SetNameRender() const noexcept{ //TODO: Magic numbers
 	DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
 
-	// BELOW CODE IS FOR NAME INPUT RENDER
-	DrawText("PLACE MOUSE OVER INPUT BOX!", 600, 400, 20, YELLOW);
-
+	DrawText("ENTER NAME!", 600, 400, 20, YELLOW);
 	DrawRectangleRec(textBox, LIGHTGRAY);
-	DrawRectangleLines((int)textBox.x, (int)textBox.y, (int)textBox.width, (int)textBox.height, RED);
-
-	//Draw the name being typed out
-	DrawText(name.data(), (int)textBox.x + 5, (int)textBox.y + 8, 40, MAROON);
-
-	//Draw the text explaining how many characters are used
+	DrawRectangleLinesEx(textBox, 2, RED);
+	DrawText(name.data(), getTextboxXI() + 5, getTextboxYI() + 8, 40, MAROON);
 	DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, 8), 600, 600, 20, YELLOW);
 
-		//if (letterCount < 9)
-		//{
-		//	// Draw blinking underscore char
-		//	if (((framesCounter / 20) % 2) == 0)
-		//	{
-		//		DrawText("_", (int)textBox.x + 8 + MeasureText(name, 40), (int)textBox.y + 12, 40, MAROON);
-		//	}
-
-		//}
-		//else
-		//{
-		//	//Name needs to be shorter
-		//	DrawText("Press BACKSPACE to delete chars...", 600, 650, 20, YELLOW);
-		//}
-
-	// Explain how to continue when name is input
-	if (letterCount > 0 && letterCount < 9)
-	{
+	if (letterCount > 0 && letterCount < 9){
 		DrawText("PRESS ENTER TO CONTINUE", 600, 800, 40, YELLOW);
 	}
 }
 
 void LeaderBoard::HSRender() const noexcept{
-	// If no highscore or name is entered, show scoreboard and call it a day
 	DrawText("PRESS SPACE TO CONTINUE", 600, 200, 40, YELLOW);
-
 	DrawText("LEADERBOARD", 50, 100, 40, YELLOW);
 
 	int i = 0;
@@ -176,6 +151,13 @@ void LeaderBoard::HSRender() const noexcept{
 		DrawText(TextFormat("%i", var.score), 350, 140 + (i * 40), 40, YELLOW);
 		i++;
 	}
+}
+
+int LeaderBoard::getTextboxXI() const noexcept {
+	return static_cast<int>(textBox.x);
+}
+int LeaderBoard::getTextboxYI() const noexcept {
+	return static_cast<int>(textBox.y);
 }
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

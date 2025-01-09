@@ -33,4 +33,6 @@ struct LeaderBoard {
 	void SetNameRender() const noexcept;
 	void HSRender() const noexcept;
 	void render() const noexcept;
+	int getTextboxXI() const noexcept;
+	int getTextboxYI() const noexcept;
 };
