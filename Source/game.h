@@ -32,7 +32,7 @@ struct Game {
 	Textures shipTexture3{ "./Assets/Ship3.png" };
 	Animation playerAnimation{ {shipTexture1.get(), shipTexture2.get(), shipTexture3.get()} };
 	
-	Game();
+	Game() noexcept(false);
 	void End() noexcept;
 	void reset();
 

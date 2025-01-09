@@ -12,7 +12,7 @@ struct Textures
 	explicit Textures(std::string_view fileName){
 		texture = LoadTexture(fileName.data());
 		if (texture.id <= 0) {
-			throw std::runtime_error(std::format("ERROR. Failed to load texture: {}", fileName));
+			throw std::invalid_argument(std::format("ERROR. Failed to load texture: {}", fileName));
 		}
 	}
 

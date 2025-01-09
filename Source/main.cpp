@@ -63,6 +63,9 @@ int main(void) {
     catch (const std::runtime_error& e) {
         std::println("Runtime error: {}", e.what());
     }
+    catch (const std::invalid_argument& e) {
+        std::println("Out of range: {}", e.what());
+    }
     return 0;
 }
 

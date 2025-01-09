@@ -28,7 +28,7 @@
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
 
-Game::Game(){
+Game::Game() noexcept(false) {
 	reset();
 }
 
