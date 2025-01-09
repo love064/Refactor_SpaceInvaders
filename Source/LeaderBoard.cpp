@@ -1,9 +1,6 @@
 #include "LeaderBoard.h"
-
-#include <iostream> //TODO: check which are in use
 #include <vector>
 #include <chrono>
-#include <thread>
 #include <fstream>
 #include <string>
 
@@ -41,13 +38,9 @@ GameState LeaderBoard::update(int score) {
 }
 
 void LeaderBoard::SetName() {
-	int key = GetCharPressed();
-	while (key > 0) {
-		if ((key >= 32) && (key <= 125) && (letterCount < 9)) {
-			name += static_cast<char>(key);
-			letterCount++;
-		}
-		key = GetCharPressed();
+	if (const int key = GetCharPressed(); key >= 32 && key <= 125 && letterCount < MAX_LETTER_COUNT) {
+		name += static_cast<char>(key); //TODO: fix this (gsl::narrow_cast<char>(key)) find out how to include gsl
+		letterCount++;
 	}
 
 	if (IsKeyPressed(KEY_BACKSPACE) && letterCount > 0) {
@@ -55,7 +48,7 @@ void LeaderBoard::SetName() {
 		letterCount--;
 	}
 
-	if (letterCount > 0 && letterCount < 9 && IsKeyReleased(KEY_ENTER)) {
+	if (letterCount > 0 && letterCount < MAX_LETTER_COUNT && IsKeyReleased(KEY_ENTER)) {
 		yourScore.name = name;
 		ReadFromFile("Assets/LeaderBoard.txt");
 		SortLeaderBoard();
@@ -64,12 +57,11 @@ void LeaderBoard::SetName() {
 }
 
 void LeaderBoard::ReadFromFile(std::string_view fileName) {
-	std::ifstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary); //TODO: RAII
+	std::ifstream LeaderBoardFile(fileName.data(), std::ios::in | std::ios::binary);
 	if (LeaderBoardFile.is_open()) { 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) { 
 			ReadPlayerData(LeaderBoardFile);
 		}
-		LeaderBoardFile.close();
 	}
 }
 
@@ -88,24 +80,23 @@ void LeaderBoard::ReadPlayerData(std::ifstream& LeaderBoardFile) {
 	}
 }
 
-void LeaderBoard::SortLeaderBoard() { //TODO: looking into this, may swap?
-	for (int i = 0; i < Leaderboard.size(); i++){
-		if (yourScore.score > Leaderboard[i].score){
-			Leaderboard.insert(Leaderboard.begin() + i, yourScore);
-			Leaderboard.pop_back();
-			break;
-		}
+void LeaderBoard::SortLeaderBoard() { 
+	auto toChange = std::ranges::find_if(Leaderboard, [this](const PlayerData& player) {
+		return yourScore.score > player.score;
+	});
+	if (toChange != Leaderboard.end()) {
+		Leaderboard.insert(toChange, yourScore);
+		Leaderboard.pop_back();
 	}
 }
 
 void LeaderBoard::WriteToFile(std::string_view fileName) const {
-	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary); //TODO: RAII
+	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()){
 		for (const auto& var : Leaderboard) {
 			LeaderBoardFile << "Player Name: " << var.name << "\n";
 			LeaderBoardFile << "Score: " << var.score << "\n";
 		}
-		LeaderBoardFile.close();
 	}
 }
 
@@ -127,37 +118,36 @@ void LeaderBoard::render() const noexcept {
 	}
 }
 
-void LeaderBoard::SetNameRender() const noexcept{ //TODO: Magic numbers
-	DrawText("NEW HIGHSCORE!", 600, 300, 60, YELLOW);
+void LeaderBoard::SetNameRender() const noexcept{
+	DrawText("NEW HIGHSCORE!", X_RENDER_INDENT, Y_RENDER_INDENT, FONT_SIZE_LARGE, YELLOW);
+	DrawText("ENTER NAME!", X_RENDER_INDENT, Y_RENDER_INDENT * 2, FONT_SIZE_SMALL, YELLOW);
+	DrawRectangleRec(NAME_TEXTBOX, LIGHTGRAY);
+	DrawRectangleLinesEx(NAME_TEXTBOX, LINE_THICKNESS, RED);
+	DrawText(name.data(), getTextboxXI() + NAME_OFFSET_X, getTextboxYI() + NAME_OFFSET_Y, FONT_SIZE_MEDIUM, MAROON);
+	DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, MAX_LETTER_COUNT - 1), X_RENDER_INDENT, Y_RENDER_INDENT * 3, FONT_SIZE_SMALL, YELLOW);
 
-	DrawText("ENTER NAME!", 600, 400, 20, YELLOW);
-	DrawRectangleRec(textBox, LIGHTGRAY);
-	DrawRectangleLinesEx(textBox, 2, RED);
-	DrawText(name.data(), getTextboxXI() + 5, getTextboxYI() + 8, 40, MAROON);
-	DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, 8), 600, 600, 20, YELLOW);
-
-	if (letterCount > 0 && letterCount < 9){
-		DrawText("PRESS ENTER TO CONTINUE", 600, 800, 40, YELLOW);
+	if (letterCount > 0 && letterCount < MAX_LETTER_COUNT){
+		DrawText("PRESS ENTER TO CONTINUE", X_RENDER_INDENT, Y_RENDER_INDENT * 4, FONT_SIZE_MEDIUM, YELLOW);
 	}
 }
 
 void LeaderBoard::HSRender() const noexcept{
-	DrawText("PRESS SPACE TO CONTINUE", 600, 200, 40, YELLOW);
-	DrawText("LEADERBOARD", 50, 100, 40, YELLOW);
+	DrawText("PRESS SPACE TO CONTINUE", X_RENDER_INDENT, Y_RENDER_INDENT, FONT_SIZE_MEDIUM, YELLOW);
+	DrawText("LEADERBOARD", LEADERBOARD_X_OFFSET, LEADERBOARD_Y_OFFSET - FONT_SIZE_MEDIUM, FONT_SIZE_MEDIUM, YELLOW);
 
 	int i = 0;
 	for (const auto& var : Leaderboard) {
-		DrawText(var.name.data(), 50, 140 + (i * 40), 40, YELLOW);
-		DrawText(TextFormat("%i", var.score), 350, 140 + (i * 40), 40, YELLOW);
+		DrawText(var.name.data(), LEADERBOARD_X_OFFSET, LEADERBOARD_Y_OFFSET + (i * FONT_SIZE_MEDIUM), FONT_SIZE_MEDIUM, YELLOW);
+		DrawText(TextFormat("%i", var.score), LEADERBOARD_SCORE_X_OFFSEET, LEADERBOARD_Y_OFFSET + (i * FONT_SIZE_MEDIUM), FONT_SIZE_MEDIUM, YELLOW);
 		i++;
 	}
 }
 
 int LeaderBoard::getTextboxXI() const noexcept {
-	return static_cast<int>(textBox.x);
+	return static_cast<int>(NAME_TEXTBOX.x);
 }
 int LeaderBoard::getTextboxYI() const noexcept {
-	return static_cast<int>(textBox.y);
+	return static_cast<int>(NAME_TEXTBOX.y);
 }
 
 #define RESTORE_WARNINGS __pragma(warning(pop))

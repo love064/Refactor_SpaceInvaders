@@ -29,7 +29,7 @@ GameState StartScreen::update() const noexcept {
     return GameState::STARTSCREEN;
 }
 
-void StartScreen::render() const noexcept {
+void StartScreen::render() const noexcept { //TODO: MAgic values
 	DrawText("SPACE INVADERS", 200, 100, 160, YELLOW);
 	DrawText("PRESS SPACE TO BEGIN", 200, 350, 40, YELLOW);
 }
