@@ -38,6 +38,8 @@ Recheck all noexcpets (allocation of memory = except) ie. emplace_back is alloca
 //TODO: GO OVER ALL USES OF INT REPLACE WITH BETTER TYPE (UNSIGNED FOR POSITIVES). 
 //TODO: REMOVE HELPER FUNCTIONS GETPOSI(), REPLACE WITH BETTER FUNCSTION OVERLOADS. 
 //TODO: CHNAGE NAMES (CLASS= CAPTIAL, OTHERWISE LOWERCASE EG. Stars = stars)
+//TODO: go over structs and change into class (see what can be private/public)
+//TODO: REMOVE ALL magic variables ("strigns also count")
 
 int main(void) {   
     try {
@@ -47,6 +49,9 @@ int main(void) {
         }     
     }
     catch (const std::invalid_argument& e) {
+        std::println("invalid argument: {}", e.what());
+    }
+    catch (const std::out_of_range& e) {
         std::println("Out of range: {}", e.what());
     }
     catch (const std::runtime_error& e) {

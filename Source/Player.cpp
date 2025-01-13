@@ -2,31 +2,27 @@
 #include "Util.h"
 
 Player::Player() noexcept {
-	rec.x = GetScreenWidthF() / 2.f;
+	pos.x = GetScreenWidthF() / 2.f;
 }
 
 void Player::Update() noexcept{
-	Movement();
-}
-
-void Player::Movement() noexcept {
-	direction = Direction::STATIC;
-	if (IsKeyDown(KEY_LEFT)){
-		direction = Direction::LEFT;
+	vel = 0;
+	if (IsKeyDown(KEY_LEFT)) {
+		vel = -1;
 	}
-	if (IsKeyDown(KEY_RIGHT)){
-		direction = Direction::RIGHT;
+	if (IsKeyDown(KEY_RIGHT)) {
+		vel = 1;
 	}
 
-	rec.x += PLAYER_SPEED * static_cast<float>(direction);
+	pos.x += PLAYER_SPEED * vel;
 
-	if (rec.x < 0 + PLAYER_RADIUS)
+	if (pos.x < 0 + PLAYER_RADIUS)
 	{
-		rec.x = 0 + PLAYER_RADIUS;
+		pos.x = 0 + PLAYER_RADIUS;
 	}
-	else if (rec.x > GetScreenWidthF() - PLAYER_RADIUS)
+	else if (pos.x > GetScreenWidthF() - PLAYER_RADIUS)
 	{
-		rec.x = GetScreenWidthF() - PLAYER_RADIUS;
+		pos.x = GetScreenWidthF() - PLAYER_RADIUS;
 	}
 }
 
@@ -35,12 +31,12 @@ void Player::Collision() noexcept {
 }
 
 void Player::Render(Texture2D texture) const noexcept{ 
-	DrawTextureV(texture, getPosition(), WHITE);
+	DrawTextureV(texture, pos, WHITE);
 }
 
-Vector2 Player::getPosition() const noexcept{
-	return { rec.x, rec.y };
+Rectangle Player::getRec() const noexcept{
+	return { pos.x, pos.y,  PLAYER_SIZE, PLAYER_SIZE};
 }
 float Player::getPositionX() const noexcept {
-	return rec.x;
+	return pos.x;
 }

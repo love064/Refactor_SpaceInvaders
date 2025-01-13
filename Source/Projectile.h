@@ -10,7 +10,6 @@ constexpr float PROJECTILE_SIZE_Y = 50;
 struct Projectile{
 	Vector2 pos = { 0, 0 };
 	float vel = 0;
-
 	bool active = true;
 	
 	Projectile(Vector2 position, float velocity) noexcept;

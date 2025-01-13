@@ -19,7 +19,6 @@ constexpr int FORMATION_COLLUM = 5;
 constexpr float ALIEN_SPACING = 100;
 constexpr float FORMATION_X = 100;
 constexpr float FORMATION_Y = 50;
-constexpr int PLAYER_TO_STAR_OFFSET_DIVIDER = 10;
 
 struct Game {
 	int score = 0; 
@@ -42,7 +41,7 @@ struct Game {
 	GameState Update();
 	void PlayerShooting();
 	void AlienShooting();
-	void Render() const noexcept;
+	void Render() const;
 	void checkCollisions(auto& projectile, auto& entities) const noexcept;
 	void Collisions() noexcept;
 
@@ -50,11 +49,8 @@ struct Game {
 
 	UI ui;
 	Player player;
-	//std::vector<Projectile> Projectiles;
-
 	std::vector<Projectile> enemyProjectiles;
 	std::vector<Projectile> playerProjectiles;
-
 	std::vector<Wall> walls;
 	std::vector<Alien> aliens;
 	Background background{ STAR_COUNT };

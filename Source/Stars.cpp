@@ -1,42 +1,37 @@
 #include "Stars.h"
+#include "Util.h"
 
-//TODO: REMOVE: ENUMS, WARING SUPRESSION. ADD: FUNCTION OVERLOADS (REMOVE STATIC_CAST). SIMPLIFY: LEADERBAORD IF TIME. GUT PROJECTILE, CHANGE INTO TWO VECTORS
-
-Background::Background(int starAmount){
-	for (int i = 0; i < starAmount; i++) {
-		Stars.emplace_back();
-	}
+Background::Background(unsigned starAmount){
+	stars = std::vector<Star>(starAmount);
 }
 
-void Background::Update(float offset) noexcept {
-	for (auto& star : Stars) {
+void Background::Update(float playerPositionX) noexcept {
+	const float offset = ((GetScreenWidthF() / 2.f) - playerPositionX) / PLAYER_TO_STAR_OFFSET_DIVIDER;
+	for (auto& star : stars) {
 		star.Update(offset);
 	}
 }
 
 void Background::Render() const noexcept{
-	for (const auto& star : Stars) {
+	for (const auto& star : stars) {
 		star.Render();
 	}
 }
 
-//float GetRandomValueF() {} //TODO
-
 Star::Star() noexcept {
-	size = static_cast<float>(GetRandomValue(1, 4)) / 2.f;
-	initX = static_cast<float>(GetRandomValue(-150, GetScreenWidth() + 150));
+	
+	size = GetRandomValueF(STAR_MIN_SIZE, STAR_MAX_SIZE) / 2.f;
+	initX = GetRandomValueF(-STAR_X_OFFSET, GetScreenWidth() + STAR_X_OFFSET);
 	position.x = initX;
-	position.y = static_cast<float>(GetRandomValue(0, GetScreenHeight()));
+	position.y = GetRandomValueF(0, GetScreenHeight());
 }
 
 void Star::Update(float starOffset) noexcept {
 	position.x = initX + starOffset;
 }
 
-//void DrawCircle(Vector2 pos) {}; //TODO. (use overloads)
-
 void Star::Render() const noexcept {
-	DrawCircle(getPositionX(), getPositionY(), size, SKYBLUE);
+	DrawCircleV(position, size, SKYBLUE);
 }
 
 int Star::getPositionX() const noexcept {

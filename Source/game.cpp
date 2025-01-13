@@ -38,7 +38,6 @@ GameState Game::Update(){ //TODO: simplify/shorten
 	for (auto& alien : aliens) {
 		alien.Update();
 		if (alien.getPositionY() > PLAYER_POSITION_Y) {
-			End();
 			return GameState::ENDSCREEN;
 		}
 	}
@@ -56,8 +55,8 @@ GameState Game::Update(){ //TODO: simplify/shorten
 		wall.Update();
 	}
 
-	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / PLAYER_TO_STAR_OFFSET_DIVIDER; //TODO: move to background
-	background.Update(offset);
+
+	background.Update(player.getPositionX());
 
 	PlayerShooting();
 	AlienShooting();
@@ -86,8 +85,8 @@ void Game::AlienShooting() {
 	if (shootTimer < 60) {
 		return;	
 	}		
-	const int randomNumber = GetRandomValue(0, static_cast<int>(aliens.size()) - 1); //TODO: gsl::narrow_cast
-	enemyProjectiles.emplace_back(aliens[randomNumber].getPosition(), -1.f); //TODO: at(), THERE ARE OTHER WAYS OF DOING THIS ???
+	const size_t randomNumber = GetRandomValueST(0, aliens.size() - 1);
+	enemyProjectiles.emplace_back(aliens[randomNumber].pos, -1.f); //TODO: at(), THERE ARE OTHER WAYS OF DOING THIS ???
 	shootTimer = 0;	
 }
 
@@ -103,7 +102,7 @@ void Game::checkCollisions(auto& projectile, auto& entities) const noexcept {
 void Game::Collisions() noexcept {
 	std::ranges::for_each(enemyProjectiles, [this](auto& projectile) noexcept {
 		checkCollisions(projectile, walls);
-		if (CheckCollisionRecs(projectile.getRec(), player.rec)) {
+		if (CheckCollisionRecs(projectile.getRec(), player.getRec())) {
 			projectile.Collision();
 			player.Collision();
 		}
@@ -112,7 +111,7 @@ void Game::Collisions() noexcept {
 	std::ranges::for_each(playerProjectiles, [this](auto& projectile) noexcept {
 		checkCollisions(projectile, walls);
 		std::ranges::for_each(aliens, [&projectile, this](auto& alien) noexcept {
-			if (CheckCollisionRecs(projectile.getRec(), alien.rec)) {
+			if (CheckCollisionRecs(projectile.getRec(), alien.getRec())) {
 				projectile.Collision();
 				alien.Collision();
 				score += 100;
@@ -121,7 +120,7 @@ void Game::Collisions() noexcept {
 	});
 }
 
-void Game::Render() const noexcept {
+void Game::Render() const {
 	background.Render();
 
 	ui.Render(score, player.lives);

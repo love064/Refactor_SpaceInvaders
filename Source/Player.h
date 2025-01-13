@@ -10,19 +10,16 @@ constexpr float PLAYER_RADIUS = PLAYER_SIZE/2;
 constexpr float PLAYER_ANIMATION_TIMER = 0.4f;
 constexpr int	PLAYER_MAX_HEALTH = 3;
 
-struct Player
-{
-	Player() noexcept;
-
-	Rectangle rec = { 0, PLAYER_POSITION_Y, PLAYER_SIZE, PLAYER_SIZE };
-	Direction direction = Direction::STATIC;
+struct Player{
+	Vector2 pos = { 0, PLAYER_POSITION_Y };
 	int lives = PLAYER_MAX_HEALTH;
-	EntityType type = EntityType::PLAYER;
+	float vel = 0;
+	
+	Player() noexcept;
 
 	void Render(Texture2D texture) const noexcept;
 	void Update() noexcept;
-	void Movement() noexcept;
 	void Collision() noexcept;
-	Vector2 getPosition() const noexcept;
+	Rectangle getRec() const noexcept;
 	float getPositionX() const noexcept;
 };

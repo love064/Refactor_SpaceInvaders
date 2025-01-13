@@ -7,19 +7,16 @@ constexpr float ALIEN_SPEED = 2.f;
 constexpr int ALIEN_Y_DROP_AMOUNT = 50;
 
 struct Alien{
-	Rectangle rec = { 0, 0, ALIEN_SIZE, ALIEN_SIZE };
+	Vector2 pos = { 0,0 };
+	float vel = 1;
 	bool active = true;
-	bool moveRight = true;
-	float speed = ALIEN_SPEED;
-	EntityType type = EntityType::ENEMY;
 
-	explicit Alien(Vector2 pos) noexcept;
+	explicit Alien(Vector2 position) noexcept;
 
 	void Update() noexcept;
 	void Render(Texture2D texture) const noexcept;
 	void Collision() noexcept;
 
-	Vector2 getPosition() const noexcept;
-	float getPositionX() const noexcept;
 	float getPositionY() const noexcept;
+	Rectangle getRec() const noexcept;
 };

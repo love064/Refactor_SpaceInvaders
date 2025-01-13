@@ -1,17 +1,16 @@
 #include "Alien.h"
 #include "Util.h"
 
-Alien::Alien(Vector2 pos) noexcept {
-    rec.x = pos.x;
-    rec.y = pos.y;
+Alien::Alien(Vector2 position) noexcept {
+	pos = position;
 }
 
 void Alien::Update() noexcept {
-	rec.x += (moveRight ? speed : -speed);
+	pos.x += ALIEN_SPEED * vel;
 
-	if (rec.x >= GetScreenWidthF() - ALIEN_SIZE || rec.x <= 0) {
-		moveRight = !moveRight;  
-		rec.y += ALIEN_Y_DROP_AMOUNT;
+	if (pos.x >= GetScreenWidthF() - ALIEN_SIZE || pos.x <= 0) {
+		vel = -vel;
+		pos.y += ALIEN_Y_DROP_AMOUNT;
 	}
 }
 
@@ -20,16 +19,12 @@ void Alien::Collision() noexcept {
 }
 
 void Alien::Render(Texture2D texture) const noexcept{
-    DrawTextureV(texture, getPosition(), WHITE);
+	DrawTextureV(texture, pos, WHITE);
 }
 
-Vector2 Alien::getPosition() const noexcept {
-    return { rec.x, rec.y };
-}
-
-float Alien::getPositionX() const noexcept {
-	return rec.x;
-}
 float Alien::getPositionY() const noexcept {
-	return rec.y;
+	return pos.y;
+}
+Rectangle Alien::getRec() const noexcept {
+	return { pos.x, pos.y, ALIEN_SIZE, ALIEN_SIZE };
 }
