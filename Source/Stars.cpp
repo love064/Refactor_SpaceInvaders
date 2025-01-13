@@ -33,10 +33,3 @@ void Star::Update(float starOffset) noexcept {
 void Star::Render() const noexcept {
 	DrawCircleV(position, size, SKYBLUE);
 }
-
-int Star::getPositionX() const noexcept {
-	return static_cast<int>(position.x);
-}
-int Star::getPositionY() const noexcept {
-	return static_cast<int>(position.y);
-}

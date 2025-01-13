@@ -16,9 +16,6 @@ struct Star{
 
 	void Update(float starOffset) noexcept;
 	void Render() const noexcept;
-
-	int getPositionX() const noexcept;
-	int getPositionY() const noexcept;
 };
 
 struct Background{

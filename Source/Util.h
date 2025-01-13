@@ -6,7 +6,6 @@ float GetScreenWidthF() noexcept;
 float GetScreenHeightF() noexcept;
 
 float GetRandomValueF(int min, int max) noexcept;
-size_t GetRandomValueST(size_t min, size_t max) noexcept;
 
 void DrawTextF(const char* text, float x, float y, unsigned fontSize, Color color) noexcept;
 void DrawTextSV(std::string_view text, int x, int y, unsigned fontSize, Color color) noexcept;

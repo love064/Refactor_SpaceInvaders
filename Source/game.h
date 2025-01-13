@@ -23,13 +23,12 @@ constexpr float FORMATION_Y = 50;
 struct Game {
 	int score = 0; 
 	float shootTimer = 0;
-	bool newHighScore = false;
 
 	Textures alienTexture{ "./Assets/Alien.png" };
 	Textures barrierTexture{ "./Assets/Barrier.png" };
 	Textures laserTexture{ "./Assets/Laser.png" };
 
-	Textures shipTexture1{ "./Assets/Ship1.png" }; //TODO: should game or player own animation?
+	Textures shipTexture1{ "./Assets/Ship1.png" }; 
 	Textures shipTexture2{ "./Assets/Ship2.png" };
 	Textures shipTexture3{ "./Assets/Ship3.png" };
 	Animation playerAnimation{ {shipTexture1.get(), shipTexture2.get(), shipTexture3.get()} };
@@ -39,12 +38,14 @@ struct Game {
 	void reset();
 
 	GameState Update();
+	GameState UpdateEntities() noexcept;
 	void PlayerShooting();
+	Alien getRandomAlien(const std::vector<Alien>& vec) const;
 	void AlienShooting();
 	void Render() const;
-	void checkCollisions(auto& projectile, auto& entities) const noexcept;
+	void CheckWallCollisions(auto& projectile, auto& entities) const noexcept;
+	void CheckAlienCollisions(auto& projectile, auto& entities) noexcept;
 	void Collisions() noexcept;
-
 	void SpawnAliens();
 
 	UI ui;

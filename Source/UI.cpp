@@ -1,7 +1,7 @@
-#include "UI.h"
 #include "pch.h"
+#include "UI.h"
 
 void UI::Render(int score, int lives) const noexcept {
-	DrawText(TextFormat("Score: %i", score), 50, 20, 40, YELLOW); //TODO: magci values (string)
-	DrawText(TextFormat("Lives: %i", lives), 50, 70, 40, YELLOW);
+	DrawText(TextFormat(SCORE_TEXT.data(), score), TEXT_POS_X, SCORE_TEXT_POS_Y, FONT_SIZE, YELLOW);
+	DrawText(TextFormat(LIVES_TEXT.data(), lives), TEXT_POS_X, LIVES_TEXT_POS_Y, FONT_SIZE, YELLOW);
 }
