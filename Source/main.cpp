@@ -59,7 +59,7 @@ int main(void) {
         }
         return 0;
     }
-    catch (const std::runtime_error& e) {
+    catch (const std::runtime_error& e) { //TODO: i dont think i use runtime error anymore (check?)
         std::println("Runtime error: {}", e.what());
     }
     catch (const std::invalid_argument& e) {

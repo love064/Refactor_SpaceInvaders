@@ -5,6 +5,7 @@ void Application::run() {
 
     switch (currentState) {
         using enum GameState;
+
     case STARTSCREEN:
         doStartScreen();
         break;

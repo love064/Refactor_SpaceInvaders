@@ -33,13 +33,13 @@ void Animation::Update(float anitmationTimer) noexcept {
     timer += GetFrameTime();
 
     if (!animationTextures.empty() && timer > anitmationTimer) {
-        frame = (frame + 1) % animationTextures.size(); //TODO: arethmetic overflow?
+        frame = (frame + 1) % static_cast<int>(animationTextures.size()); //TODO: gsl::narrow_cast<int>()
         timer = 0;
     }
 }
 
 Texture2D Animation::getTexture() const noexcept {
-    return animationTextures[frame]; //TODO: supress at()?
+    return animationTextures[frame]; //TODO: at()?
 }
 
 
