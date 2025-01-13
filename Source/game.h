@@ -43,14 +43,19 @@ struct Game {
 	void PlayerShooting();
 	void AlienShooting();
 	void Render() const noexcept;
+	void checkCollisions(auto& projectile, auto& entities) const noexcept;
 	void Collisions() noexcept;
 
 	void SpawnAliens();
 
 	UI ui;
 	Player player;
-	std::vector<Projectile> Projectiles;
-	std::vector<Wall> Walls;
-	std::vector<Alien> Aliens;
+	//std::vector<Projectile> Projectiles;
+
+	std::vector<Projectile> enemyProjectiles;
+	std::vector<Projectile> playerProjectiles;
+
+	std::vector<Wall> walls;
+	std::vector<Alien> aliens;
 	Background background{ STAR_COUNT };
 };

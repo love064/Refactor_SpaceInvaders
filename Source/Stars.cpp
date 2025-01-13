@@ -3,7 +3,9 @@
 //TODO: REMOVE: ENUMS, WARING SUPRESSION. ADD: FUNCTION OVERLOADS (REMOVE STATIC_CAST). SIMPLIFY: LEADERBAORD IF TIME. GUT PROJECTILE, CHANGE INTO TWO VECTORS
 
 Background::Background(int starAmount){
-    Stars = std::vector<Star>(starAmount);
+	for (int i = 0; i < starAmount; i++) {
+		Stars.emplace_back();
+	}
 }
 
 void Background::Update(float offset) noexcept {
@@ -18,7 +20,7 @@ void Background::Render() const noexcept{
 	}
 }
 
-float GetRandomValueF() {} //TODO
+//float GetRandomValueF() {} //TODO
 
 Star::Star() noexcept {
 	size = static_cast<float>(GetRandomValue(1, 4)) / 2.f;
@@ -31,7 +33,7 @@ void Star::Update(float starOffset) noexcept {
 	position.x = initX + starOffset;
 }
 
-void DrawCircle(Vector2 pos) {}; //TODO. (use overloads)
+//void DrawCircle(Vector2 pos) {}; //TODO. (use overloads)
 
 void Star::Render() const noexcept {
 	DrawCircle(getPositionX(), getPositionY(), size, SKYBLUE);

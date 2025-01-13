@@ -1,22 +1,24 @@
 #include "game.h"
 #include "Util.h"
 #include "pch.h"
+#include <algorithm>
 
 Game::Game() noexcept(false) {
 	reset();
 }
 
 void Game::End() noexcept{
-	Projectiles.clear();
-	Walls.clear();
-	Aliens.clear();
+	enemyProjectiles.clear();
+	playerProjectiles.clear();
+	walls.clear();
+	aliens.clear();
 }
 
 void Game::reset(){
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1);
 	for (int i = 0; i < WALL_COUNT; i++) {
 		const Vector2 spawnPoint = { wall_distance * (i + WALL_MARGIN_X), GetScreenHeightF() - WALL_Y_OFFSET };
-		Walls.emplace_back(spawnPoint);
+		walls.emplace_back(spawnPoint);
 	}	
 	player = {};	
 	SpawnAliens();		
@@ -33,21 +35,24 @@ GameState Game::Update(){ //TODO: simplify/shorten
 	player.Update();
 	playerAnimation.Update(PLAYER_ANIMATION_TIMER);
 	
-	for (auto& alien : Aliens) {
+	for (auto& alien : aliens) {
 		alien.Update();
 		if (alien.getPositionY() > PLAYER_POSITION_Y) {
 			End();
 			return GameState::ENDSCREEN;
 		}
 	}
-	if (Aliens.empty()){
+	if (aliens.empty()){
 		SpawnAliens();
 	}
 
-	for (auto& projectile : Projectiles) {
+	for (auto& projectile : enemyProjectiles) {
 		projectile.Update();
 	}
-	for (auto& wall : Walls) {
+	for (auto& projectile : playerProjectiles) {
+		projectile.Update();
+	}
+	for (auto& wall : walls) {
 		wall.Update();
 	}
 
@@ -58,9 +63,10 @@ GameState Game::Update(){ //TODO: simplify/shorten
 	AlienShooting();
 	Collisions();
 
-	std::erase_if(Aliens, [](const Alien& a) { return !a.active; });
-	std::erase_if(Walls, [](const Wall& w) { return !w.active; });
-	std::erase_if(Projectiles, [](const Projectile& p) { return !p.active; });
+	std::erase_if(aliens, [](const Alien& a) { return !a.active; });
+	std::erase_if(walls, [](const Wall& w) { return !w.active; });
+	std::erase_if(enemyProjectiles, [](const Projectile& p) { return !p.active; });
+	std::erase_if(playerProjectiles, [](const Projectile& p) { return !p.active; });
 	
 	return GameState::GAMEPLAY;
 }
@@ -68,45 +74,51 @@ GameState Game::Update(){ //TODO: simplify/shorten
 void Game::PlayerShooting(){
 	if (IsKeyPressed(KEY_SPACE)) {
 		Vector2 spawnPoint = { player.getPositionX() + (PLAYER_SIZE / 2), PLAYER_POSITION_Y};
-		Projectiles.emplace_back(EntityType::PLAYER_PROJECTILE, spawnPoint);
+		playerProjectiles.emplace_back(spawnPoint, 1.f);
 	}
 }
 
 void Game::AlienShooting() {
-	if (Aliens.empty()) {
+	if (aliens.empty()) {
 		return;
 	}
 	shootTimer += 1;
 	if (shootTimer < 60) {
 		return;	
 	}		
-	const int randomNumber = GetRandomValue(0, static_cast<int>(Aliens.size()) - 1); //TODO: gsl::narrow_cast
-	Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition()); //TODO: at(), THERE ARE OTHER WAYS OF DOING THIS ???
+	const int randomNumber = GetRandomValue(0, static_cast<int>(aliens.size()) - 1); //TODO: gsl::narrow_cast
+	enemyProjectiles.emplace_back(aliens[randomNumber].getPosition(), -1.f); //TODO: at(), THERE ARE OTHER WAYS OF DOING THIS ???
 	shootTimer = 0;	
 }
 
-void Game::Collisions() noexcept {
-	for (auto& projectile : Projectiles) {
-		for (auto& wall : Walls) {
-			if (CheckCollisionRecs(projectile.rec, wall.rec)) {
-				projectile.Collision();
-				wall.Collision();
-			}
+void Game::checkCollisions(auto& projectile, auto& entities) const noexcept {
+	std::ranges::for_each(entities, [&projectile](auto& entity) noexcept {
+		if (CheckCollisionRecs(projectile.getRec(), entity.rec)) {
+			projectile.Collision();
+			entity.Collision();
 		}
+	});
+};
 
-		if (projectile.type == EntityType::ENEMY_PROJECTILE && CheckCollisionRecs(projectile.rec, player.rec)) {
+void Game::Collisions() noexcept {
+	std::ranges::for_each(enemyProjectiles, [this](auto& projectile) noexcept {
+		checkCollisions(projectile, walls);
+		if (CheckCollisionRecs(projectile.getRec(), player.rec)) {
 			projectile.Collision();
 			player.Collision();
 		}
+	});
 
-		for (auto& alien : Aliens) {
-			if (projectile.type == EntityType::PLAYER_PROJECTILE && CheckCollisionRecs(projectile.rec, alien.rec)) {
+	std::ranges::for_each(playerProjectiles, [this](auto& projectile) noexcept {
+		checkCollisions(projectile, walls);
+		std::ranges::for_each(aliens, [&projectile, this](auto& alien) noexcept {
+			if (CheckCollisionRecs(projectile.getRec(), alien.rec)) {
 				projectile.Collision();
 				alien.Collision();
 				score += 100;
 			}
-		}
-	}
+		});
+	});
 }
 
 void Game::Render() const noexcept {
@@ -116,13 +128,16 @@ void Game::Render() const noexcept {
 
 	player.Render(playerAnimation.getTexture());
 
-	for (const auto& p : Projectiles) {
+	for (const auto& p : enemyProjectiles) {
 		p.Render(laserTexture.get());
 	}
-	for (const auto& w : Walls) {
+	for (const auto& p : playerProjectiles) {
+		p.Render(laserTexture.get());
+	}
+	for (const auto& w : walls) {
 		w.Render(barrierTexture.get());
 	}
-	for (const auto& a : Aliens) {
+	for (const auto& a : aliens) {
 		a.Render(alienTexture.get());
 	}
 }
@@ -130,8 +145,8 @@ void Game::Render() const noexcept {
 void Game::SpawnAliens(){
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {
-			Vector2 spawnPoint = { FORMATION_X + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
-			Aliens.emplace_back(spawnPoint);
+			const Vector2 spawnPoint = { FORMATION_X + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
+			aliens.emplace_back(spawnPoint);
 		}
 	}
 }

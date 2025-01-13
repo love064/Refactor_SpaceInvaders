@@ -8,14 +8,15 @@ constexpr float PROJECTILE_SIZE_X = 1;
 constexpr float PROJECTILE_SIZE_Y = 50;
 
 struct Projectile{
-	Rectangle rec = { 0, 0, PROJECTILE_SIZE_X, PROJECTILE_SIZE_Y };
-	EntityType type = EntityType::PLAYER_PROJECTILE;
-	bool active = true;
-	Direction direction = Direction::UP;
+	Vector2 pos = { 0, 0 };
+	float vel = 0;
 
-	Projectile(EntityType type, Vector2 pos) noexcept;
+	bool active = true;
+	
+	Projectile(Vector2 position, float velocity) noexcept;
 	
 	void Update() noexcept;
 	void Collision() noexcept;
 	void Render(Texture2D texture) const noexcept;
+	Rectangle getRec() const noexcept;
 };

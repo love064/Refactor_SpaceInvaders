@@ -11,5 +11,5 @@ struct Animation {
 	explicit Animation(const std::vector<Texture>& textures);
 	void Update(float anitmationTimer) noexcept;
 	Texture2D getTexture() const noexcept;
-	void addFrame(Texture2D texture);
+	//void addFrame(Texture2D texture);
 };

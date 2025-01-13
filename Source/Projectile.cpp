@@ -1,19 +1,15 @@
 #include "Projectile.h"
 #include "Util.h"
 
-Projectile::Projectile(EntityType entityType, Vector2 pos) noexcept {
-	type = entityType;
-    rec.x = pos.x;
-    rec.y = pos.y;
-	if (entityType == EntityType::ENEMY_PROJECTILE) {
-		direction = Direction::DOWN;
-	}
+Projectile::Projectile(Vector2 position, float velocity) noexcept {
+	pos = position;
+	vel = velocity;
 }
 
 void Projectile::Update() noexcept {
-	rec.y -= PROJECTILE_SPEED * static_cast<float>(direction);
+	pos.y -= PROJECTILE_SPEED * vel;
 
-	if (rec.y < 0 || rec.y > GetScreenHeightF()){
+	if (pos.y < 0 || pos.y > GetScreenHeightF()){
 		active = false;
 	}
 }
@@ -23,5 +19,9 @@ void Projectile::Collision() noexcept {
 }
 
 void Projectile::Render(Texture2D texture) const noexcept{
-    DrawTextureV(texture, { rec.x, rec.y }, WHITE);
+    DrawTextureV(texture, pos, WHITE);
+}
+
+Rectangle Projectile::getRec() const noexcept {
+	return { pos.x, pos.y, PROJECTILE_SIZE_X, PROJECTILE_SIZE_Y };
 }

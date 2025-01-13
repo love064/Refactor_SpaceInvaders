@@ -5,9 +5,9 @@ Animation::Animation(const std::vector<Texture>& textures) {
     animationTextures = textures;
 }
 
-void Animation::addFrame(Texture2D texture) {
-    animationTextures.push_back(texture);
-}
+//void Animation::addFrame(Texture2D texture) {
+//    animationTextures.push_back(texture);
+//}
 
 void Animation::Update(float anitmationTimer) noexcept {
     timer += GetFrameTime();
