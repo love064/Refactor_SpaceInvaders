@@ -1,30 +1,9 @@
 #include "Stars.h"
 
-#define DISABLE_WARNINGS_FROM_RAYLIB \
-    __pragma(warning(push)) \
-    /* C26812: The enum type '...' is unscoped. Prefer 'enum class' over 'enum' (Enum.3) */ \
-    __pragma(warning(disable : 26812)) \
-    /* C26446: Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4). */ \
-    __pragma(warning(disable : 26446)) \
-    /* C26455: Default constructor is not declared as noexcept */ \
-    __pragma(warning(disable : 26455)) \
-    /* C26426: Global initializer calls a non-constexpr function */ \
-    __pragma(warning(disable : 26426)) \
-    /* C26409: Avoid calling new and delete explicitly, use smart pointers */ \
-    __pragma(warning(disable : 26409)) \
-    /* C26477: Use 'override' instead of base class member name */ \
-    __pragma(warning(disable : 26477)) \
-    /* C26433: Function can be marked as noexcept */ \
-    __pragma(warning(disable : 26433)) \
-    /* C26818: Prefer std::vector over C array */ \
-    __pragma(warning(disable : 26818)) \
-    /* C26440: Function can be declared 'const' */ \
-    __pragma(warning(disable : 26440))
+//TODO: REMOVE: ENUMS, WARING SUPRESSION. ADD: FUNCTION OVERLOADS (REMOVE STATIC_CAST). SIMPLIFY: LEADERBAORD IF TIME. GUT PROJECTILE, CHANGE INTO TWO VECTORS
 
 Background::Background(int starAmount){
-	for (int i = 0; i < starAmount; i++) {
-		Stars.emplace_back();
-	}
+    Stars = std::vector<Star>(starAmount);
 }
 
 void Background::Update(float offset) noexcept {
@@ -39,6 +18,7 @@ void Background::Render() const noexcept{
 	}
 }
 
+float GetRandomValueF() {} //TODO
 
 Star::Star() noexcept {
 	size = static_cast<float>(GetRandomValue(1, 4)) / 2.f;
@@ -51,6 +31,8 @@ void Star::Update(float starOffset) noexcept {
 	position.x = initX + starOffset;
 }
 
+void DrawCircle(Vector2 pos) {}; //TODO. (use overloads)
+
 void Star::Render() const noexcept {
 	DrawCircle(getPositionX(), getPositionY(), size, SKYBLUE);
 }
@@ -61,5 +43,3 @@ int Star::getPositionX() const noexcept {
 int Star::getPositionY() const noexcept {
 	return static_cast<int>(position.y);
 }
-
-#define RESTORE_WARNINGS __pragma(warning(pop))

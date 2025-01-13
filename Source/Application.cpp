@@ -29,6 +29,7 @@ void Application::doGameplay() {
     currentState = game.Update();
     game.Render();
     if (currentState == GameState::ENDSCREEN) {
+        game.End();
         score = game.score;
         game.reset();
     }

@@ -6,7 +6,7 @@
 #include "StartScreen.h"
 #include "GameStates.h"
 
-struct Application {
+class Application {
     GameState currentState = GameState::STARTSCREEN;
     Window window{ 1920, 1080, "Space Invaders", 60 };
 
@@ -15,10 +15,9 @@ struct Application {
     LeaderBoard leaderboard;
 
     int score = 0;
-
-	void run();
     void doStartScreen() noexcept;
     void doGameplay();
     void doLeaderBoard();
-
+public:
+	void run();
 };

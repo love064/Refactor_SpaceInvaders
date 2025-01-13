@@ -2,27 +2,6 @@
 #include "Util.h"
 #include "pch.h"
 
-#define DISABLE_WARNINGS_FROM_RAYLIB \
-    __pragma(warning(push)) \
-    /* C26812: The enum type '...' is unscoped. Prefer 'enum class' over 'enum' (Enum.3) */ \
-    __pragma(warning(disable : 26812)) \
-    /* C26446: Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4). */ \
-    __pragma(warning(disable : 26446)) \
-    /* C26455: Default constructor is not declared as noexcept */ \
-    __pragma(warning(disable : 26455)) \
-    /* C26426: Global initializer calls a non-constexpr function */ \
-    __pragma(warning(disable : 26426)) \
-    /* C26409: Avoid calling new and delete explicitly, use smart pointers */ \
-    __pragma(warning(disable : 26409)) \
-    /* C26477: Use 'override' instead of base class member name */ \
-    __pragma(warning(disable : 26477)) \
-    /* C26433: Function can be marked as noexcept */ \
-    __pragma(warning(disable : 26433)) \
-    /* C26818: Prefer std::vector over C array */ \
-    __pragma(warning(disable : 26818)) \
-    /* C26440: Function can be declared 'const' */ \
-    __pragma(warning(disable : 26440))
-
 Game::Game() noexcept(false) {
 	reset();
 }
@@ -46,18 +25,13 @@ void Game::reset(){
 }
 
 
-GameState Game::Update(){
-	if (IsKeyReleased(KEY_Q)) {
-		End();
+GameState Game::Update(){ //TODO: simplify/shorten
+	if (IsKeyReleased(KEY_Q) || player.lives < 1) {
 		return GameState::ENDSCREEN;
 	}
 	
 	player.Update();
 	playerAnimation.Update(PLAYER_ANIMATION_TIMER);
-	if (player.lives < 1){
-		End();
-		return GameState::ENDSCREEN;
-	}
 	
 	for (auto& alien : Aliens) {
 		alien.Update();
@@ -77,7 +51,7 @@ GameState Game::Update(){
 		wall.Update();
 	}
 
-	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / PLAYER_TO_STAR_OFFSET_DIVIDER;
+	const float offset = ((GetScreenWidthF() / 2.f) - player.getPositionX()) / PLAYER_TO_STAR_OFFSET_DIVIDER; //TODO: move to background
 	background.Update(offset);
 
 	PlayerShooting();
@@ -99,16 +73,16 @@ void Game::PlayerShooting(){
 }
 
 void Game::AlienShooting() {
-	shootTimer += 1;
-	if (shootTimer >= 60){
-		if (Aliens.empty()) {
-			return;
-		}
-		const int randomNumber = GetRandomValue(0, static_cast<int>(Aliens.size()) - 1); //TODO: gsl::narrow_cast
-
-		Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition()); //TODO: at()
-		shootTimer = 0;
+	if (Aliens.empty()) {
+		return;
 	}
+	shootTimer += 1;
+	if (shootTimer < 60) {
+		return;	
+	}		
+	const int randomNumber = GetRandomValue(0, static_cast<int>(Aliens.size()) - 1); //TODO: gsl::narrow_cast
+	Projectiles.emplace_back(EntityType::ENEMY_PROJECTILE, Aliens[randomNumber].getPosition()); //TODO: at(), THERE ARE OTHER WAYS OF DOING THIS ???
+	shootTimer = 0;	
 }
 
 void Game::Collisions() noexcept {
@@ -156,10 +130,8 @@ void Game::Render() const noexcept {
 void Game::SpawnAliens(){
 	for (int row = 0; row < FORMATION_COLLUM; row++) {
 		for (int col = 0; col < FORMATION_ROW; col++) {
-			const Vector2 spawnPoint = { FORMATION_X + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
+			Vector2 spawnPoint = { FORMATION_X + (col * ALIEN_SPACING), FORMATION_Y + (row * ALIEN_SPACING) };
 			Aliens.emplace_back(spawnPoint);
 		}
 	}
 }
-
-#define RESTORE_WARNINGS __pragma(warning(pop))
