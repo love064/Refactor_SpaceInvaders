@@ -1,7 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "EntityType.h"
-#include "Direction.h"
 
 constexpr float PROJECTILE_SPEED = 15;
 constexpr float PROJECTILE_SIZE_X = 1;

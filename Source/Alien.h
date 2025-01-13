@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "EntityType.h"
 
 constexpr int ALIEN_SIZE = 100;
 constexpr float ALIEN_SPEED = 2.f;

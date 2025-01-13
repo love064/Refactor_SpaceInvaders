@@ -1,7 +1,5 @@
 #pragma once
 #include "pch.h"
-#include "EntityType.h"
-#include "Direction.h"
 
 constexpr float PLAYER_SPEED = 7.f;
 constexpr float PLAYER_POSITION_Y = 950.f;

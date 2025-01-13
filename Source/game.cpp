@@ -44,7 +44,6 @@ GameState Game::Update(){ //TODO: simplify/shorten
 	if (aliens.empty()){
 		SpawnAliens();
 	}
-
 	for (auto& projectile : enemyProjectiles) {
 		projectile.Update();
 	}
@@ -54,8 +53,6 @@ GameState Game::Update(){ //TODO: simplify/shorten
 	for (auto& wall : walls) {
 		wall.Update();
 	}
-
-
 	background.Update(player.getPositionX());
 
 	PlayerShooting();
@@ -92,7 +89,7 @@ void Game::AlienShooting() {
 
 void Game::checkCollisions(auto& projectile, auto& entities) const noexcept {
 	std::ranges::for_each(entities, [&projectile](auto& entity) noexcept {
-		if (CheckCollisionRecs(projectile.getRec(), entity.rec)) {
+		if (CheckCollisionRecs(projectile.getRec(), entity.getRec())) {
 			projectile.Collision();
 			entity.Collision();
 		}

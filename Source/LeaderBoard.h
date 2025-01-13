@@ -19,6 +19,16 @@ constexpr int LEADERBOARD_X_OFFSET = 50;
 constexpr int LEADERBOARD_Y_OFFSET = 140;
 constexpr int LEADERBOARD_SCORE_X_OFFSEET = 350;
 constexpr Rectangle NAME_TEXTBOX = { 600, 500, 225, 50 };
+constexpr std::string_view NEW_HS_TEXT = "NEW HIGHSCORE!";
+constexpr std::string_view ENTER_NAME_TEXT = "ENTER NAME!";
+constexpr std::string_view INPUT_TEXT = "INPUT CHARS: %i/%i";
+constexpr std::string_view CONFIRM_TEXT = "PRESS ENTER TO CONTINUE";
+constexpr std::string_view CONTINUE_TEXT = "PRESS SPACE TO CONTINUE";
+constexpr std::string_view LEADERBOARD_TEXT = "LEADERBOARD";
+constexpr std::string_view HS_FILE_NAME = "Assets/LeaderBoard.txt";
+constexpr std::string_view PLAYER_NAME_TEXT = "Player Name:";
+constexpr std::string_view PLAYER_SCORE_TEXT = "Score:";
+constexpr unsigned LEADERBOARD_COUNT = 5;
 
 struct PlayerData {
 	std::string name;
@@ -26,7 +36,7 @@ struct PlayerData {
 };
 
 struct LeaderBoard {
-	std::vector<PlayerData> Leaderboard;
+	std::vector<PlayerData> highscores;
 
 	bool newHighScore = true;
 	PlayerData yourScore = {"", 0};
@@ -46,6 +56,4 @@ struct LeaderBoard {
 	void SetNameRender() const noexcept;
 	void HSRender() const noexcept;
 	void render() const noexcept;
-	int getTextboxXI() const noexcept;
-	int getTextboxYI() const noexcept;
 };

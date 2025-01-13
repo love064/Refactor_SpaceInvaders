@@ -3,6 +3,8 @@
 #include <chrono>
 #include <fstream>
 #include <string>
+#include "Util.h"
+#include <algorithm>
 
 GameState LeaderBoard::update(int score) {
 	if (newHighScore) {
@@ -28,7 +30,7 @@ void LeaderBoard::SetName() {
 
 	if (letterCount > 0 && letterCount < MAX_LETTER_COUNT && IsKeyReleased(KEY_ENTER)) {
 		yourScore.name = name;
-		ReadFromFile("Assets/LeaderBoard.txt");
+		ReadFromFile(HS_FILE_NAME);
 		SortLeaderBoard();
 		newHighScore = false;
 	}
@@ -37,7 +39,7 @@ void LeaderBoard::SetName() {
 void LeaderBoard::ReadFromFile(std::string_view fileName) {
 	std::ifstream LeaderBoardFile(fileName.data(), std::ios::in | std::ios::binary);
 	if (LeaderBoardFile.is_open()) { 
-		for (int i = 0; i < 5; i++) { 
+		for (int i = 0; i < LEADERBOARD_COUNT; i++) { 
 			ReadPlayerData(LeaderBoardFile);
 		}
 	}
@@ -48,39 +50,38 @@ void LeaderBoard::ReadPlayerData(std::ifstream& LeaderBoardFile) {
 	PlayerData currentPlayer;
 
 	while (std::getline(LeaderBoardFile, line)) {
-		if (line.contains("Player Name:")) {
-			currentPlayer.name = line.substr(13);
+		if (line.contains(PLAYER_NAME_TEXT)) { 
+			currentPlayer.name = line.substr(PLAYER_NAME_TEXT.size());
 		}
-		else if (line.contains("Score:")) {
-			std::istringstream(line.substr(7)) >> currentPlayer.score;
-			Leaderboard.push_back(currentPlayer);
+		else if (line.contains(PLAYER_SCORE_TEXT)) {
+			std::istringstream(line.substr(PLAYER_SCORE_TEXT.size())) >> currentPlayer.score;
+			highscores.push_back(currentPlayer);
 		}
 	}
 }
 
-void LeaderBoard::SortLeaderBoard() { 
-	auto toChange = std::ranges::find_if(Leaderboard, [this](const PlayerData& player) {
-		return yourScore.score > player.score;
+void LeaderBoard::SortLeaderBoard() {
+	highscores.push_back(yourScore);
+	std::sort(highscores.begin(), highscores.end(), [](const PlayerData& player1, const PlayerData& player2)
+		{
+			return player2.score < player1.score;
 	});
-	if (toChange != Leaderboard.end()) {
-		Leaderboard.insert(toChange, yourScore);
-		Leaderboard.pop_back();
-	}
+	highscores.pop_back();
 }
 
 void LeaderBoard::WriteToFile(std::string_view fileName) const {
 	std::ofstream LeaderBoardFile(fileName.data(), std::ios::out | std::ios::binary);
 	if (LeaderBoardFile.is_open()){
-		for (const auto& var : Leaderboard) {
-			LeaderBoardFile << "Player Name: " << var.name << "\n";
-			LeaderBoardFile << "Score: " << var.score << "\n";
+		for (const auto& var : highscores) {
+			LeaderBoardFile << PLAYER_NAME_TEXT << var.name << "\n";
+			LeaderBoardFile << PLAYER_SCORE_TEXT << var.score << "\n";
 		}
 	}
 }
 
 void LeaderBoard::reset() {
-	WriteToFile("Assets/LeaderBoard.txt");
-	Leaderboard.clear();
+	WriteToFile(HS_FILE_NAME);
+	highscores.clear();
 	yourScore = { "", 0};
 	name = "";
 	letterCount = 0;
@@ -97,33 +98,27 @@ void LeaderBoard::render() const noexcept {
 }
 
 void LeaderBoard::SetNameRender() const noexcept{
-	DrawText("NEW HIGHSCORE!", X_RENDER_INDENT, Y_RENDER_INDENT, FONT_SIZE_LARGE, YELLOW);
-	DrawText("ENTER NAME!", X_RENDER_INDENT, Y_RENDER_INDENT * 2, FONT_SIZE_SMALL, YELLOW);
+	DrawTextSV(NEW_HS_TEXT, X_RENDER_INDENT, Y_RENDER_INDENT, FONT_SIZE_LARGE, YELLOW);
+	DrawTextSV(ENTER_NAME_TEXT, X_RENDER_INDENT, Y_RENDER_INDENT * 2, FONT_SIZE_SMALL, YELLOW);
 	DrawRectangleRec(NAME_TEXTBOX, LIGHTGRAY);
 	DrawRectangleLinesEx(NAME_TEXTBOX, LINE_THICKNESS, RED);
-	DrawText(name.data(), getTextboxXI() + NAME_OFFSET_X, getTextboxYI() + NAME_OFFSET_Y, FONT_SIZE_MEDIUM, MAROON);
-	DrawText(TextFormat("INPUT CHARS: %i/%i", letterCount, MAX_LETTER_COUNT - 1), X_RENDER_INDENT, Y_RENDER_INDENT * 3, FONT_SIZE_SMALL, YELLOW);
+	DrawTextF(name.data(), NAME_TEXTBOX.x + NAME_OFFSET_X, NAME_TEXTBOX.y + NAME_OFFSET_Y, FONT_SIZE_MEDIUM, MAROON);
+	DrawText(TextFormat(INPUT_TEXT.data(), letterCount, MAX_LETTER_COUNT - 1), X_RENDER_INDENT, Y_RENDER_INDENT * 3, FONT_SIZE_SMALL, YELLOW);
 
 	if (letterCount > 0 && letterCount < MAX_LETTER_COUNT){
-		DrawText("PRESS ENTER TO CONTINUE", X_RENDER_INDENT, Y_RENDER_INDENT * 4, FONT_SIZE_MEDIUM, YELLOW);
+		DrawTextSV(CONFIRM_TEXT, X_RENDER_INDENT, Y_RENDER_INDENT * 4, FONT_SIZE_MEDIUM, YELLOW);
 	}
 }
 
 void LeaderBoard::HSRender() const noexcept{
-	DrawText("PRESS SPACE TO CONTINUE", X_RENDER_INDENT, Y_RENDER_INDENT, FONT_SIZE_MEDIUM, YELLOW);
-	DrawText("LEADERBOARD", LEADERBOARD_X_OFFSET, LEADERBOARD_Y_OFFSET - FONT_SIZE_MEDIUM, FONT_SIZE_MEDIUM, YELLOW);
+	DrawTextSV(CONTINUE_TEXT, X_RENDER_INDENT, Y_RENDER_INDENT, FONT_SIZE_MEDIUM, YELLOW);
+	DrawTextSV(LEADERBOARD_TEXT, LEADERBOARD_X_OFFSET, LEADERBOARD_Y_OFFSET - FONT_SIZE_MEDIUM, FONT_SIZE_MEDIUM, YELLOW);
 
 	int i = 0;
-	for (const auto& var : Leaderboard) {
+	for (const auto& var : highscores) {
 		DrawText(var.name.data(), LEADERBOARD_X_OFFSET, LEADERBOARD_Y_OFFSET + (i * FONT_SIZE_MEDIUM), FONT_SIZE_MEDIUM, YELLOW);
 		DrawText(TextFormat("%i", var.score), LEADERBOARD_SCORE_X_OFFSEET, LEADERBOARD_Y_OFFSET + (i * FONT_SIZE_MEDIUM), FONT_SIZE_MEDIUM, YELLOW);
 		i++;
 	}
 }
 
-int LeaderBoard::getTextboxXI() const noexcept {
-	return static_cast<int>(NAME_TEXTBOX.x);
-}
-int LeaderBoard::getTextboxYI() const noexcept {
-	return static_cast<int>(NAME_TEXTBOX.y);
-}

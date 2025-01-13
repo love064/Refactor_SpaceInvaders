@@ -1,8 +1,9 @@
 #include "Wall.h"
+#include "Util.h"
 
-Wall::Wall(Vector2 pos) noexcept {
-	rec.x = pos.x;
-	rec.y = pos.y;
+Wall::Wall(Vector2 position) noexcept {
+	pos.x = position.x;
+	pos.y = position.y;
 }
 
 void Wall::Update() noexcept {
@@ -16,13 +17,11 @@ void Wall::Collision() noexcept {
 }
 
 void Wall::Render(Texture2D texture) const noexcept {
-    DrawTextureV(texture, { rec.x, rec.y }, WHITE);
-	DrawText(TextFormat("%i", health), getPosXI() + WALL_TEXT_OFFSET_X, getPosYI() + WALL_TEXT_OFFSET_Y, WALL_TEXT_SIZE, RED);
+    DrawTextureV(texture, pos, WHITE);
+	DrawTextF(TextFormat("%i", health), pos.x + WALL_TEXT_OFFSET_X, pos.y + WALL_TEXT_OFFSET_Y, WALL_TEXT_SIZE, RED);
 }
 
-int Wall::getPosXI() const noexcept{
-	return static_cast<int>(rec.x);
+Rectangle Wall::getRec() const noexcept {
+	return { pos.x, pos.y, WALL_SIZE_X , WALL_SIZE_Y };
 }
-int Wall::getPosYI() const noexcept {
-	return static_cast<int>(rec.y);
-}
+

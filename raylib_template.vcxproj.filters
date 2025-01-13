@@ -65,9 +65,6 @@
     <ClInclude Include="Source\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EntityType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\StartScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Direction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\pch.h">

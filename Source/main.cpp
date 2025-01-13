@@ -29,7 +29,7 @@ disable warnings and static analysis on external files, check the forums for how
 
 Recheck all noexcpets (allocation of memory = except) ie. emplace_back is allocation*/
 
-//TODO: REMOVE: ENUMS
+// REMOVE: ENUMS
 // REMOVE: WARING SUPRESSION. 
 //TODO: ADD: FUNCTION OVERLOADS (REMOVE STATIC_CAST). 
 //TODO: SIMPLIFY: LEADERBAORD IF TIME. 
