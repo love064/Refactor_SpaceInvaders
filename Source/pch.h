@@ -1,19 +1,14 @@
 #pragma once
 
-#include <codeanalysis\warnings.h>
+
+//#include <codeanalysis\warnings.h>
+#include <CodeAnalysis/Warnings.h>
 #pragma warning(push)
 #pragma warning(disable:ALL_CODE_ANALYSIS_WARNINGS)
 
-
-
 #include <raylib.h>
 
-
 #pragma warning(pop)
-
-
-
-//cpp file
 
 #define DISABLE_WARNINGS_FROM_RAYLIB \
     __pragma(warning(push)) \
@@ -35,7 +30,5 @@
     __pragma(warning(disable : 26818)) \
     /* C26440: Function can be declared 'const' */ \
     __pragma(warning(disable : 26440))
-
-//code
 
 #define RESTORE_WARNINGS __pragma(warning(pop))
