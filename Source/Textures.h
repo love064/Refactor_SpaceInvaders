@@ -5,18 +5,18 @@
 #include <stdexcept>
 #include <format>
 
-struct Textures
+struct TextureResource
 {
 	Texture2D texture;
 
-	explicit Textures(std::string_view fileName){
+	explicit TextureResource(std::string_view fileName){
 		texture = LoadTexture(fileName.data());
 		if (texture.id <= 0) {
 			throw std::invalid_argument(std::format("ERROR. Failed to load texture: {}", fileName));
 		}
 	}
 
-	~Textures() noexcept {
+	~TextureResource() noexcept {
 		UnloadTexture(texture);
 	}
 
@@ -24,8 +24,8 @@ struct Textures
 		return texture;
 	}
 
-	Textures(const Textures&) = delete;
-	Textures(Textures&&) = delete;
-	Textures& operator=(const Textures&) = delete;
-	Textures& operator=(Textures&&) = delete;
+	TextureResource(const TextureResource&) = delete;
+	TextureResource(TextureResource&&) = delete;
+	TextureResource& operator=(const TextureResource&) = delete;
+	TextureResource& operator=(TextureResource&&) = delete;
 };
