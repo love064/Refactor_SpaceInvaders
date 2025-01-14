@@ -34,8 +34,8 @@ struct Game {
 	Animation playerAnimation{ {shipTexture1.get(), shipTexture2.get(), shipTexture3.get()} };
 	
 	Game() noexcept(false);
-	void End() noexcept;
 	void reset();
+	void End() noexcept;
 
 	GameState Update();
 	GameState UpdateEntities() noexcept;

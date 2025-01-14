@@ -8,13 +8,6 @@ Game::Game() noexcept(false) {
 	reset();
 }
 
-void Game::End() noexcept{
-	enemyProjectiles.clear();
-	playerProjectiles.clear();
-	walls.clear();
-	aliens.clear();
-}
-
 void Game::reset(){
 	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1);
 	for (int i = 0; i < WALL_COUNT; i++) {
@@ -27,6 +20,12 @@ void Game::reset(){
 	score = 0;
 }
 
+void Game::End() noexcept{
+	enemyProjectiles.clear();
+	playerProjectiles.clear();
+	walls.clear();
+	aliens.clear();
+}
 
 GameState Game::Update(){ 
 	if (IsKeyReleased(KEY_Q) || player.lives < 1) {

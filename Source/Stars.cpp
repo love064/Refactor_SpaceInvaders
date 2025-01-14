@@ -19,7 +19,6 @@ void Background::Render() const noexcept{
 }
 
 Star::Star() noexcept {
-	
 	size = GetRandomValueF(STAR_MIN_SIZE, STAR_MAX_SIZE) / 2.f;
 	initX = GetRandomValueF(-STAR_X_OFFSET, GetScreenWidth() + STAR_X_OFFSET);
 	position.x = initX;
