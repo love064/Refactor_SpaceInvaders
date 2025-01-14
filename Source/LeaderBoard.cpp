@@ -5,6 +5,7 @@
 #include <string>
 #include "Util.h"
 #include <algorithm>
+#include <iostream>
 
 GameState LeaderBoard::update(int score) {
 	if (newHighScore) {
@@ -18,8 +19,11 @@ GameState LeaderBoard::update(int score) {
 }
 
 void LeaderBoard::SetName() {
-	if (const int key = GetCharPressed(); key >= 32 && key <= 125 && letterCount < MAX_LETTER_COUNT) {
-		name += static_cast<char>(key); //TODO: fix this (gsl::narrow_cast<char>(key)) find out how to include gsl
+	if (const int key = GetCharPressed(); key >= 32 && key <= 125 && letterCount < MAX_LETTER_COUNT){
+#pragma warning(push)
+#pragma warning(disable: 26472) // Aware of narrowing conversion, but it's safe as key(int) is within bounds of char (if statment above)
+		name += static_cast<char>(key);
+#pragma warning(pop)
 		letterCount++;
 	}
 
