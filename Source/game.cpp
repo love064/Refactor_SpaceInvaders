@@ -9,9 +9,9 @@ Game::Game() noexcept(false) {
 }
 
 void Game::reset(){
-	const auto wall_distance = GetScreenWidthF() / (WALL_COUNT + 1);
+	const auto wallDistance = GetScreenWidthF() / (WALL_COUNT + 1);
 	for (int i = 0; i < WALL_COUNT; i++) {
-		const Vector2 spawnPoint = { wall_distance * (i + WALL_MARGIN_X), GetScreenHeightF() - WALL_Y_OFFSET };
+		const Vector2 spawnPoint = { wallDistance * (i + WALL_MARGIN_X), GetScreenHeightF() - WALL_Y_OFFSET };
 		walls.emplace_back(spawnPoint);
 	}	
 	player = {};	

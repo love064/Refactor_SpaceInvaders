@@ -21,7 +21,7 @@ GameState LeaderBoard::update(int score) {
 void LeaderBoard::SetName() {
 	if (const int key = GetCharPressed(); key >= 32 && key <= 125 && letterCount < MAX_LETTER_COUNT){
 #pragma warning(push)
-#pragma warning(disable: 26472) // Aware of narrowing conversion, but it's safe as key(int) is within bounds of char (if statment above)
+#pragma warning(disable: 26472) // Aware of narrowing conversion, but it should be safe as key(int) is within bounds of char (if statment above)
 		name += static_cast<char>(key);
 #pragma warning(pop)
 		letterCount++;
